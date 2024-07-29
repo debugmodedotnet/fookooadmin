@@ -1,0 +1,169 @@
+<section class="youtube-videos text-center py-5">
+  <div class="container-boxed">
+    <h2
+      class="section-title font-36 nmc-dark-grey font-family-poppins text-center mb-5"
+    >
+      YouTube Videos
+    </h2>
+
+    <!-- Button to show the form for adding a new video -->
+    <button class="btn btn-light-orange btn-sm mb-3" (click)="showForm()">
+      Add New Video
+    </button>
+
+    <!-- Form for adding or updating a video -->
+    @if(formVisible){
+    <div class="card p-4 mb-4">
+      <h3>{{ editMode ? "Edit" : "Add" }} YouTube Video</h3>
+      <form [formGroup]="videoForm" (ngSubmit)="addOrUpdateVideo()">
+        <div class="mb-3">
+          <label for="Info" class="form-label required">Info:</label>
+          <input
+            class="form-control form-control-sm custom-input"
+            formControlName="Info"
+            type="text"
+          />
+          <div
+            *ngIf="
+              videoForm.get('Info')?.invalid &&
+              (videoForm.get('Info')?.dirty || videoForm.get('Info')?.touched)
+            "
+            class="text-danger"
+          >
+            <div *ngIf="videoForm.get('Info')?.errors?.['required']">
+              Info is required.
+            </div>
+            <div *ngIf="videoForm.get('Info')?.errors?.['maxlength']">
+              Info cannot be longer than 100 characters.
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="Title" class="form-label required">Title:</label>
+          <input
+            class="form-control form-control-sm custom-input"
+            formControlName="Title"
+            type="text"
+          />
+          <div
+            *ngIf="
+              videoForm.get('Title')?.invalid &&
+              (videoForm.get('Title')?.dirty || videoForm.get('Title')?.touched)
+            "
+            class="text-danger"
+          >
+            <div *ngIf="videoForm.get('Title')?.errors?.['required']">
+              Title is required.
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="Thumbnail" class="form-label">Thumbnail:</label>
+          <input
+            class="form-control form-control-sm custom-input"
+            formControlName="Thumbnail"
+            type="text"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="Link" class="form-label required">Link:</label>
+          <input
+            class="form-control form-control-sm custom-input"
+            formControlName="Link"
+            type="text"
+          />
+          <div
+            *ngIf="
+              videoForm.get('Link')?.invalid &&
+              (videoForm.get('Link')?.dirty || videoForm.get('Link')?.touched)
+            "
+            class="text-danger"
+          >
+            <div *ngIf="videoForm.get('Link')?.errors?.['required']">
+              Link is required.
+            </div>
+            <div *ngIf="videoForm.get('Link')?.errors?.['youtubeUrl']">
+              Link must be a valid YouTube URL.
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="Tech" class="form-label">Tech:</label>
+          <select
+            class="form-control form-control-sm custom-input"
+            formControlName="Tech"
+          >
+            <option value="Angular">Angular</option>
+            <option value="React">React</option>
+            <option value="Azure">Azure</option>
+            <option value="GenAI">GenAI</option>
+          </select>
+        </div>
+        <div class="mb-3 form-check">
+          <input
+            class="form-check-input custom-input"
+            formControlName="displayAtHomePage"
+            type="checkbox"
+            id="displayAtHomePage"
+          />
+          <label for="displayAtHomePage" class="form-check-label"
+            >Display at Home Page</label
+          >
+        </div>
+        <button class="btn btn-light-orange btn-sm custom-input" type="submit">
+          {{ editMode ? "Update" : "Add" }}
+        </button>
+        <button
+          class="btn btn-light-red btn-sm custom-input"
+          type="button"
+          (click)="hideForm()"
+        >
+          Cancel
+        </button>
+      </form>
+    </div>
+    }
+
+    <!-- Table displaying the list of YouTube videos -->
+    @if(!formVisible){
+    <div class="mt-3">
+      <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+          <tr>
+            <th>Info</th>
+            <th>Title</th>
+            <th>Tech</th>
+            <th>Link</th>
+            <th>Display</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let video of videos">
+            <td>{{ video.Info }}</td>
+            <td>{{ video.Title }}</td>
+            <td>{{ video.Tech }}</td>
+            <td><a [href]="video.Link" target="_blank">Watch</a></td>
+            <td>{{ video.displayAtHomePage ? "Yes" : "No" }}</td>
+            <td class="actions">
+              <button
+                class="btn btn-custom-edit btn-sm"
+                (click)="editVideo(video)"
+              >
+                Edit
+              </button>
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="deleteVideo(video.Id)"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    }
+  </div>
+</section>

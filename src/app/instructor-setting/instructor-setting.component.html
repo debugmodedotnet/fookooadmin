@@ -1,0 +1,286 @@
+<section class="pt-4 pb-5 instructor-settings-section">
+  <div class="container-boxed">
+    <h2
+      class="section-title font-36 nmc-dark-grey font-family-poppins text-center mb-4"
+    >
+      Instructor Settings
+    </h2>
+
+    <!-- Button to show/hide form for creating new instructor -->
+    <button class="btn btn-custom-add mb-3" (click)="toggleFormVisibility()">
+      Add New Instructor
+    </button>
+
+    <!-- Form to create new instructor -->
+    @if(formVisible){
+    <div class="form-wrapper rounded-4 p-4 w-100 mx-auto">
+      <form [formGroup]="instructorForm" (ngSubmit)="addOrUpdateInstructor()">
+        <div class="row form-group mt-3">
+          <div class="col-6">
+            <label for="name" class="form-label required">Name</label>
+            <input
+              type="text"
+              id="name"
+              class="form-control h-3 rounded-3"
+              formControlName="Name"
+              placeholder="Enter name"
+            />
+          </div>
+
+          <div class="col-6">
+            <label for="position" class="form-label required">Position</label>
+            <input
+              type="text"
+              id="position"
+              class="form-control h-3 rounded-3"
+              formControlName="Position"
+              placeholder="Position"
+            />
+          </div>
+
+          <div class="col-6">
+            <label for="email" class="form-label required">Email</label>
+            <input
+              type="email"
+              id="email"
+              class="form-control h-3 rounded-3"
+              formControlName="Email"
+              placeholder="Email"
+            />
+          </div>
+
+          <div class="col-6">
+            <label for="github" class="form-label required">Github</label>
+            <input
+              type="url"
+              id="github"
+              class="form-control h-3 rounded-3"
+              formControlName="Github"
+              placeholder="Github"
+              pattern="https://github.com/.*"
+              title="Please enter a valid GitHub URL"
+            />
+          </div>
+
+          <div class="col-6">
+            <label for="twitter" class="form-label required">Twitter</label>
+            <input
+              type="url"
+              id="twitter"
+              class="form-control h-3 rounded-3"
+              formControlName="Twitter"
+              placeholder="Twitter"
+              pattern="https://twitter.com/.*"
+              title="Please enter a valid Twitter URL"
+            />
+          </div>
+
+          <div class="col-6">
+            <label for="linkedin" class="form-label required">LinkedIn</label>
+            <input
+              type="url"
+              id="linkedin"
+              class="form-control h-3 rounded-3"
+              formControlName="LinkedIn"
+              placeholder="LinkedIn"
+              pattern="https://www.linkedin.com/.*"
+              title="Please enter a valid LinkedIn URL"
+            />
+          </div>
+
+          <div class="col-6 mt-4">
+            <label for="skill1" class="form-label required">Skill 1</label>
+            <select
+              id="skill1"
+              class="form-control h-3 rounded-3"
+              formControlName="Skill1"
+            >
+              <option value="" disabled selected>Select a skill</option>
+              @for(skill of skills; track skill){
+              <option [value]="skill">
+                {{ skill }}
+              </option>
+              }
+            </select>
+          </div>
+
+          <div class="col-6 mt-4">
+            <label for="skill2" class="form-label required">Skill 2</label>
+            <select
+              id="skill2"
+              class="form-control h-3 rounded-3"
+              formControlName="Skill2"
+            >
+              <option value="" disabled selected>Select a skill</option>
+              @for(skill of skills; track skill){
+              <option [value]="skill">
+                {{ skill }}
+              </option>
+              }
+            </select>
+          </div>
+
+          <div class="col-6 mt-4">
+            <label for="skill3" class="form-label required">Skill 3</label>
+            <select
+              id="skill3"
+              class="form-control h-3 rounded-3"
+              formControlName="Skill3"
+            >
+              <option value="" disabled selected>Select a skill</option>
+              @for(skill of skills; track skill){
+              <option [value]="skill">
+                {{ skill }}
+              </option>
+              }
+            </select>
+          </div>
+
+          <div class="col-6 mt-4">
+            <label for="skill4" class="form-label required">Skill 4</label>
+            <select
+              id="skill4"
+              class="form-control h-3 rounded-3"
+              formControlName="Skill4"
+            >
+              <option value="" disabled selected>Select a skill</option>
+              @for(skill of skills; track skill){
+              <option [value]="skill">
+                {{ skill }}
+              </option>
+              }
+            </select>
+          </div>
+
+          <!-- Companies -->
+          <div class="col-6 mt-4">
+            <label for="company1" class="form-label required">Company1</label>
+            <input
+              type="text"
+              id="company1"
+              class="form-control h-3 rounded-3"
+              formControlName="Company1"
+              placeholder="Company1"
+              required
+            />
+          </div>
+
+          <div class="col-6 mt-4">
+            <label for="company2" class="form-label required">Company2</label>
+            <input
+              type="text"
+              id="company2"
+              class="form-control h-3 rounded-3"
+              formControlName="Company2"
+              placeholder="Company2"
+              required
+            />
+          </div>
+
+          <div class="col-6 mt-4">
+            <label for="company3" class="form-label required">Company3</label>
+            <input
+              type="text"
+              id="company3"
+              class="form-control h-3 rounded-3"
+              formControlName="Company3"
+              placeholder="Company3"
+            />
+          </div>
+
+          <div class="col-6 mt-4">
+            <label for="company4" class="form-label required">Company4</label>
+            <input
+              type="text"
+              id="company4"
+              class="form-control h-3 rounded-3"
+              formControlName="Company4"
+              placeholder="Company4"
+            />
+          </div>
+
+          <div class="col-12 mt-4">
+            <label for="bio" class="form-label required">Bio</label>
+            <textarea
+              id="bio"
+              class="form-control rounded-3"
+              formControlName="Bio"
+              placeholder="Tell us about you in brief"
+              rows="4"
+            ></textarea>
+          </div>
+
+          <div class="col-12 mt-4">
+            <label for="imageUpload" class="form-label">Upload Image</label>
+            <input
+              type="file"
+              id="imageUpload"
+              class="form-control h-3 rounded-3"
+              (change)="uploadPhoto($event)"
+              formControlName="ImageUpload"
+            />
+          </div>
+
+          <div class="col-12 text-center mt-5">
+            <button
+              type="submit"
+              class="nmc-btn-primary w-100 font-14 fw-semibold box-shadow-none py-2 h-auto"
+              [disabled]="!instructorForm.valid"
+            >
+              Create Instructor
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    }
+
+    <!-- Table displaying the list of instructors -->
+    @if(!formVisible){
+    <div class="mt-3">
+      <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+          <tr>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Email</th>
+            <th>Github</th>
+            <th>Twitter</th>
+            <th>LinkedIn</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for(instructor of instructors; track instructor){
+          <tr>
+            <td>{{ instructor.Name }}</td>
+            <td>{{ instructor.Position }}</td>
+            <td>{{ instructor.Email }}</td>
+            <td><a [href]="instructor.Github" target="_blank">Github</a></td>
+            <td><a [href]="instructor.Twitter" target="_blank">Twitter</a></td>
+            <td>
+              <a [href]="instructor.LinkedIn" target="_blank">LinkedIn</a>
+            </td>
+            <td class="actions">
+              <button
+                class="btn btn-custom-edit btn-sm"
+                (click)="editInstructor(instructor)"
+              >
+                Edit
+              </button>
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="deleteInstructor(instructor.id)"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    }
+  </div>
+</section>

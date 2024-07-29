@@ -1,0 +1,847 @@
+/* You can add global styles to this file, and also import other style files */
+@use "./app/styles/variables" as *;
+
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
+    margin: 0;
+    font-family: $nmc-font-family-inter !important;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar-track {
+    background-color: $nmc-dark-grey;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: $nmc-primary;
+}
+
+::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+    background-color: $nmc-grey-2;
+    margin-right: 5px;
+}
+
+menu,
+ol,
+ul,
+li {
+    list-style: none;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+img,
+video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+textarea {
+    padding-top: 11px !important;
+}
+
+/*-------------------------------------------------------------------------
+# Font Family
+-------------------------------------------------------------------------*/
+@font-face {
+    font-family: "DIN Next LT Pro";
+    src: url("assets/fonts/DIN-Next-LT-Pro-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("assets/fonts/Roboto-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Inter";
+    src: url("assets/fonts/Inter-VariableFont_slnt,wght.ttf");
+}
+
+@font-face {
+    font-family: "Poppins";
+    src: url("assets/fonts/Poppins-SemiBold.ttf");
+}
+
+@font-face {
+    font-family: "Pacifico";
+    src: url("assets/fonts/Pacifico-Regular.ttf");
+}
+
+.font-family-roboto {
+    font-family: $nmc-font-family-roboto !important;
+}
+
+.font-family-din {
+    font-family: $nmc-font-family-din !important;
+}
+
+.font-family-inter {
+    font-family: $nmc-font-family-inter !important;
+}
+
+.font-family-poppins {
+    font-family: $nmc-font-family-poppins !important;
+}
+
+.font-family-pacifico {
+    font-family: $nmc-font-family-pacifico !important;
+}
+
+/*-------------------------------------------------------------------------
+# Font Sizes
+-------------------------------------------------------------------------*/
+.font-10 {
+    font-size: 0.625rem;
+}
+
+.font-12 {
+    font-size: 0.75rem;
+}
+
+.font-13 {
+    font-size: 0.8rem;
+}
+
+.font-14 {
+    font-size: 0.875rem !important;
+}
+
+.font-15 {
+    font-size: 0.95rem !important;
+}
+
+.font-16 {
+    font-size: 1rem !important;
+}
+
+.font-18 {
+    font-size: 1.125rem;
+}
+
+.font-20 {
+    font-size: 1.25rem;
+}
+
+.font-22 {
+    font-size: 1.375rem;
+}
+
+.font-24 {
+    font-size: 1.5rem;
+}
+
+.font-26 {
+    font-size: 1.625rem;
+}
+
+.font-28 {
+    font-size: 1.75rem;
+}
+
+.font-30 {
+    font-size: 1.875rem;
+}
+
+.font-32 {
+    font-size: 2rem !important;
+}
+
+.font-34 {
+    font-size: 2.125rem !important;
+}
+
+.font-36 {
+    font-size: 2.25rem !important;
+}
+
+.font-48 {
+    font-size: 3rem !important;
+}
+
+.font-50 {
+    font-size: 3.125rem !important;
+}
+
+.font-52 {
+    font-size: 3.375rem !important;
+}
+
+.font-big {
+    font-size: 100px !important;
+}
+
+/*-------------------------------------------------------------------------
+# Width
+-------------------------------------------------------------------------*/
+.w-15 {
+    width: 15%;
+}
+
+.w-20 {
+    width: 20%;
+}
+
+.w-25 {
+    width: 25%;
+}
+
+.w-30 {
+    width: 30%;
+}
+
+.w-33 {
+    width: 33.33%;
+}
+
+.w-40 {
+    width: 40%;
+}
+
+.w-45 {
+    width: 45%;
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.w-55 {
+    width: 55%;
+}
+
+.w-60 {
+    width: 60%;
+}
+
+.w-65 {
+    width: 65%;
+}
+
+.w-75 {
+    width: 75%;
+}
+
+.w-80 {
+    width: 80%;
+}
+
+.w-100 {
+    width: 100% !important;
+}
+
+.w-150px {
+    width: 150px;
+}
+
+.w-1 {
+    width: 1rem;
+}
+
+.w-2 {
+    width: 2.5rem;
+}
+
+.max-w-220 {
+    max-width: 220px;
+}
+
+.max-w-150 {
+    max-width: 150px;
+}
+
+.max-w-md {
+    max-width: 28rem
+}
+
+/*-------------------------------------------------------------------------
+# Height
+-------------------------------------------------------------------------*/
+.h-60 {
+    height: 60px;
+}
+
+.h-1 {
+    height: 1rem;
+}
+
+.h-3 {
+    height: 3rem;
+}
+
+.max-h-406 {
+    max-height: 406px;
+}
+
+.max-h-60 {
+    max-height: 60px;
+}
+
+/*-------------------------------------------------------------------------
+# Margin & Padding
+-------------------------------------------------------------------------*/
+.py-10 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+.py-20 {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+}
+
+.mb-10 {
+    margin-bottom: 2.5rem
+}
+
+/*-------------------------------------------------------------------------
+# Text Colors
+-------------------------------------------------------------------------*/
+.nmc-primary {
+    color: $nmc-primary !important;
+}
+
+.nmc-secondary {
+    color: $nmc-secondary !important;
+}
+
+.nmc-dark-grey {
+    color: $nmc-dark-grey !important;
+}
+
+.nmc-medium-grey {
+    color: $nmc-medium-grey !important;
+}
+
+.nmc-medium-light-grey {
+    color: $nmc-medium-light-grey !important;
+}
+
+.nmc-light-grey {
+    color: $nmc-light-grey !important;
+}
+
+.nmc-white {
+    color: $nmc-white !important;
+}
+
+.nmc-black {
+    color: $nmc-black !important;
+}
+
+.text-orange-600 {
+    --tw-text-opacity: 1;
+    color: rgb(234 88 12/var(--tw-text-opacity));
+}
+
+.text-cyan-600 {
+    --tw-text-opacity: 1;
+    color: rgb(8 145 178/var(--tw-text-opacity));
+}
+
+.text-sky-600 {
+    --tw-text-opacity: 1;
+    color: rgb(2 132 199/var(--tw-text-opacity));
+}
+
+.text-blue-600 {
+    --tw-text-opacity: 1;
+    color: rgb(2 132 199/var(--tw-text-opacity));
+}
+
+.text-red-600 {
+    --tw-text-opacity: 1;
+    color: rgb(196 0 43);
+}
+
+.text-purple-600 {
+    --tw-text-opacity: 1;
+    color: rgb(81 43 212);
+}
+
+.text-lemon-600 {
+    --tw-text-opacity: 1;
+    color: rgb(65 122 4);
+}
+
+.text-green-600 {
+    --tw-text-opacity: 1;
+    color: rgb(52 73 94);
+}
+
+/*-------------------------------------------------------------------------
+# Background Colors
+-------------------------------------------------------------------------*/
+.nmc-bg-primary {
+    background-color: $nmc-primary !important;
+}
+
+.nmc-bg-secondary {
+    background-color: $nmc-secondary !important;
+}
+
+.nmc-bg-grey {
+    background-color: $nmc-grey !important;
+}
+
+.nmc-bg-dark-grey {
+    background-color: $nmc-dark-grey !important;
+}
+
+.nmc-bg-medium-grey {
+    background-color: $nmc-medium-grey !important;
+}
+
+.nmc-bg-light-grey {
+    background-color: $nmc-light-grey !important;
+}
+
+.nmc-bg-white {
+    background-color: $nmc-white !important;
+}
+
+.nmc-bg-black {
+    background-color: $nmc-black !important;
+}
+
+.bg-cyan-100 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(207 250 254/var(--tw-bg-opacity));
+}
+
+.bg-orange-100 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 237 213/var(--tw-bg-opacity));
+}
+
+.bg-sky-100 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(224 242 254/var(--tw-bg-opacity));
+}
+
+.bg-purple-100 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(223 213 255/var(--tw-bg-opacity));
+}
+
+.bg-green-100 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(196 255 229/var(--tw-bg-opacity));
+}
+
+.bg-lemon-100 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(220 255 180/var(--tw-bg-opacity));
+}
+
+.bg-red-100 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 204 215/var(--tw-bg-opacity));
+}
+
+.bg-blue-100 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(224 242 254/var(--tw-bg-opacity));
+}
+
+.orange-bg-gradient {
+    background: linear-gradient(179.5deg,
+            rgb(255, 166, 0) 3.3%,
+            rgb(220 95 0) 96%);
+}
+
+.purple-bg-gradient {
+    background: linear-gradient(318deg,
+            rgb(85, 37, 186) 0%,
+            rgb(26, 1, 103) 100%);
+}
+
+.blue-bg-gradient {
+    background: linear-gradient(318deg,
+            rgb(37, 106, 186) 0%,
+            rgb(1, 15, 103) 100%);
+}
+
+.green-bg-gradient {
+    background: linear-gradient(318deg,
+            rgb(37, 186, 114) 0%,
+            rgb(1, 103, 4) 100%);
+}
+
+.pink-bg-gradient {
+    background: linear-gradient(318deg,
+            rgb(186, 37, 154) 0%,
+            rgb(103, 1, 74) 100%);
+}
+
+.indigo-bg-gradient {
+    background: linear-gradient(318deg,
+            rgb(114, 37, 186) 0%,
+            rgb(103, 1, 91) 100%);
+}
+
+// .purple-bg-gradient {
+//     background: linear-gradient(318deg, #7e11f3 0%, #af67fc 100%);
+// }
+
+// .orange-bg-gradient {
+//     background: linear-gradient(318deg, #fc4a1a 0%, #f7b733 100%);
+// }
+
+// .blue-bg-gradient {
+//     background: linear-gradient(318deg, #396afc 0%, #2948ff 100%);
+// }
+
+// .green-bg-gradient {
+//     background: linear-gradient(318deg, #00b09b 0%, #96c93d 100%);
+// }
+
+// .pink-bg-gradient {
+//     background: linear-gradient(318deg, #f95671 0%, #f576ab 100%);
+// }
+
+.yellow-bg-gradient {
+    background: linear-gradient(318deg, #f7971e 0%, #ffd200 100%);
+}
+
+.red-bg-gradient {
+    background: linear-gradient(318deg, #b11712 0%, #ff373d 100%);
+}
+
+/*-------------------------------------------------------------------------
+# Positioning
+-------------------------------------------------------------------------*/
+inset-0 {
+    inset: 0;
+}
+
+/*-------------------------------------------------------------------------
+# Spacing
+-------------------------------------------------------------------------*/
+.spacer--default {
+    height: 7rem
+}
+
+.spacer--medium {
+    height: 3.5rem
+}
+
+.spacer--small {
+    height: 2.5rem
+}
+
+.tracking-tight {
+    letter-spacing: -.01em
+}
+
+.tracking-wider {
+    letter-spacing: .05em
+}
+
+.tracking-widest {
+    letter-spacing: .1em
+}
+
+/*-------------------------------------------------------------------------
+# Container CSS
+-------------------------------------------------------------------------*/
+.container-boxed {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1280px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+/*-------------------------------------------------------------------------
+# Buttons
+-------------------------------------------------------------------------*/
+.nmc-btn-primary {
+    display: block;
+    height: 42px;
+    border-radius: .5rem;
+    color: $nmc-white;
+    background-color: $nmc-primary;
+    border: none;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: 500;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+}
+
+.nmc-btn-primary:hover {
+    --bg-opacity: 1;
+    background-color: $nmc-dark-grey;
+}
+
+.nmc-btn-outline {
+    display: block;
+    height: 42px;
+    border-radius: 8px;
+    color: $nmc-dark-grey;
+    background-color: $nmc-white;
+    border: 1px solid rgba(203, 213, 224, 1);
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: 500;
+    position: relative;
+
+    &::before,
+    &::after {
+        position: absolute;
+        content: '';
+        height: 1px;
+        width: 400px;
+        background-color: rgba(203, 213, 224, 1);
+        top: 21px;
+    }
+
+    &::before {
+        right: 185px;
+    }
+
+    &::after {
+        left: 185px;
+    }
+}
+
+.nmc-underline-btn {
+    display: inline-block;
+    padding: 1em 0;
+    letter-spacing: 2px;
+    text-decoration: none;
+    position: relative;
+
+    &::before,
+    &::after {
+        content: "";
+        display: block;
+        position: absolute;
+        height: 2px;
+        width: 0;
+    }
+
+    &::before {
+        transition: width 0s ease, background 0.4s ease;
+        left: 0;
+        right: 0;
+        bottom: 9px;
+    }
+
+    &::after {
+        right: 2.2%;
+        bottom: 9px;
+        background: $nmc-white;
+        transition: width 0.4s ease;
+    }
+
+    &:hover {
+        &::before {
+            width: 97.8%;
+            background: $nmc-white;
+            transition: width 0.4s ease;
+        }
+
+        &::after {
+            width: 97.8%;
+            background: 0 0;
+            transition: all 0s ease;
+        }
+    }
+}
+
+.nmc-btn-primary:disabled {
+    background-color: $nmc-light-grey;
+    pointer-events: none;
+}
+
+/*-------------------------------------------------------------------------
+# Navigation
+-------------------------------------------------------------------------*/
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link.show,
+.nav-link:focus,
+.nav-link:hover {
+    color: $nmc-primary !important;
+}
+
+.dropdown-toggle::after {
+    display: none !important;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+}
+
+.navbar-expand-lg .navbar-nav .dropdown-menu {
+    width: 200px;
+    border: none;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    top: 50px;
+}
+
+.navbar-expand-lg .navbar-nav .dropdown-menu li+li {
+    border-top: 1px solid rgb(241 245 249);
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+    background-color: inherit !important;
+    color: $nmc-primary !important;
+}
+
+/*-------------------------------------------------------------------------
+# Scroll Top Button
+-------------------------------------------------------------------------*/
+.scroll-top {
+    position: fixed;
+    visibility: hidden;
+    opacity: 0;
+    right: 15px;
+    bottom: -15px;
+    z-index: 99999;
+    background-color: $nmc-dark-grey;
+    width: 44px;
+    height: 44px;
+    border-radius: 50px;
+    transition: all 0.4s;
+}
+
+.scroll-top i {
+    font-size: 24px;
+    color: $nmc-white;
+    line-height: 0;
+}
+
+.scroll-top.active {
+    visibility: visible;
+    opacity: 1;
+    bottom: 15px;
+}
+
+/*--------------------------------------------------------------
+# Preloader
+--------------------------------------------------------------*/
+#preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    overflow: hidden;
+    background: $nmc-white;
+    transition: all 0.6s ease-out;
+}
+
+#preloader:before {
+    content: "";
+    position: fixed;
+    top: calc(50% - 30px);
+    left: calc(50% - 30px);
+    border: 6px solid #ffffff;
+    border-color: $nmc-primary transparent $nmc-primary transparent;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: animate-preloader 1.5s linear infinite;
+}
+
+@keyframes animate-preloader {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/*-------------------------------------------------------------------------
+# Global Styles
+-------------------------------------------------------------------------*/
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.section-title {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    position: relative;
+}
+
+.section-title::after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 70px;
+    height: 4px;
+    background: $nmc-primary;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.section-title.left::after {
+    right: 100%;
+}
+
+/*-------------------------------------------------------------------------
+# Custom CSS
+-------------------------------------------------------------------------*/
+.box-shadow-none {
+    box-shadow: none;
+}
+
+.breadcrumb-item.active,
+.breadcrumb-item+.breadcrumb-item::before {
+    color: $nmc-primary !important;
+}
+
+.show-password {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+}
+
+.nmc-alert p {
+    color: red;
+}
+
+.nmc-view-all {
+    .nmc-view-all-btn {
+        background: linear-gradient(111.59deg, #e78235 16.69%, #dc5f00 74.35%);
+        box-shadow: 0 3px 6px #f5cbab;
+        width: 3rem;
+        height: 3rem;
+    }
+
+    span {
+        margin-right: 1rem;
+    }
+
+    // &:hover span {
+    //     margin-left: 3em;
+    //     transition: all .5s ease;
+    // }
+}

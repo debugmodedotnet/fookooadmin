@@ -1,0 +1,586 @@
+<section class="pt-4 pb-5">
+  <div class="container-boxed">
+    <h2
+      class="section-title font-36 nmc-dark-grey font-family-poppins text-center mb-4"
+    >
+      Manage Events
+    </h2>
+
+    <div class="d-flex justify-content-end mb-3">
+      <button class="nmc-btn-primary" (click)="showForm()" type="button">
+        Add New Event
+      </button>
+    </div>
+
+    @if(formVisible){
+    <div class="form-wrapper rounded-4 w-100">
+      <form [formGroup]="eventForm" (ngSubmit)="addOrUpdateEvent()">
+        <div class="row form-group mt-3 p-4">
+          <div class="col-6">
+            <label for="title" class="form-label required">Title</label>
+            <input
+              id="title"
+              type="text"
+              class="form-control h-3 rounded-3"
+              formControlName="Title"
+              placeholder="Enter Title"
+            />
+          </div>
+
+          <div class="col-3">
+            <label for="totalSeats" class="form-label required"
+              >Total Seats</label
+            >
+            <input
+              id="totalSeats"
+              type="text"
+              class="form-control h-3 rounded-3"
+              formControlName="TotalSeats"
+              placeholder="Enter Total Seats"
+            />
+          </div>
+
+          <div class="col-3">
+            <label for="registeredSeats" class="form-label required"
+              >Registered Seats</label
+            >
+            <input
+              id="registeredSeats"
+              type="text"
+              class="form-control h-3 rounded-3"
+              formControlName="RegisteredSeats"
+              placeholder="Enter Registered Seats"
+            />
+          </div>
+
+          <div class="col-4 mt-4">
+            <label for="tech" class="form-label required">Technology</label>
+
+            <select
+              class="form-select form-control h-3 rounded-3"
+              id="tech"
+              formControlName="Tech"
+            >
+              <option selected>Choose...</option>
+              <option value="Angular">Angular</option>
+              <option value="React">React</option>
+              <option value="Vue">Vue</option>
+            </select>
+          </div>
+
+          <div class="col-4 mt-4">
+            <label for="logo" class="form-label required">Logo</label>
+            <input
+              id="logo"
+              type="text"
+              class="form-control h-3 rounded-3"
+              formControlName="Logo"
+              placeholder="Enter Logo URL"
+            />
+          </div>
+
+          <div class="col-4 mt-4">
+            <label for="tagline" class="form-label required">Tagline</label>
+            <input
+              id="tagline"
+              type="text"
+              class="form-control h-3 rounded-3"
+              formControlName="Tagline"
+              placeholder="Enter Tagline"
+            />
+          </div>
+
+          <div class="col-4 mt-4">
+            <label for="shortDescription" class="form-label required"
+              >Short Description</label
+            >
+            <input
+              id="shortDescription"
+              type="text"
+              class="form-control h-3 rounded-3"
+              formControlName="ShortDescription"
+              placeholder="Enter Short Description"
+            />
+          </div>
+
+          <div class="col-8 mt-4">
+            <label for="longDescription" class="form-label required"
+              >Long Description</label
+            >
+            <textarea
+              id="longDescription"
+              type="text"
+              class="form-control h-3 rounded-3"
+              formControlName="Description"
+              placeholder="Enter Long Description"
+              rows="4"
+            ></textarea>
+          </div>
+
+          <div class="col-3 mt-4">
+            <label for="date" class="form-label required">Date</label>
+            <input
+              id="date"
+              formControlName="Date"
+              type="date"
+              class="form-control h-3 rounded-3"
+            />
+          </div>
+
+          <div class="col-3 mt-4">
+            <label for="city" class="form-label required">City</label>
+            <input
+              id="city"
+              type="text"
+              class="form-control h-3 rounded-3"
+              formControlName="City"
+              placeholder="Enter City"
+            />
+          </div>
+
+          <div class="col-6 mt-4">
+            <label for="eventImage" class="form-label">Event Image</label>
+            <input
+              type="file"
+              id="eventImage"
+              class="form-control h-3 rounded-3"
+              formControlName="EventImage"
+            />
+          </div>
+
+          <div class="col-6 mt-4">
+            <label for="venueName" class="form-label required"
+              >Venue Name</label
+            >
+            <input
+              id="venueName"
+              type="text"
+              class="form-control h-3 rounded-3"
+              formControlName="VenueName"
+              placeholder="Enter Venue Name"
+            />
+          </div>
+
+          <div class="col-6 mt-4">
+            <label for="venueImage" class="form-label">Venue Image</label>
+            <input
+              type="file"
+              id="venueImage"
+              class="form-control h-3 rounded-3"
+              formControlName="VenueImg"
+            />
+          </div>
+
+          <div class="col-6 mt-4">
+            <label for="venueInfo" class="form-label required"
+              >Venue Info</label
+            >
+            <textarea
+              id="venueInfo"
+              type="text"
+              class="form-control h-3 rounded-3"
+              formControlName="VenueInfo"
+              placeholder="Venue Info"
+            ></textarea>
+          </div>
+
+          <div class="col-6 mt-4">
+            <label for="venueIframe" class="form-label"
+              >Venue Map Location</label
+            >
+            <input
+              id="venueIframe"
+              type="text"
+              class="form-control h-3 rounded-3"
+              formControlName="VenueIframe"
+              placeholder="Enter Iframe"
+            />
+          </div>
+
+          <div class="col-2 mt-4">
+            <input type="checkbox" formControlName="isOffline" />
+            Is Offline?
+          </div>
+
+          <div class="col-2 mt-4">
+            <input type="checkbox" formControlName="isPaid" />
+            Is Paid?
+          </div>
+
+          <div class="col-3 mt-4">
+            <input type="checkbox" formControlName="isCertificateProvided" />
+            Is Certificate Provided?
+          </div>
+
+          <div class="col-3 mt-4">
+            <input type="checkbox" formControlName="displayAtHomePage" />
+            Display At HomePage
+          </div>
+        </div>
+
+        <!-- Speakers -->
+        <div class="p-4 border-top">
+          <div class="d-flex align-items-center justify-content-between">
+            <h4 class="section-title left pb-3">Speakers</h4>
+
+            <button
+              (click)="showSpeakerForm()"
+              type="button"
+              class="nmc-btn-primary font-14 fw-semibold box-shadow-none py-2 h-auto"
+            >
+              Add Speaker
+            </button>
+          </div>
+
+          <!-- Speaker Form -->
+          @if(speakerFormVisible){
+          <div formArrayName="Speakers">
+            <div class="row form-group">
+              <div class="col-6">
+                <label for="name" class="form-label required"> Name</label>
+                <input
+                  id="name"
+                  class="form-control rounded-3"
+                  formControlName="Name"
+                  placeholder="Speaker Name"
+                />
+              </div>
+
+              <div class="col-6">
+                <label for="image" class="form-label required"> Image</label>
+                <input
+                  id="image"
+                  class="form-control rounded-3"
+                  formControlName="Image"
+                  placeholder="Speaker Image"
+                />
+              </div>
+
+              <div class="col-6 mt-3">
+                <label for="position" class="form-label required">
+                  Position</label
+                ><input
+                  id="position"
+                  class="form-control rounded-3"
+                  formControlName="Position"
+                  placeholder="Speaker Position"
+                />
+              </div>
+
+              <div class="col-6 mt-3">
+                <label for="info" class="form-label required"> Info</label>
+                <textarea
+                  id="info"
+                  class="form-control rounded-3"
+                  formControlName="Info"
+                  placeholder="Speaker Info"
+                ></textarea>
+              </div>
+
+              <div class="col-4 mt-3">
+                <label for="github" class="form-label required"> Github</label>
+                <input
+                  id="github"
+                  class="form-control rounded-3"
+                  formControlName="Github"
+                  placeholder="Speaker Github"
+                />
+              </div>
+
+              <div class="col-4 mt-3">
+                <label for="linkedIn" class="form-label required">
+                  LinkedIn</label
+                >
+                <input
+                  id="linkedIn"
+                  class="form-control rounded-3"
+                  formControlName="LinkedIn"
+                  placeholder="Speaker LinkedIn"
+                />
+              </div>
+
+              <div class="col-4 mt-3">
+                <label for="twitter" class="form-label required">
+                  Twitter</label
+                >
+                <input
+                  id="twitter"
+                  class="form-control rounded-3"
+                  formControlName="X"
+                  placeholder="Speaker Twitter"
+                />
+              </div>
+
+              <div class="d-flex justify-content-end p-4">
+                <button
+                  type="button"
+                  class="nmc-btn-primary font-14 fw-semibold box-shadow-none py-2 h-auto nmc-bg-medium-grey"
+                  (click)="hideSpeakerForm()"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="button"
+                  class="nmc-btn-primary font-14 fw-semibold box-shadow-none py-2 h-auto ms-2"
+                  (click)="addOrUpdateSpeaker()"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+          }
+
+          <!-- Speaker Table -->
+          @if(!speakerFormVisible){
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for(speaker of speakers; track speaker; let i = $index){
+              <tr [formGroupName]="i">
+                <td>{{ speaker.Name }}</td>
+                <td>{{ speaker.Position }}</td>
+                <td class="actions">
+                  <button
+                    class="btn btn-custom-edit btn-sm nmc-bg-primary nmc-white"
+                    (click)="editSpeaker(i)"
+                    type="button"
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    class="btn btn-danger btn-sm ms-3"
+                    (click)="removeSpeaker(i)"
+                    type="button"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+          }
+        </div>
+
+        <!-- Agenda -->
+        <div class="p-4 border-top">
+          <div class="d-flex align-items-center justify-content-between">
+            <h4 class="section-title left pb-3">Agenda</h4>
+
+            <button
+              (click)="showAgendaForm()"
+              type="button"
+              class="nmc-btn-primary font-14 fw-semibold box-shadow-none py-2 h-auto"
+            >
+              Add Agenda
+            </button>
+          </div>
+
+          <!-- Agenda Form -->
+          @if(agendaFormVisible){
+          <div formArrayName="Agenda">
+            <div class="row form-group">
+              <div class="col-4">
+                <label for="time" class="form-label required"> Time</label>
+                <input
+                  id="time"
+                  class="form-control rounded-3"
+                  formControlName="Time"
+                  placeholder="Agenda Time"
+                />
+              </div>
+
+              <div class="col-4">
+                <label for="title" class="form-label required"> Title</label>
+                <input
+                  id="title"
+                  class="form-control rounded-3"
+                  formControlName="Title"
+                  placeholder="Agenda Title"
+                />
+              </div>
+
+              <div class="col-4">
+                <label for="tech" class="form-label required"> Tech</label>
+                <input
+                  id="tech"
+                  class="form-control rounded-3"
+                  formControlName="Tech"
+                  placeholder="Agenda Tech"
+                />
+              </div>
+
+              <div class="col-4 mt-3">
+                <label for="info" class="form-label required"> Info</label>
+                <input
+                  id="info"
+                  class="form-control rounded-3"
+                  formControlName="Info"
+                  placeholder="Agenda Info"
+                />
+              </div>
+
+              <div class="col-4 mt-3">
+                <label for="speaker" class="form-label required">
+                  Speaker</label
+                >
+                <input
+                  id="speaker"
+                  class="form-control rounded-3"
+                  formControlName="Speaker"
+                  placeholder="Agenda Speaker"
+                />
+              </div>
+
+              <div class="col-4 mt-3">
+                <label for="image" class="form-label required"
+                  >Speaker Image</label
+                >
+                <input
+                  id="image"
+                  class="form-control rounded-3"
+                  formControlName="SpeakerImg"
+                  placeholder="Agenda Speaker Image"
+                />
+              </div>
+
+              <div class="d-flex justify-content-end p-4">
+                <button
+                  type="button"
+                  class="nmc-btn-primary font-14 fw-semibold box-shadow-none py-2 h-auto nmc-bg-medium-grey"
+                  (click)="hideAgendaForm()"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="button"
+                  class="nmc-btn-primary font-14 fw-semibold box-shadow-none py-2 h-auto ms-2"
+                  (click)="addOrUpdateAgenda()"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+          }
+
+          <!-- Agenda Table -->
+          @if(!agendaFormVisible){
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Title</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for(agenda of agendas; track agenda; let i = $index;){
+              <tr [formGroupName]="i">
+                <td>{{ agenda.Time }}</td>
+
+                <td>{{ agenda.Title }}</td>
+
+                <td class="actions">
+                  <button
+                    type="button"
+                    class="btn btn-custom-edit btn-sm nmc-bg-primary nmc-white"
+                    (click)="editAgenda(i)"
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    type="button"
+                    class="btn btn-danger btn-sm ms-3"
+                    (click)="removeAgenda(i)"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+          }
+        </div>
+
+        <div class="d-flex justify-content-end p-4">
+          <button
+            type="button"
+            class="nmc-btn-primary font-14 fw-semibold box-shadow-none py-2 h-auto nmc-bg-medium-grey"
+            (click)="hideForm()"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="nmc-btn-primary font-14 fw-semibold box-shadow-none py-2 h-auto ms-3"
+            [disabled]="!eventForm.valid"
+          >
+            {{ editMode !== null ? "Update" : "Add" }} Event
+          </button>
+        </div>
+      </form>
+    </div>
+    }
+
+    <!-- Display Events Table -->
+    @if(!formVisible){
+    <div class="mt-3">
+      <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+          <tr>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Tech</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for(event of events; track event; let i = $index;){
+          <tr>
+            <td>{{ event.Title }}</td>
+            <td>{{ event.Date }}</td>
+            <td>{{ event.Tech }}</td>
+
+            <td class="actions">
+              <button
+                type="button"
+                class="btn btn-custom-edit btn-sm nmc-bg-primary nmc-white"
+                (click)="editEvent(event)"
+              >
+                Edit
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-danger btn-sm ms-3"
+                (click)="deleteEvent(event.id)"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    }
+  </div>
+</section>
+

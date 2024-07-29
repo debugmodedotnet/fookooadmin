@@ -1,0 +1,91 @@
+$nmc-primary: #ef7a04; // Define your primary color
+
+.instructor .card {
+  border-bottom: 3px solid $nmc-primary;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin: 20px 0;
+}
+
+.truncate {
+  width: 100%;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+}
+
+.trainers figure,
+.youtube-videos .card {
+  margin: 0 80px;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+}
+
+.instructor .table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.instructor .table td {
+  vertical-align: top;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.instructor .table th,
+.instructor .table td {
+  padding: 15px;
+  text-align: left;
+  border: 1px solid #dee2e6;
+}
+
+.instructor .table th {
+  background-color: #343a40;
+  color: #fff;
+}
+
+.instructor .table .actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-light-orange {
+  background-color: #ef7a04;
+  color: white;
+  border: none;
+}
+
+.btn-light-orange:hover {
+  background-color: #fc9313;
+}
+
+.btn-custom-edit {
+  background-color: #ef7a04;
+  color: white;
+  border: none;
+}
+
+.btn-custom-edit:hover {
+  background-color: #fc9313;
+}
+
+.btn-small {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  border-radius: 0.2rem;
+}
+
+.custom-input {
+  border: 1px solid #c4c0c0; /* Adjust the color value to make the border darker */
+}
+
+.required::after {
+  content: '*';
+  color: red;
+  margin-left: 0.25rem; /* Adjust spacing between label text and asterisk */
+}
+ 
