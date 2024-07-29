@@ -1,0 +1,50 @@
+$nmc-primary: #ef7a04; 
+
+h1 {
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
+  color: #ff5733; 
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  border-bottom: 3px solid $nmc-primary;
+
+  a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+    color: black;
+    background-color: whitesmoke; 
+    border: 1px solid black; 
+    border-radius: 5px;
+    margin: 0 10px;
+    transition: background-color 0.3s, color 0.3s;
+
+    &:hover {
+      background-color: $nmc-primary; 
+      border-color: $nmc-primary;
+      color: white;
+    }
+  }
+}
+
+.router-outlet {
+  padding: 20px;
+}
+
+// Responsive styles
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+
+    a {
+      margin: 10px 0;
+    }
+  }
+}
