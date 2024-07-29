@@ -16,7 +16,7 @@ export class YoutubeVideoService {
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as IYoutubeVideos;
         const id = a.payload.doc.id;
-        return { id, ...data };
+        return { ...data, Id :id };
       }))
     );
   }

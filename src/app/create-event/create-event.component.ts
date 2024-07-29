@@ -89,42 +89,24 @@ export class CreateEventComponent implements OnInit {
     );
   }
 
-  // fetchAndAddSpeakers(): void {
-  //   for (let index = 0; index < this.events.length; index++) {
-  //     this.eventService.getEventSpeakers(this.events[index].id!).pipe(first()).subscribe(res => {
-  //       this.events[index].Speakers = res;
-  //       console.log(res)
-  //     });
-  //   }
-  // }
-
   fetchAndAddSpeakers(): void {
-    for (const event of this.events) {
+    this.events.forEach(event => {
       this.eventService.getEventSpeakers(event.id!).pipe(first()).subscribe(res => {
         event.Speakers = res;
         console.log(res);
       });
-    }
+    });
   }
-
-
-  // fetchAndAddAgenda(): void {
-  //   for (let index = 0; index < this.events.length; index++) {
-  //     this.eventService.getEventAgenda(this.events[index].id!).pipe(first()).subscribe(res => {
-  //       this.events[index].Agenda = res;
-  //       console.log(res)
-  //     });
-  //   }
-  // }
-
+  
   fetchAndAddAgenda(): void {
-    for (const event of this.events) {
+    this.events.forEach(event => {
       this.eventService.getEventAgenda(event.id!).pipe(first()).subscribe(res => {
         event.Agenda = res;
         console.log(res);
       });
-    }
+    });
   }
+  
 
 
   generateSlug(title: string): string {
@@ -132,29 +114,35 @@ export class CreateEventComponent implements OnInit {
   }
 
   addOrUpdateEvent() {
+    console.log('Form values:', this.eventForm.value);
     const title = this.eventForm.get('Title')?.value;
     const slug = this.generateSlug(title);
     const uuid = uuidv4();
     const eventId = `${slug}-${uuid}`;
-
+  
     this.eventForm.get('Id')?.setValue(eventId);
-
+  
     const speakers = this.speakersFormArray.value as IEventSpeakers[];
     const agenda = this.agendaFormArray.value as IEventAgenda[];
     const event = { ...this.eventForm.value } as IEvent;
-
+  
     delete event.Speakers;
     delete event.Agenda;
-
+  
     if (this.editMode && this.currentEventId) {
+      console.log('Updating event with ID:', this.currentEventId);
       this.updateEvent(this.currentEventId, event, speakers, agenda);
     } else {
+      console.log('Adding new event with ID:', eventId);
       this.addEvent(eventId, event, speakers, agenda);
     }
   }
+  
 
   addEvent(id: string, event: IEvent, speakers: IEventSpeakers[], agenda: IEventAgenda[]) {
+    console.log('Adding event with ID:', id);
     this.eventService.addEvent(event, id).then(() => {
+      console.log('Event added successfully.');
       this.addSpeakers(id, speakers);
       this.addAgendas(id, agenda);
       this.resetForm();
@@ -162,10 +150,12 @@ export class CreateEventComponent implements OnInit {
     }).catch(error => {
       console.error('Error adding event:', error);
     });
-  }
+  }  
 
   updateEvent(id: string, event: IEvent, speakers: IEventSpeakers[], agenda: IEventAgenda[]) {
+    console.log('Updating event with ID:', id);
     this.eventService.updateEvent(id, event).then(() => {
+      console.log('Event updated successfully.');
       this.updateSpeakers(id, speakers);
       this.updateAgendas(id, agenda);
       this.resetForm();
@@ -174,10 +164,13 @@ export class CreateEventComponent implements OnInit {
       console.error('Error updating event:', error);
     });
   }
+  
 
   addSpeakers(eventId: string, speakers: IEventSpeakers[]) {
     speakers.forEach(speaker => {
-      this.eventService.addSpeaker(eventId, speaker).catch(error => {
+      this.eventService.addSpeaker(eventId, speaker).then(() => {
+        console.log('Speaker added successfully.');
+      }).catch(error => {
         console.error('Error adding speaker:', error);
       });
     });
@@ -199,7 +192,9 @@ export class CreateEventComponent implements OnInit {
 
   addAgendas(eventId: string, agenda: IEventAgenda[]) {
     agenda.forEach(agendaItem => {
-      this.eventService.addAgenda(eventId, agendaItem).catch(error => {
+      this.eventService.addAgenda(eventId, agendaItem).then(() => {
+        console.log('Agenda item added successfully.');
+      }).catch(error => {
         console.error('Error adding agenda item:', error);
       });
     });
