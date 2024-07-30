@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ReactiveFormsModule } from '@angular/forms';
-import { InstructorService } from '../services/instructor.service'; // Update with your service
-import { IInstructor } from '../modules/instructors';  // Update with your model/interface
+import { InstructorService } from '../services/instructor.service'; 
+import { IInstructor } from '../modules/instructors'; 
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs';
 
@@ -18,7 +18,7 @@ export class InstructorSettingComponent implements OnInit {
   editMode = false;
   currentInstructorId?: string;
   formVisible = false;
-  skills: string[] = ['Skill A', 'Skill B', 'Skill C', 'Skill D']; // Example skills
+  skills: string[] | undefined;
   photoURL: string | null = null;
 
   private storage = inject(AngularFireStorage);
@@ -30,7 +30,7 @@ export class InstructorSettingComponent implements OnInit {
       Position: ['', Validators.required],
       Email: ['', [Validators.required, Validators.email]],
       Github: ['', [Validators.required, Validators.pattern('https://github.com/.*')]],
-      Twitter: ['', [Validators.required, Validators.pattern('https://twitter.com/.*')]],
+      Twitter: ['', [Validators.required, Validators.pattern('https://x.com/.*')]],
       LinkedIn: ['', [Validators.required, Validators.pattern('https://www.linkedin.com/.*')]],
       Skill1: ['', Validators.required],
       Skill2: ['', Validators.required],
@@ -41,7 +41,7 @@ export class InstructorSettingComponent implements OnInit {
       Company3: [''],
       Company4: [''],
       Bio: ['', Validators.required],
-      ImageUpload: ['']
+      InstructorImg: ['']
     });
   }
 
@@ -69,7 +69,12 @@ export class InstructorSettingComponent implements OnInit {
   }
 
   addInstructor() {
-    this.instructorService.addInstructor({ ...this.instructorForm.value, ImageUpload: this.photoURL }).then(
+    const newInstructor: IInstructor = {
+      ...this.instructorForm.value,
+      InstructorImg: this.photoURL
+    };
+
+    this.instructorService.addInstructor(newInstructor).then(
       () => {
         this.resetForm();
         this.loadInstructors(); // Reload instructors after adding
@@ -79,7 +84,12 @@ export class InstructorSettingComponent implements OnInit {
   }
 
   updateInstructor(id: string, instructor: IInstructor) {
-    this.instructorService.updateInstructor(id, { ...instructor, InstructorImg: this.photoURL }).then(
+    const updatedInstructor: IInstructor = {
+      ...instructor,
+      InstructorImg: this.photoURL || instructor.InstructorImg
+    };
+
+    this.instructorService.updateInstructor(id, updatedInstructor).then(
       () => {
         this.resetForm();
         this.loadInstructors(); // Reload instructors after update
@@ -92,7 +102,8 @@ export class InstructorSettingComponent implements OnInit {
     this.instructorForm.patchValue(instructor);
     this.editMode = true;
     this.currentInstructorId = instructor.id;
-    this.formVisible = true; // Show the form
+    this.photoURL = instructor.InstructorImg || null; 
+    this.formVisible = true; 
   }
 
   deleteInstructor(id: string | undefined) {
@@ -111,16 +122,15 @@ export class InstructorSettingComponent implements OnInit {
   uploadPhoto(event: any) {
     const file = event.target.files[0];
     if (file) {
-      // Create a unique file path
       const filePath = `instructorPhotos/${new Date().getTime()}_${file.name}`;
       const fileRef = this.storage.ref(filePath);
       const task = this.storage.upload(filePath, file);
 
-      // Get notified when the download URL is available
       task.snapshotChanges().pipe(
         finalize(() => {
           fileRef.getDownloadURL().subscribe(url => {
             this.photoURL = url;
+            this.instructorForm.patchValue({ InstructorImg: this.photoURL });
           });
         })
       ).subscribe();
@@ -131,7 +141,8 @@ export class InstructorSettingComponent implements OnInit {
     this.instructorForm.reset();
     this.editMode = false;
     this.currentInstructorId = undefined;
-    this.formVisible = false; // Hide the form
+    this.photoURL = null; 
+    this.formVisible = false; 
   }
 
   toggleFormVisibility() {
