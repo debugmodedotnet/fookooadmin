@@ -88,4 +88,62 @@ $nmc-primary: #ef7a04; // Define your primary color
   color: red;
   margin-left: 0.25rem; /* Adjust spacing between label text and asterisk */
 }
+
+.create-instructor-section {
+  margin-top: 60px; 
+}
+
+.form-wrapper {
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  width: 100%;
+  max-width: 600px; 
+  margin: 0 auto; 
+  padding: 20px; 
+}
+
+.form-wrapper input,
+.form-wrapper textarea {
+  margin-bottom: 20px; 
+}
+
+textarea.form-control {
+  resize: vertical; 
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.required::after {
+  content: " *";
+  color: red;
+  font-weight: normal;
+}
+
+button.nmc-btn-primary {
+  margin-top: 20px; 
+}
+.addinstructor {
+  background-color: #f79137; 
+  color: rgb(8, 8, 8); 
+  border: 2px solid #ff861d; 
+  border-radius: 4px; 
+  padding: 8px 16px; 
+  font-size: 14px; 
+  font-weight: bold; 
+  text-transform: uppercase; 
+  text-align: center;
+  display: inline-block; 
+  cursor: pointer; 
+  transition: background-color 0.3s, border-color 0.3s, transform 0.2s;
+}
+
+.addinstructor:hover {
+  background-color: #ef9c53; 
+  border-color: #ffffff; 
+  transform: translateY(-2px); 
+}
+
  
