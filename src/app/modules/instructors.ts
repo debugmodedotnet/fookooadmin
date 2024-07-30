@@ -21,4 +21,5 @@ export interface IInstructor {
   Company3: string;
   Company4: string;
   Courses?: ICourse[];
+  ImageUpload?: string;
 }
