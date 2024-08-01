@@ -1,0 +1,84 @@
+<section class="pt-4 pb-5 create-quiz-section">
+    <div class="container-boxed">
+      <h2 class="section-title font-36 nmc-dark-grey font-family-poppins text-center mb-4">
+        Create Quiz
+      </h2>
+  
+      <div class="form-wrapper rounded-4 p-4 w-100 mx-auto">
+        <form [formGroup]="quizForm" (ngSubmit)="onSubmit()">
+          <div class="form-group mt-3">
+            <label for="question" class="form-label required">Question</label>
+            <input
+              type="text"
+              id="question"
+              class="form-control h-3 rounded-3"
+              formControlName="question"
+              placeholder="Enter question"
+            />
+          </div>
+  
+          <div formArrayName="options" class="options-container mt-3">
+            <div *ngFor="let option of options.controls; let i = index" [formGroupName]="i" class="option-group mb-2">
+              <label for="option{{i}}" class="form-label">Option {{i + 1}}</label>
+              <input
+                id="option{{i}}"
+                formControlName="value"
+                type="text"
+                class="form-control h-3 rounded-3"
+                placeholder="Enter option"
+              />
+              <button *ngIf="options.length > 1" type="button" (click)="removeOption(i)" class="btn btn-danger btn-sm mt-2">
+                Remove
+              </button>
+            </div>
+          </div>
+  
+          <button type="button" (click)="addOption()" class="btn btn-light-orange mt-3">
+            Add Option
+          </button>
+  
+          <div *ngIf="isOptionsInvalid" class="error-label text-danger font-18 mt-2">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>Please provide values for all options
+          </div>
+  
+          <div class="d-flex justify-content-end align-items-center mt-5">
+            <button type="button" (click)="onCancel()" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-light-orange ms-2" [disabled]="!quizForm.valid">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+  
+      <div class="table-wrapper mt-5">
+        <h3 class="font-24 text-center mb-3">Quiz List</h3>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Question</th>
+              <th>Options</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let quiz of quizzes">
+              <td>{{ quiz.question }}</td>
+              <td>
+                <ul>
+                  <li *ngFor="let option of quiz.options">{{ option.value }}</li>
+                </ul>
+              </td>
+              <td>
+                <button (click)="onEdit(quiz.id)" class="btn btn-warning btn-sm">Edit</button>
+                <button (click)="onDelete(quiz.id)" class="btn btn-danger btn-sm ms-2">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  
+  
+  
+  

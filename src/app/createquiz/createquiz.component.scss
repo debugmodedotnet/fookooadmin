@@ -1,0 +1,121 @@
+$nmc-primary: #ef7a04;
+.create-quiz-section {
+    max-width: 900px;
+    margin: auto;
+  }
+  
+  .form-wrapper {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .form-control {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+  }
+  
+  .options-container {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1rem;
+    background: #fff;
+  }
+  
+  .option-group {
+    position: relative;
+  }
+  
+  .option-group .btn-danger {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  
+  .btn-light-orange {
+    background-color: $nmc-primary;
+    color:#fff;
+  }
+  
+  
+  .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+  }
+  
+  .error-label {
+    display: flex;
+    align-items: center;
+  }
+  
+  .error-label i {
+    font-size: 1.5rem;
+  }
+  
+  .table-wrapper {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+  }
+  
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+  }
+  
+  .font-24 {
+    font-size: 1.5rem;
+  }
+  
+  .mt-5 {
+    margin-top: 3rem !important;
+  }
+  
+  .ms-2 {
+    margin-left: 0.5rem !important;
+  }
+  
+  .mb-2 {
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .font-18 {
+    font-size: 1.125rem;
+  }
+  
+  .min-height-700 {
+    min-height: 700px;
+  }
+  
+  .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 0.2rem;
+  }
+  
