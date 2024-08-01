@@ -49,6 +49,11 @@ export class QuizService {
     await this.firestore.collection(this.quizAttemptCollection).add(attemptedQuestion);
   }
 
+  addQuestion(questionData: any): Promise<void> {
+    const id = this.firestore.createId(); // or use your own ID generation
+    return this.firestore.collection('questions').doc(id).set(questionData);
+  }
+
   getAttemptedQuestions(userId: string): Observable<IQuizAttemptedQuestion[]> {
     return this.firestore.collection<IQuizAttemptedQuestion>(this.quizAttemptCollection, ref => ref
       .where('userId', '==', userId)
