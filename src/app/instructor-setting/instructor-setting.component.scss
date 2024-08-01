@@ -53,6 +53,11 @@ $nmc-primary: #ef7a04; // Define your primary color
   gap: 5px;
 }
 
+.right-align {
+  display: block;
+  text-align: right;
+}
+
 .btn-light-orange {
   background-color: #ef7a04;
   color: white;
@@ -91,14 +96,17 @@ $nmc-primary: #ef7a04; // Define your primary color
 
 .create-instructor-section {
   margin-top: 60px; 
+  max-width: 900px; 
 }
 
 .form-wrapper {
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  background: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 600px; 
+  max-width: 1000px; 
   margin: 0 auto; 
   padding: 20px; 
+  border-radius: 8px;
 }
 
 .form-wrapper input,
@@ -108,6 +116,12 @@ $nmc-primary: #ef7a04; // Define your primary color
 
 textarea.form-control {
   resize: vertical; 
+  
+}
+.form-control{
+  border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
 }
 
 .form-label {
@@ -158,6 +172,7 @@ button.nmc-btn-primary {
   text-transform: uppercase;
   cursor: pointer;
   transition: background-color 0.3s, border-color 0.3s, transform 0.2s;
+  border: 2px solid darken($nmc-primary, 10%);
 }
 
 .btn-custom-submit:hover {
@@ -192,10 +207,24 @@ button.nmc-btn-primary {
   cursor: pointer;
   transition: background-color 0.3s, border-color 0.3s, transform 0.2s;
   margin-left: 8px;
+  border: 2px solid darken(#f44336, 10%);
 }
 
 .btn-custom-cancel:hover {
   background-color: #d32f2f;
   border-color: #b71c1c;
   transform: translateY(-2px);
+}
+.error-label {
+  color: #f44336; /* Error color indication */
+  font-size: 0.875rem; /* Smaller font for error messages */
+  font-weight: bold;
+  display: block;
+}
+
+.section-title {
+  font-size: 18px; /* Smaller than the form labels */
+  font-weight: bold;
+  color: #333;
+  text-align: center;
 }
