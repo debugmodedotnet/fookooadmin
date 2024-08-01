@@ -17,6 +17,17 @@
             />
           </div>
   
+          <div class="form-group mt-3">
+            <label for="order" class="form-label required">Order</label>
+            <input
+              type="number"
+              id="order"
+              class="form-control h-3 rounded-3"
+              formControlName="order"
+              placeholder="Enter order"
+            />
+          </div>
+  
           <div formArrayName="options" class="options-container mt-3">
             <div *ngFor="let option of options.controls; let i = index" [formGroupName]="i" class="option-group mb-2">
               <label for="option{{i}}" class="form-label">Option {{i + 1}}</label>
@@ -37,6 +48,20 @@
             Add Option
           </button>
   
+          <div class="form-group mt-3">
+            <label for="answerId" class="form-label required">Correct Answer</label>
+            <select
+              id="answerId"
+              class="form-control h-3 rounded-3"
+              formControlName="answerId"
+              [ngClass]="{'is-invalid': isOptionsInvalid}"
+            >
+              <option *ngFor="let option of options.controls" [value]="option.get('id')?.value">
+                {{ option.get('value')?.value }}
+              </option>
+            </select>
+          </div>
+  
           <div *ngIf="isOptionsInvalid" class="error-label text-danger font-18 mt-2">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>Please provide values for all options
           </div>
@@ -55,6 +80,7 @@
         <table class="table table-striped">
           <thead>
             <tr>
+              <th>Order</th>
               <th>Question</th>
               <th>Options</th>
               <th>Actions</th>
@@ -62,6 +88,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let quiz of quiz">
+              <td>{{ quiz.order }}</td>
               <td>{{ quiz.question }}</td>
               <td>
                 <ul>
@@ -78,8 +105,4 @@
       </div>
     </div>
   </section>
-  
-  
-  
-  
   
