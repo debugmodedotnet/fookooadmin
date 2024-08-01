@@ -4,12 +4,12 @@ import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } fr
 import { Router } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import { IQuizQuestion } from '../modules/quiz-question';
-import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { CommonModule, NgClass, NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-createquiz',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, NgFor, CommonModule],
+  imports: [ReactiveFormsModule, NgClass, NgIf, NgFor], // Import NgClass here
   templateUrl: './createquiz.component.html',
   styleUrls: ['./createquiz.component.scss']
 })
@@ -23,10 +23,11 @@ export class CreatequizComponent {
   constructor() {
     this.quizForm = new FormGroup({
       question: new FormControl('', Validators.required),
-      options: new FormArray([this.createOption()]) // Start with one option
+      order: new FormControl('', Validators.required),
+      options: new FormArray([this.createOption(1)]),
+      answerId: new FormControl('')
     });
 
-    // Fetch quiz data for display
     this.firestore.collection<IQuizQuestion>('quiz').valueChanges().subscribe((data: IQuizQuestion[]) => {
       this.quiz = data;
     });
@@ -36,15 +37,17 @@ export class CreatequizComponent {
     return this.quizForm.get('options') as FormArray;
   }
 
-  createOption(): FormGroup {
+  createOption(order: number): FormGroup {
     return new FormGroup({
-      id: new FormControl(uuidv4()), // Generate a unique ID for each option
-      value: new FormControl('', Validators.required)
+      id: new FormControl(uuidv4()),
+      value: new FormControl('', Validators.required),
+      order: new FormControl(order)
     });
   }
 
   addOption(): void {
-    this.options.push(this.createOption());
+    const newOrder = this.options.length + 1;
+    this.options.push(this.createOption(newOrder));
   }
 
   removeOption(index: number): void {
@@ -55,16 +58,16 @@ export class CreatequizComponent {
 
   onSubmit(): void {
     if (this.quizForm.valid) {
-      const quizData: IQuizQuestion = {
-        id: uuidv4(), // Generate a unique question ID
+      const quizData = {
         question: this.quizForm.value.question,
+        order: this.quizForm.value.order,
         options: this.quizForm.value.options.map((option: any) => ({
-          id: option.id || uuidv4(), // Ensure ID is always set
-          value: option.value
-        }))
+          id: option.id,
+          value: option.value,
+        })),
+        answerId: this.quizForm.value.answerId
       };
 
-      // Store data in Firestore collection 'quiz'
       this.firestore.collection('quiz').add(quizData)
         .then(docRef => {
           console.log(`Document written with ID: ${docRef.id}`);
@@ -80,18 +83,15 @@ export class CreatequizComponent {
   }
 
   onEdit(id: string): void {
-    // Fetch and populate quiz data for editing
     this.firestore.collection<IQuizQuestion>('quiz').doc(id).get()
       .subscribe(doc => {
         if (doc.exists) {
           const data = doc.data() as IQuizQuestion;
-          // Initialize form with existing data
           this.quizForm.setValue({
-            question: data.question || '',
-            options: (data.options || []).map(option => ({
-              id: option.id || uuidv4(), // Ensure ID is always set
-              value: option.value
-            }))
+            question: data?.question || '',
+            order: data?.order || '', 
+            options: data?.options || [],
+            answerId: data?.answerId || ''
           });
         }
       });
@@ -102,8 +102,6 @@ export class CreatequizComponent {
       this.firestore.collection('quiz').doc(id).delete()
         .then(() => {
           console.log(`Document with ID ${id} deleted`);
-          // Optionally update the local array
-          this.quiz = this.quiz.filter(q => q.id !== id);
         })
         .catch(error => {
           console.error("Error deleting document: ", error);
@@ -112,10 +110,7 @@ export class CreatequizComponent {
   }
 
   onCancel(): void {
-    // Navigate to the previous page or another route
-    this.router.navigate(['/quizzes']); // Adjust the route as needed
+    this.router.navigate(['/quizzes']);
   }
 }
-
-
 
