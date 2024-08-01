@@ -3,7 +3,7 @@ $nmc-primary: #ef7a04;
     max-width: 900px;
     margin: auto;
   }
-  
+
   .form-wrapper {
     background: #f9f9f9;
     border-radius: 8px;
@@ -118,4 +118,8 @@ $nmc-primary: #ef7a04;
     font-size: 0.75rem;
     border-radius: 0.2rem;
   }
-  
+  .table-wide {
+    width: 100%; /* Adjust to fit the container */
+    max-width: 1200px; /* Set a maximum width as needed */
+    margin: auto; /* Center the table */
+}
