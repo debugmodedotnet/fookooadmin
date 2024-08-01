@@ -74,35 +74,46 @@
           </div>
         </form>
       </div>
-  
-      <div class="table-wrapper mt-5">
-        <h3 class="font-24 text-center mb-3">Quiz List</h3>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Order</th>
-              <th>Question</th>
-              <th>Options</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let quiz of quiz">
-              <td>{{ quiz.order }}</td>
-              <td>{{ quiz.question }}</td>
-              <td>
-                <ul>
-                  <li *ngFor="let option of quiz.options">{{ option.value }}</li>
-                </ul>
-              </td>
-              <td>
-                <button (click)="onEdit(quiz.id)" class="btn btn-warning btn-sm">Edit</button>
-                <button (click)="onDelete(quiz.id)" class="btn btn-danger btn-sm ms-2">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+
     </div>
   </section>
+  
+      <section id="quiz-list">
+        <div class="container mt-5">
+            <h3 class="section-title font-30 nmc-dark-grey font-family-poppins text-center mb-4">Quiz List</h3>
+            <div class="table-responsive">
+                <!-- Adjust the width of the table by adding a custom class -->
+                <table class="table table-striped table-wide">
+                    <thead>
+                        <tr>
+                            <th>Order</th>
+                            <th>Question</th>
+                            <th>Options</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let quiz of quiz">
+                            <td>{{ quiz.order }}</td>
+                            <td>{{ quiz.question }}</td>
+                            <td>
+                                <ul>
+                                    <li *ngFor="let option of quiz.options">{{ option.value }}</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <div class="d-flex">
+                                    <button (click)="onEdit(quiz.id)" class="btn btn-warning btn-sm me-2">Edit</button>
+                                    <button (click)="onDelete(quiz.id)" class="btn btn-danger btn-sm">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    
+    
+ 
   
