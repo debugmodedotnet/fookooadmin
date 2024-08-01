@@ -5,9 +5,10 @@
     </h2>
 
     <!-- Button to show/hide form for creating new instructor -->
+    <div class="right-align">
     <button class="btn btn-custom-add mb-3 addinstructor" (click)="toggleFormVisibility()">
       Add New Instructor
-    </button>
+    </button></div>
 
     <!-- Table displaying the list of instructors -->
     <div *ngIf="!formVisible" class="mt-3">
@@ -47,214 +48,90 @@
     <!-- Form to create or update instructor -->
     <div *ngIf="formVisible" class="form-wrapper rounded-4 p-4 w-100 mx-auto">
       <form [formGroup]="instructorForm" (ngSubmit)="addOrUpdateInstructor()">
+        <!-- General Information Section -->
         <div class="row form-group mt-3">
-          <div class="col-6">
-            <label for="name" class="form-label required">Name</label>
-            <input
-              type="text"
-              id="name"
-              class="form-control h-3 rounded-3"
-              formControlName="Name"
-              placeholder="Enter name"
-            />
+          <div class="col-12">
+            <h4 class="section-title">General Information</h4>
+            <div class="row">
+              <div class="col-md-6">
+                <label for="name" class="form-label required">Name</label>
+                <input type="text" id="name" class="form-control" formControlName="Name" placeholder="Enter name" />
+              </div>
+              <div class="col-md-6">
+                <label for="position" class="form-label required">Position</label>
+                <input type="text" id="position" class="form-control" formControlName="Position" placeholder="Position" />
+              </div>
+              <div class="col-12 mt-3">
+                <label for="bio" class="form-label required">Bio</label>
+                <textarea id="bio" class="form-control" formControlName="Bio" rows="4" placeholder="Write a brief bio"></textarea>
+              </div>
+            </div>
           </div>
-
-          <div class="col-6">
-            <label for="position" class="form-label required">Position</label>
-            <input
-              type="text"
-              id="position"
-              class="form-control h-3 rounded-3"
-              formControlName="Position"
-              placeholder="Position"
-            />
+        </div>
+    
+        <!-- Social Links Section -->
+        <div class="row mt-4">
+          <div class="col-12">
+            <h4 class="section-title">Social Links</h4>
+            <div class="row">
+              <div class="col-md-4">
+                <label for="github" class="form-label required">GitHub</label>
+                <input type="url" id="github" class="form-control" formControlName="Github" placeholder="GitHub URL" />
+              </div>
+              <div class="col-md-4">
+                <label for="twitter" class="form-label required">Twitter</label>
+                <input type="url" id="twitter" class="form-control" formControlName="Twitter" placeholder="Twitter URL" />
+              </div>
+              <div class="col-md-4">
+                <label for="linkedin" class="form-label required">LinkedIn</label>
+                <input type="url" id="linkedin" class="form-control" formControlName="LinkedIn" placeholder="LinkedIn URL" />
+              </div>
+            </div>
           </div>
-
-          <div class="col-6">
-            <label for="email" class="form-label required">Email</label>
-            <input
-              type="email"
-              id="email"
-              class="form-control h-3 rounded-3"
-              formControlName="Email"
-              placeholder="Email"
-            />
+        </div>
+    
+        <!-- Skills Section -->
+        <div class="row mt-4">
+          <div class="col-12">
+            <h4 class="section-title">Skills</h4>
+            <div class="row">
+              <div class="col-md-3" *ngFor="let skill of ['Skill1', 'Skill2', 'Skill3', 'Skill4']">
+                <label for="{{skill}}" class="form-label required">Skill</label>
+                <select id="{{skill}}" class="form-control" formControlName="{{skill}}">
+                  <option value="" disabled>Select a skill</option>
+                  <option *ngFor="let s of skills" [value]="s">{{ s }}</option>
+                </select>
+              </div>
+            </div>
           </div>
-
-          <div class="col-6">
-            <label for="github" class="form-label required">Github</label>
-            <input
-              type="url"
-              id="github"
-              class="form-control h-3 rounded-3"
-              formControlName="Github"
-              placeholder="Github"
-              pattern="https://github.com/.*"
-              title="Please enter a valid GitHub URL"
-            />
+        </div>
+    
+        <!-- Companies Section -->
+        <div class="row mt-4">
+          <div class="col-12">
+            <h4 class="section-title">Companies</h4>
+            <div class="row">
+              <div class="col-md-3" *ngFor="let company of ['Company1', 'Company2', 'Company3', 'Company4']">
+                <label for="{{company}}" class="form-label required">Company</label>
+                <input type="text" id="{{company}}" class="form-control" formControlName="{{company}}" placeholder="Company Name" />
+              </div>
+            </div>
           </div>
-
-          <div class="col-6">
-            <label for="twitter" class="form-label required">Twitter</label>
-            <input
-              type="url"
-              id="twitter"
-              class="form-control h-3 rounded-3"
-              formControlName="Twitter"
-              placeholder="Twitter"
-              pattern="https://x.com/.*"
-              title="Please enter a valid Twitter URL"
-            />
-          </div>
-
-          <div class="col-6">
-            <label for="linkedin" class="form-label required">LinkedIn</label>
-            <input
-              type="url"
-              id="linkedin"
-              class="form-control h-3 rounded-3"
-              formControlName="LinkedIn"
-              placeholder="LinkedIn"
-              pattern="https://www.linkedin.com/.*"
-              title="Please enter a valid LinkedIn URL"
-            />
-          </div>
-
-          <div class="col-6 mt-4">
-            <label for="skill1" class="form-label required">Skill 1</label>
-            <select
-              id="skill1"
-              class="form-control h-3 rounded-3"
-              formControlName="Skill1"
-            >
-              <option value="" disabled>Select a skill</option>
-              <option *ngFor="let skill of skills" [value]="skill">
-                {{ skill }}
-              </option>
-            </select>
-          </div>
-
-          <div class="col-6 mt-4">
-            <label for="skill2" class="form-label required">Skill 2</label>
-            <select
-              id="skill2"
-              class="form-control h-3 rounded-3"
-              formControlName="Skill2"
-            >
-              <option value="" disabled>Select a skill</option>
-              <option *ngFor="let skill of skills" [value]="skill">
-                {{ skill }}
-              </option>
-            </select>
-          </div>
-
-          <div class="col-6 mt-4">
-            <label for="skill3" class="form-label required">Skill 3</label>
-            <select
-              id="skill3"
-              class="form-control h-3 rounded-3"
-              formControlName="Skill3"
-            >
-              <option value="" disabled>Select a skill</option>
-              <option *ngFor="let skill of skills" [value]="skill">
-                {{ skill }}
-              </option>
-            </select>
-          </div>
-
-          <div class="col-6 mt-4">
-            <label for="skill4" class="form-label required">Skill 4</label>
-            <select
-              id="skill4"
-              class="form-control h-3 rounded-3"
-              formControlName="Skill4"
-            >
-              <option value="" disabled>Select a skill</option>
-              <option *ngFor="let skill of skills" [value]="skill">
-                {{ skill }}
-              </option>
-            </select>
-          </div>
-
-          <div class="col-6 mt-4">
-            <label for="company1" class="form-label required">Company 1</label>
-            <input
-              type="text"
-              id="company1"
-              class="form-control h-3 rounded-3"
-              formControlName="Company1"
-              placeholder="Company Name"
-            />
-          </div>
-
-          <div class="col-6 mt-4">
-            <label for="company2" class="form-label required">Company 2</label>
-            <input
-              type="text"
-              id="company2"
-              class="form-control h-3 rounded-3"
-              formControlName="Company2"
-              placeholder="Company Name"
-            />
-          </div>
-
-          <div class="col-6 mt-4">
-            <label for="company3" class="form-label">Company 3</label>
-            <input
-              type="text"
-              id="company3"
-              class="form-control h-3 rounded-3"
-              formControlName="Company3"
-              placeholder="Company Name"
-            />
-          </div>
-
-          <div class="col-6 mt-4">
-            <label for="company4" class="form-label">Company 4</label>
-            <input
-              type="text"
-              id="company4"
-              class="form-control h-3 rounded-3"
-              formControlName="Company4"
-              placeholder="Company Name"
-            />
-          </div>
-
-          <div class="col-12 mt-4">
-            <label for="bio" class="form-label required">Bio</label>
-            <textarea
-              id="bio"
-              class="form-control h-3 rounded-3"
-              formControlName="Bio"
-              rows="4"
-              placeholder="Write a brief bio"
-            ></textarea>
-          </div>
-
-          <div class="col-12 mt-4">
+        </div>
+    
+        <!-- Photo Upload Section -->
+        <div class="row mt-4">
+          <div class="col-12">
             <label for="imageUpload" class="form-label">Upload Photo</label>
-            <input
-              type="file"
-              id="imageUpload"
-              (change)="uploadPhoto($event)"
-            />
+            <input type="file" id="imageUpload" (change)="uploadPhoto($event)" class="form-control" />
           </div>
-
-          <div class="col-12 mt-4 text-center">
-            <button
-              type="submit"
-              class="btn btn-custom-submit"
-              [disabled]="instructorForm.invalid"
-            >
-              {{ instructorForm.get('id')?.value ? 'Update' : 'Add' }}
-            </button>
-            <button
-              type="button"
-              class="btn btn-custom-cancel ms-2"
-              (click)="toggleFormVisibility()"
-            >
-              Cancel
-            </button>
+        </div>
+    
+        <!-- Form Actions -->
+        <div class="row mt-4">
+          <div class="col-12 text-center">
+            <button type="submit" class="btn btn-custom-submit" [disabled]="instructorForm.invalid">{{ instructorForm.get('id')?.value ? 'Update' : 'Add' }}</button>
+            <button type="button" class="btn btn-custom-cancel ms-2" (click)="toggleFormVisibility()">Cancel</button>
           </div>
         </div>
       </form>
