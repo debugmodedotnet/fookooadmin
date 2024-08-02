@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild, inject, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import { IQuizQuestion } from '../modules/quiz-question';
@@ -30,8 +30,8 @@ export class CreatequizComponent implements OnInit {
     this.quizForm = this.fb.group({
       question: ['', Validators.required],
       order: ['', Validators.required],
-      options: this.fb.array([this.createOption(1)]),
-      answerId: ['']
+      options: this.fb.array([this.createOption(1)], Validators.minLength(2)),
+      answerId: ['', Validators.required]
     });
 
     this.firestore.collection<IQuizQuestion>('quiz').valueChanges({ idField: 'id' }).subscribe((data: IQuizQuestion[]) => {
@@ -73,41 +73,43 @@ export class CreatequizComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.quizForm.valid) {
-      const quizData = {
-        question: this.quizForm.value.question,
-        order: this.quizForm.value.order,
-        options: this.quizForm.value.options.map((option: any) => ({
-          id: option.id,
-          value: option.value,
-        })),
-        answerId: this.quizForm.value.answerId
-      };
-
-      if (this.editMode && this.currentQuizId) {
-        this.firestore.collection('quiz').doc(this.currentQuizId).update(quizData)
-          .then(() => {
-            console.log(`Document with ID ${this.currentQuizId} updated`);
-            this.resetForm();
-            this.loadQuizzes();
-          })
-          .catch(error => {
-            console.error("Error updating document: ", error);
-          });
-      } else {
-        this.firestore.collection('quiz').add(quizData)
-          .then(docRef => {
-            console.log(`Document written with ID: ${docRef.id}`);
-            this.quizForm.reset();
-            this.isOptionsInvalid = false;
-            this.loadQuizzes();
-          })
-          .catch(error => {
-            console.error("Error adding document: ", error);
-          });
-      }
-    } else {
+    if (this.quizForm.invalid) {
       this.isOptionsInvalid = true;
+      this.checkValidations();
+      return;
+    }
+
+    const quizData = {
+      question: this.quizForm.value.question,
+      order: this.quizForm.value.order,
+      options: this.quizForm.value.options.map((option: any) => ({
+        id: option.id,
+        value: option.value,
+      })),
+      answerId: this.quizForm.value.answerId
+    };
+
+    if (this.editMode && this.currentQuizId) {
+      this.firestore.collection('quiz').doc(this.currentQuizId).update(quizData)
+        .then(() => {
+          console.log(`Document with ID ${this.currentQuizId} updated`);
+          this.resetForm();
+          this.loadQuizzes();
+        })
+        .catch(error => {
+          console.error("Error updating document: ", error);
+        });
+    } else {
+      this.firestore.collection('quiz').add(quizData)
+        .then(docRef => {
+          console.log(`Document written with ID: ${docRef.id}`);
+          this.quizForm.reset();
+          this.isOptionsInvalid = false;
+          this.loadQuizzes();
+        })
+        .catch(error => {
+          console.error("Error adding document: ", error);
+        });
     }
   }
 
@@ -157,6 +159,7 @@ export class CreatequizComponent implements OnInit {
   }
 
   onCancel(): void {
+    this.resetForm();
     this.router.navigate(['/quizzes']);
   }
 
@@ -175,6 +178,24 @@ export class CreatequizComponent implements OnInit {
   scrollToForm(): void {
     if (this.formSection) {
       this.formSection.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  checkValidations(): void {
+    const question = this.quizForm.get('question');
+    const options = this.quizForm.get('options');
+    const answerId = this.quizForm.get('answerId');
+
+    if (question?.invalid) {
+      console.log("Please enter a question");
+    }
+
+    if (options?.invalid || options?.value.length < 2) {
+      console.log("Please enter at least two options");
+    }
+
+    if (!answerId?.value) {
+      console.log("Please choose a correct answer");
     }
   }
 }
