@@ -11,7 +11,7 @@ $nmc-primary: #ef7a04;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-bottom: 3px solid $nmc-primary;
-    margin: 20px 0;
+    margin-top: 2px;
 }
 
 .form-label {
@@ -133,3 +133,21 @@ $nmc-primary: #ef7a04;
     align-items: center;
     gap: 5px;
 }
+.add-video-container {
+  text-align: right;
+  margin-top: 10px;
+}
+.btn-light-orange {
+    background-color: $nmc-primary;
+    color: #fff;
+    font-weight: bold; 
+    border: none;
+    padding: 0.75rem 1.5rem; // Adjust padding to increase the button size
+    font-size: 1rem; // Increase font size if needed
+    min-width: 150px; // Ensure a minimum width for the button
+}
+
+.btn-light-orange:hover {
+    background-color: #fc9313;
+}
+

@@ -33,7 +33,7 @@
             <td><a [href]="instructor.Twitter" target="_blank">Twitter</a></td>
             <td><a [href]="instructor.LinkedIn" target="_blank">LinkedIn</a></td>
             <td class="actions">
-              <button class="btn btn-custom-edit btn-sm" (click)="editInstructor(instructor)">
+              <button class="btn btn-custom-edit btn-sm me-2" (click)="editInstructor(instructor)">
                 Edit
               </button>
               <button class="btn btn-danger btn-sm" (click)="deleteInstructor(instructor.id!)">
@@ -129,8 +129,8 @@
     
         <!-- Form Actions -->
         <div class="row mt-4">
-          <div class="col-12 text-center">
-            <button type="submit" class="btn btn-custom-submit" [disabled]="instructorForm.invalid">{{ instructorForm.get('id')?.value ? 'Update' : 'Add' }}</button>
+          <div class="d-flex col-12 text-center">
+            <button type="submit" class="btn btn-custom-submit" [disabled]="instructorForm.invalid">{{ instructorForm.get('id')?.value ? 'Update' : 'Add' }}</button><br>
             <button type="button" class="btn btn-custom-cancel ms-2" (click)="toggleFormVisibility()">Cancel</button>
           </div>
         </div>
