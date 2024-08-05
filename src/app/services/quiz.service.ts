@@ -17,17 +17,19 @@ export class QuizService {
 
   private firestore = inject(AngularFirestore);
 
-  getQuestion(questionIdsToExclude: string[], orderValue: number = getRandomInt(1, this.maxOrderValue)): Observable<IQuizQuestion[]> {
+  getQuestion(technology: string, questionIdsToExclude: string[], orderValue: number = getRandomInt(1, this.maxOrderValue)): Observable<IQuizQuestion[]> {
     let collection: AngularFirestoreCollection<IQuizQuestion>;
+    const collectionPath = `${this.quizCollection}/${technology}/quizzes`;
+
     if (questionIdsToExclude.length) {
-      collection = this.firestore.collection<IQuizQuestion>(this.quizCollection, ref => ref
+      collection = this.firestore.collection<IQuizQuestion>(collectionPath, ref => ref
         .where(documentId(), 'not-in', questionIdsToExclude)
         .where('order', '>=', orderValue)
         .orderBy('order')
         .limit(1)
       );
     } else {
-      collection = this.firestore.collection<IQuizQuestion>(this.quizCollection, ref => ref
+      collection = this.firestore.collection<IQuizQuestion>(collectionPath, ref => ref
         .where('order', '>=', orderValue)
         .orderBy('order')
         .limit(1)
@@ -49,11 +51,24 @@ export class QuizService {
     await this.firestore.collection(this.quizAttemptCollection).add(attemptedQuestion);
   }
 
-  addQuestion(questionData: any): Promise<void> {
-    const id = this.firestore.createId(); // or use your own ID generation
-    return this.firestore.collection(this.quizCollection).doc(id).set(questionData); // Use quizCollection
+  addQuestion(technology: string, questionData: any): Promise<void> {
+    const id = this.firestore.createId();
+    const collectionPath = `${this.quizCollection}/${technology}/quizzes`;
+    return this.firestore.collection(collectionPath).doc(id).set(questionData);
   }
-  
+
+  getQuizzesByTechnology(technology: string): Observable<IQuizQuestion[]> {
+    const collectionPath = `${this.quizCollection}/${technology}/quizzes`;
+    return this.firestore.collection<IQuizQuestion>(collectionPath).snapshotChanges().pipe(
+      map(changes =>
+        changes.map(a => {
+          const data = a.payload.doc.data() as IQuizQuestion;
+          const id = a.payload.doc.id;
+          return { ...data, id };
+        })
+      )
+    );
+  }
 
   getAttemptedQuestions(userId: string): Observable<IQuizAttemptedQuestion[]> {
     return this.firestore.collection<IQuizAttemptedQuestion>(this.quizAttemptCollection, ref => ref
@@ -67,5 +82,17 @@ export class QuizService {
         })
       )
     );
+  }
+
+  async updateQuiz(technology: string, id: string, quizData: IQuizQuestion): Promise<void> {
+    const collectionPath = `${this.quizCollection}/${technology}/quizzes`;
+    const quizRef = this.firestore.doc(`${collectionPath}/${id}`);
+    await quizRef.update(quizData);
+  }
+
+  async deleteQuiz(technology: string, id: string): Promise<void> {
+    const collectionPath = `${this.quizCollection}/${technology}/quizzes`;
+    const quizRef = this.firestore.doc(`${collectionPath}/${id}`);
+    await quizRef.delete();
   }
 }

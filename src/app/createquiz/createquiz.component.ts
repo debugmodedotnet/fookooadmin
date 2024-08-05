@@ -1,32 +1,38 @@
+import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild, inject, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import { IQuizQuestion } from '../modules/quiz-question';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { QuizService } from '../services/quiz.service';
 
 @Component({
   selector: 'app-createquiz',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './createquiz.component.html',
   styleUrls: ['./createquiz.component.scss']
 })
 export class CreatequizComponent implements OnInit {
+
   @ViewChild('formSection') formSection!: ElementRef;
 
   quizForm: FormGroup;
+  technologyForm: FormGroup;
   quiz: IQuizQuestion[] = [];
+
+  technologies = ['JavaScript', 'Python', 'Angular', 'React'];
   editMode = false;
   currentQuizId?: string;
   formVisible = false;
   isOptionsInvalid = false;
   totalQuizCount = 0;
+  selectedTechnology?: string;
+  technologySelected = false;
 
   private firestore = inject(AngularFirestore);
-  private router = inject(Router);
   private fb = inject(FormBuilder);
 
   constructor() {
@@ -35,6 +41,10 @@ export class CreatequizComponent implements OnInit {
       order: ['', [Validators.required]],
       options: this.fb.array([this.createOption(1)], [Validators.required, Validators.minLength(2)]),
       answerId: ['', [Validators.required]]
+    });
+
+    this.technologyForm = this.fb.group({
+      technology: ['', [Validators.required]]
     });
   }
 
@@ -67,9 +77,6 @@ export class CreatequizComponent implements OnInit {
   }
 
   addOrUpdateQuiz(): void {
-    const quizId = `quiz${this.totalQuizCount + 1}`;
-    this.quizForm?.get('order')?.setValue(quizId);
-
     if (this.editMode && this.currentQuizId) {
       this.updateQuiz(this.currentQuizId, this.quizForm.value);
     } else {
@@ -78,7 +85,7 @@ export class CreatequizComponent implements OnInit {
   }
 
   addQuiz(): void {
-    this.firestore.collection('quiz').add(this.quizForm.value)
+    this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('quizzes').add(this.quizForm.value)
       .then(() => {
         this.resetForm();
         this.loadQuizzes();
@@ -89,7 +96,7 @@ export class CreatequizComponent implements OnInit {
   }
 
   updateQuiz(id: string, quiz: IQuizQuestion): void {
-    this.firestore.collection('quiz').doc(id).update(quiz)
+    this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('quizzes').doc(id).update(quiz)
       .then(() => {
         this.resetForm();
         this.loadQuizzes();
@@ -116,7 +123,7 @@ export class CreatequizComponent implements OnInit {
 
   deleteQuiz(id: string): void {
     if (confirm('Are you sure you want to delete this quiz?')) {
-      this.firestore.collection('quiz').doc(id).delete()
+      this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('quizzes').doc(id).delete()
         .then(() => {
           this.loadQuizzes();
         })
@@ -171,10 +178,14 @@ export class CreatequizComponent implements OnInit {
       return;
     }
 
-    if (this.editMode && this.currentQuizId) {
-      this.updateQuiz(this.currentQuizId, this.quizForm.value);
-    } else {
-      this.addQuiz();
+    this.addOrUpdateQuiz();
+  }
+
+  onTechnologySelect(): void {
+    if (this.technologyForm.valid) {
+      this.selectedTechnology = this.technologyForm.get('technology')?.value;
+      this.technologySelected = true;
+      this.formVisible = true;
     }
   }
 }
