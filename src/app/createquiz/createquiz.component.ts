@@ -15,27 +15,26 @@ import { ReactiveFormsModule } from '@angular/forms';
   styleUrls: ['./createquiz.component.scss']
 })
 export class CreatequizComponent implements OnInit {
-  @ViewChild('formSection') formSection!: ElementRef; // Reference to the form section
+  @ViewChild('formSection') formSection!: ElementRef;
 
   quizForm: FormGroup;
-  private firestore = inject(AngularFirestore);
-  private router = inject(Router);
-  private fb = inject(FormBuilder);
-  isOptionsInvalid = false;
   quiz: IQuizQuestion[] = [];
   editMode = false;
   currentQuizId?: string;
+  formVisible = false;
+  isOptionsInvalid = false;
+  totalQuizCount = 0;
+
+  private firestore = inject(AngularFirestore);
+  private router = inject(Router);
+  private fb = inject(FormBuilder);
 
   constructor() {
     this.quizForm = this.fb.group({
-      question: ['', Validators.required],
-      order: ['', Validators.required],
-      options: this.fb.array([this.createOption(1)], Validators.minLength(2)),
-      answerId: ['', Validators.required]
-    });
-
-    this.firestore.collection<IQuizQuestion>('quiz').valueChanges({ idField: 'id' }).subscribe((data: IQuizQuestion[]) => {
-      this.quiz = data;
+      question: ['', [Validators.required]],
+      order: ['', [Validators.required]],
+      options: this.fb.array([this.createOption(1)], [Validators.required, Validators.minLength(2)]),
+      answerId: ['', [Validators.required]]
     });
   }
 
@@ -50,9 +49,109 @@ export class CreatequizComponent implements OnInit {
   createOption(order: number): FormGroup {
     return this.fb.group({
       id: [uuidv4()],
-      value: ['', Validators.required],
+      value: ['', [Validators.required]],
       order: [order]
     });
+  }
+
+  loadQuizzes(): void {
+    this.firestore.collection<IQuizQuestion>('quiz').valueChanges({ idField: 'id' }).subscribe(
+      (data: IQuizQuestion[]) => {
+        this.quiz = data;
+        this.totalQuizCount = data.length;
+      },
+      error => {
+        console.error('Error loading quizzes:', error);
+      }
+    );
+  }
+
+  addOrUpdateQuiz(): void {
+    const quizId = `quiz${this.totalQuizCount + 1}`;
+    this.quizForm?.get('order')?.setValue(quizId);
+
+    if (this.editMode && this.currentQuizId) {
+      this.updateQuiz(this.currentQuizId, this.quizForm.value);
+    } else {
+      this.addQuiz();
+    }
+  }
+
+  addQuiz(): void {
+    this.firestore.collection('quiz').add(this.quizForm.value)
+      .then(() => {
+        this.resetForm();
+        this.loadQuizzes();
+      })
+      .catch(error => {
+        console.error('Error adding quiz:', error);
+      });
+  }
+
+  updateQuiz(id: string, quiz: IQuizQuestion): void {
+    this.firestore.collection('quiz').doc(id).update(quiz)
+      .then(() => {
+        this.resetForm();
+        this.loadQuizzes();
+      })
+      .catch(error => {
+        console.error('Error updating quiz:', error);
+      });
+  }
+
+  editQuiz(quiz: IQuizQuestion): void {
+    this.quizForm.patchValue(quiz);
+    this.editMode = true;
+    this.currentQuizId = quiz.id;
+    this.formVisible = true;
+
+    this.options.clear();
+    quiz.options.forEach((option, index) => {
+      this.options.push(this.createOption(index + 1));
+      this.options.at(index).patchValue(option);
+    });
+
+    this.scrollToForm();
+  }
+
+  deleteQuiz(id: string): void {
+    if (confirm('Are you sure you want to delete this quiz?')) {
+      this.firestore.collection('quiz').doc(id).delete()
+        .then(() => {
+          this.loadQuizzes();
+        })
+        .catch(error => {
+          console.error('Error deleting quiz:', error);
+        });
+    }
+  }
+
+  resetForm(): void {
+    this.quizForm.reset({
+      question: '',
+      order: '',
+      options: this.fb.array([this.createOption(1)]),
+      answerId: ''
+    });
+    this.editMode = false;
+    this.currentQuizId = undefined;
+    this.formVisible = false;
+    this.isOptionsInvalid = false;
+  }
+
+  showForm(): void {
+    this.formVisible = true;
+  }
+
+  hideForm(): void {
+    this.formVisible = false;
+    this.resetForm();
+  }
+
+  scrollToForm(): void {
+    if (this.formSection) {
+      this.formSection.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
   addOption(): void {
@@ -66,136 +165,16 @@ export class CreatequizComponent implements OnInit {
     }
   }
 
-  loadQuizzes(): void {
-    this.firestore.collection<IQuizQuestion>('quiz').valueChanges({ idField: 'id' }).subscribe((data: IQuizQuestion[]) => {
-      this.quiz = data;
-    });
-  }
-
   onSubmit(): void {
     if (this.quizForm.invalid) {
       this.isOptionsInvalid = true;
-      this.checkValidations();
       return;
     }
 
-    const quizData = {
-      question: this.quizForm.value.question,
-      order: this.quizForm.value.order,
-      options: this.quizForm.value.options.map((option: any) => ({
-        id: option.id,
-        value: option.value,
-      })),
-      answerId: this.quizForm.value.answerId
-    };
-
     if (this.editMode && this.currentQuizId) {
-      this.firestore.collection('quiz').doc(this.currentQuizId).update(quizData)
-        .then(() => {
-          console.log(`Document with ID ${this.currentQuizId} updated`);
-          this.resetForm();
-          this.loadQuizzes();
-        })
-        .catch(error => {
-          console.error("Error updating document: ", error);
-        });
+      this.updateQuiz(this.currentQuizId, this.quizForm.value);
     } else {
-      this.firestore.collection('quiz').add(quizData)
-        .then(docRef => {
-          console.log(`Document written with ID: ${docRef.id}`);
-          this.quizForm.reset();
-          this.isOptionsInvalid = false;
-          this.loadQuizzes();
-        })
-        .catch(error => {
-          console.error("Error adding document: ", error);
-        });
-    }
-  }
-
-  onEdit(id: string): void {
-    this.firestore.collection<IQuizQuestion>('quiz').doc(id).get()
-      .subscribe(doc => {
-        if (doc.exists) {
-          const data = doc.data() as IQuizQuestion;
-          this.quizForm.patchValue({
-            question: data?.question || '',
-            order: data?.order || '',
-            answerId: data?.answerId || ''
-          });
-
-          // Clear current options form array
-          this.options.clear();
-
-          // Add options from the fetched data
-          data?.options.forEach((option, index) => {
-            this.options.push(this.fb.group({
-              id: [option.id],
-              value: [option.value, Validators.required],
-              order: [index + 1]
-            }));
-          });
-
-          this.editMode = true;
-          this.currentQuizId = id;
-
-          // Scroll to the form section
-          this.scrollToForm();
-        }
-      });
-  }
-
-  onDelete(id: string): void {
-    if (confirm("Are you sure you want to delete this quiz?")) {
-      this.firestore.collection('quiz').doc(id).delete()
-        .then(() => {
-          console.log(`Document with ID ${id} deleted`);
-          this.loadQuizzes();
-        })
-        .catch(error => {
-          console.error("Error deleting document: ", error);
-        });
-    }
-  }
-
-  onCancel(): void {
-    this.resetForm();
-    this.router.navigate(['/quizzes']);
-  }
-
-  resetForm(): void {
-    this.quizForm.reset({
-      question: '',
-      order: '',
-      options: this.fb.array([this.createOption(1)]),
-      answerId: ''
-    });
-    this.editMode = false;
-    this.currentQuizId = undefined;
-    this.isOptionsInvalid = false;
-  }
-
-  scrollToForm(): void {
-    if (this.formSection) {
-      this.formSection.nativeElement.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
-
-  checkValidations(): void {
-    const question = this.quizForm.get('question');
-    const options = this.quizForm.get('options');
-    const answerId = this.quizForm.get('answerId');
-
-    if (question?.invalid) {
-      console.log("Please enter a question");
-    }
-
-    if (options?.invalid || options?.value.length < 2) {
-      console.log("Please enter at least two options");
-    }
-
-    if (!answerId?.value) {
-      console.log("Please choose a correct answer");
+      this.addQuiz();
     }
   }
 }
