@@ -10,22 +10,21 @@ export class InstructorService {
 
   private firestore = inject(AngularFirestore);
 
-  // Retrieve all instructors from Firestore
   getInstructors(): Observable<IInstructor[]> {
     return this.firestore.collection<IInstructor>('instructor').snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as IInstructor;
         const id = a.payload.doc.id;
-        return { id, ...data }; // Ensure id is correctly assigned
+        return { id, ...data };
       }))
     );
   }
   
-
-  // Add a new instructor to Firestore
+  // Add a new instructor to Firestore and return the ID
   addInstructor(instructor: IInstructor): Promise<void> {
     console.log('Adding instructor:', instructor);
-    return this.firestore.collection('instructor').add(instructor)
+    const id = this.firestore.createId(); // Generate a new ID
+    return this.firestore.collection('instructor').doc(id).set({ ...instructor, id })
       .then(() => console.log('Instructor added successfully'))
       .catch(error => console.error('Error adding instructor:', error));
   }
