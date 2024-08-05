@@ -56,14 +56,24 @@
               <div class="col-md-6">
                 <label for="name" class="form-label required">Name</label>
                 <input type="text" id="name" class="form-control" formControlName="Name" placeholder="Enter name" />
+                <div *ngIf="instructorForm.get('Name')?.invalid && instructorForm.get('Name')?.touched">
+                  <small *ngIf="instructorForm.get('Name')?.errors?.['required']">Name is required.</small>
+                </div>
               </div>
               <div class="col-md-6">
                 <label for="position" class="form-label required">Position</label>
                 <input type="text" id="position" class="form-control" formControlName="Position" placeholder="Position" />
+                <div *ngIf="instructorForm.get('Position')?.invalid && instructorForm.get('Position')?.touched">
+                  <small *ngIf="instructorForm.get('Position')?.errors?.['required']">Position is required.</small>
+                </div>
               </div>
+              
               <div class="col-12 mt-3">
                 <label for="bio" class="form-label required">Bio</label>
                 <textarea id="bio" class="form-control" formControlName="Bio" rows="4" placeholder="Write a brief bio"></textarea>
+                <div *ngIf="instructorForm.get('Bio')?.invalid && instructorForm.get('Bio')?.touched">
+                  <small *ngIf="instructorForm.get('Bio')?.errors?.['required']">Bio is required.</small>
+                </div>
               </div>
             </div>
           </div>
@@ -77,14 +87,26 @@
               <div class="col-md-4">
                 <label for="github" class="form-label required">GitHub</label>
                 <input type="url" id="github" class="form-control" formControlName="Github" placeholder="GitHub URL" />
+                <div *ngIf="instructorForm.get('Github')?.invalid && instructorForm.get('Github')?.touched">
+                  <small *ngIf="instructorForm.get('Github')?.errors?.['required']">GitHub URL is required.</small>
+                  <small *ngIf="instructorForm.get('Github')?.errors?.['pattern']">Invalid GitHub URL format.</small>
+                </div>
               </div>
               <div class="col-md-4">
                 <label for="twitter" class="form-label required">Twitter</label>
                 <input type="url" id="twitter" class="form-control" formControlName="Twitter" placeholder="Twitter URL" />
+                <div *ngIf="instructorForm.get('Twitter')?.invalid && instructorForm.get('Twitter')?.touched">
+                  <small *ngIf="instructorForm.get('Twitter')?.errors?.['required']">Twitter URL is required.</small>
+                  <small *ngIf="instructorForm.get('Twitter')?.errors?.['pattern']">Invalid Twitter URL format.</small>
+                </div>
               </div>
               <div class="col-md-4">
                 <label for="linkedin" class="form-label required">LinkedIn</label>
                 <input type="url" id="linkedin" class="form-control" formControlName="LinkedIn" placeholder="LinkedIn URL" />
+                <div *ngIf="instructorForm.get('LinkedIn')?.invalid && instructorForm.get('LinkedIn')?.touched">
+                  <small *ngIf="instructorForm.get('LinkedIn')?.errors?.['required']">LinkedIn URL is required.</small>
+                  <small *ngIf="instructorForm.get('LinkedIn')?.errors?.['pattern']">Invalid LinkedIn URL format.</small>
+                </div>
               </div>
             </div>
           </div>
@@ -106,31 +128,59 @@
           </div>
         </div>
     
-        <!-- Companies Section -->
-        <div class="row mt-4">
+        <!-- Company Section -->
+        <div class="row form-group mt-3">
           <div class="col-12">
             <h4 class="section-title">Companies</h4>
             <div class="row">
-              <div class="col-md-3" *ngFor="let company of ['Company1', 'Company2', 'Company3', 'Company4']">
-                <label for="{{company}}" class="form-label required">Company</label>
-                <input type="text" id="{{company}}" class="form-control" formControlName="{{company}}" placeholder="Company Name" />
+              <div class="col-md-3">
+                <label for="company1" class="form-label required">Company 1</label>
+                <input type="text" id="company1" class="form-control" formControlName="Company1" placeholder="Enter Company 1" />
+                <div *ngIf="instructorForm.get('Company1')?.invalid && instructorForm.get('Company1')?.touched">
+                  <small *ngIf="instructorForm.get('Company1')?.errors?.['required']">Company1 is required.</small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label for="company2" class="form-label">Company 2</label>
+                <input type="text" id="company2" class="form-control" formControlName="Company2" placeholder="Enter Company 2" />
+              </div>
+              <div class="col-md-3">
+                <label for="company3" class="form-label">Company 3</label>
+                <input type="text" id="company3" class="form-control" formControlName="Company3" placeholder="Enter Company 3" />
+              </div>
+              <div class="col-md-3">
+                <label for="company4" class="form-label">Company 4</label>
+                <input type="text" id="company4" class="form-control" formControlName="Company4" placeholder="Enter Company 4" />
               </div>
             </div>
           </div>
         </div>
-    
-        <!-- Photo Upload Section -->
-        <div class="row mt-4">
-          <div class="col-12">
-            <label for="imageUpload" class="form-label">Upload Photo</label>
-            <input type="file" id="imageUpload" (change)="uploadPhoto($event)" class="form-control" />
+
+         <!-- Email Section -->
+         <div class="row form-group mt-3">
+          <div class="col-md-6">
+            <label for="email" class="form-label required">Email</label>
+            <input type="email" id="email" class="form-control" formControlName="Email" placeholder="Enter email" />
+            <div *ngIf="instructorForm.get('Email')?.invalid && instructorForm.get('Email')?.touched">
+              <small class="error-label" *ngIf="instructorForm.get('Email')?.errors?.['required']">Email is required.</small>
+              <small class="error-label" *ngIf="instructorForm.get('Email')?.errors?.['email']">Invalid email format.</small>
+            </div>
           </div>
         </div>
+    
+        <!-- Image Upload Section -->
+        <div class="form-group mt-3">
+          <label for="imageUpload" class="form-label">Upload Image</label>
+          <input type="file" id="imageUpload" (change)="uploadPhoto($event)" />
+          <div *ngIf="photoURL" class="mt-2">
+            <img [src]="photoURL" alt="Instructor Photo" class="img-thumbnail" />
+          </div>
+        </div> 
     
         <!-- Form Actions -->
         <div class="row mt-4">
           <div class="d-flex col-12 text-center">
-            <button type="submit" class="btn btn-custom-submit" [disabled]="instructorForm.invalid">{{ instructorForm.get('id')?.value ? 'Update' : 'Add' }}</button><br>
+            <button type="submit" class="btn btn-custom-submit" >{{ editMode ? 'Update' : 'Add' }}</button><br>
             <button type="button" class="btn btn-custom-cancel ms-2" (click)="toggleFormVisibility()">Cancel</button>
           </div>
         </div>
