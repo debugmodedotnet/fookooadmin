@@ -1,13 +1,65 @@
 <section class="create-quiz-section text-center py-5">
   <div class="container-boxed">
-    <h2
-      class="section-title font-36 nmc-dark-grey font-family-poppins text-center mb-5"
-    >
-      Quiz Settings
-    </h2>
+    <!-- Table displaying the list of quizzes -->
+    <section id="quiz-list" *ngIf="!formVisible">
+      <div class="d-flex justify-content-end mb-3">
+        <button
+          class="nmc-btn-primary"
+          (click)="showTechnologyForm()"
+          type="button"
+        >
+          Add New Quiz
+        </button>
+      </div>
+
+      <div class="container mt-5" style="max-width: 900px">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+              <tr>
+                <th>Order</th>
+                <th>Question</th>
+                <th>Options</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let quiz of quiz">
+                <td>{{ quiz.order }}</td>
+                <td>{{ quiz.question }}</td>
+                <td>
+                  <ul>
+                    <li *ngFor="let option of quiz.options">
+                      {{ option.value }}
+                    </li>
+                  </ul>
+                </td>
+                <td>
+                  <div class="d-flex">
+                    <button
+                      (click)="editQuiz(quiz)"
+                      class="btn btn-warning btn-sm me-2"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      (click)="deleteQuiz(quiz.id)"
+                      class="btn btn-danger"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
 
     <!-- Form for selecting technology -->
-    <section id="select_technology" *ngIf="!formVisible && !technologySelected">
+    <section id="select_technology" *ngIf="formVisible && !technologySelected">
       <div class="container-boxed pt-4 pb-5">
         <div class="card p-4 mb-4 mx-auto" style="max-width: 700px">
           <h3
@@ -54,7 +106,7 @@
     </section>
 
     <!-- Form for adding or updating a quiz -->
-    <section id="new_quiz" *ngIf="formVisible">
+    <section id="new_quiz" *ngIf="formVisible && technologySelected">
       <div class="container-boxed pt-4 pb-5">
         <div class="card p-4 mb-4 mx-auto" style="max-width: 700px">
           <h3
@@ -161,7 +213,7 @@
             <div class="d-flex justify-content-end align-items-center mt-5">
               <button
                 type="button"
-                (click)="hideForm()"
+                (click)="hideForms()"
                 class="btn btn-secondary"
               >
                 Cancel
@@ -175,58 +227,6 @@
               </button>
             </div>
           </form>
-        </div>
-      </div>
-    </section>
-
-    <!-- Table displaying the list of quizzes -->
-    <section id="quiz-list" *ngIf="!formVisible">
-      <div class="d-flex justify-content-end mb-3">
-        <button class="nmc-btn-primary" (click)="showForm()" type="button">
-          Add New Quiz
-        </button>
-      </div>
-      <div class="container mt-5" style="max-width: 900px">
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-              <tr>
-                <th>Order</th>
-                <th>Question</th>
-                <th>Options</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let quiz of quiz">
-                <td>{{ quiz.order }}</td>
-                <td>{{ quiz.question }}</td>
-                <td>
-                  <ul>
-                    <li *ngFor="let option of quiz.options">
-                      {{ option.value }}
-                    </li>
-                  </ul>
-                </td>
-                <td>
-                  <div class="d-flex">
-                    <button
-                      (click)="editQuiz(quiz)"
-                      class="btn btn-warning btn-sm me-2"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      (click)="deleteQuiz(quiz.id)"
-                      class="btn btn-danger"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </div>
     </section>

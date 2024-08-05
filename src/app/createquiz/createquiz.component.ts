@@ -28,7 +28,6 @@ export class CreatequizComponent implements OnInit {
   currentQuizId?: string;
   formVisible = false;
   isOptionsInvalid = false;
-  totalQuizCount = 0;
   selectedTechnology?: string;
   technologySelected = false;
 
@@ -65,16 +64,21 @@ export class CreatequizComponent implements OnInit {
   }
 
   loadQuizzes(): void {
-    this.firestore.collection<IQuizQuestion>('quiz').valueChanges({ idField: 'id' }).subscribe(
-      (data: IQuizQuestion[]) => {
-        this.quiz = data;
-        this.totalQuizCount = data.length;
-      },
-      error => {
-        console.error('Error loading quizzes:', error);
-      }
-    );
+    if (this.selectedTechnology) {
+      this.firestore.collection<IQuizQuestion>(`quiz/${this.selectedTechnology}/quizzes`).valueChanges({ idField: 'id' }).subscribe(
+        (data: IQuizQuestion[]) => {
+          console.log('Quizzes loaded:', data);
+          this.quiz = data;
+        },
+        error => {
+          console.error('Error loading quizzes:', error);
+        }
+      );
+    } else {
+      console.warn('No technology selected.');
+    }
   }
+  
 
   addOrUpdateQuiz(): void {
     if (this.editMode && this.currentQuizId) {
@@ -87,7 +91,7 @@ export class CreatequizComponent implements OnInit {
   addQuiz(): void {
     this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('quizzes').add(this.quizForm.value)
       .then(() => {
-        this.resetForm();
+        this.resetForms();
         this.loadQuizzes();
       })
       .catch(error => {
@@ -98,7 +102,7 @@ export class CreatequizComponent implements OnInit {
   updateQuiz(id: string, quiz: IQuizQuestion): void {
     this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('quizzes').doc(id).update(quiz)
       .then(() => {
-        this.resetForm();
+        this.resetForms();
         this.loadQuizzes();
       })
       .catch(error => {
@@ -111,6 +115,7 @@ export class CreatequizComponent implements OnInit {
     this.editMode = true;
     this.currentQuizId = quiz.id;
     this.formVisible = true;
+    this.technologySelected = true;
 
     this.options.clear();
     quiz.options.forEach((option, index) => {
@@ -133,33 +138,33 @@ export class CreatequizComponent implements OnInit {
     }
   }
 
-  resetForm(): void {
+  resetForms(): void {
     this.quizForm.reset({
       question: '',
       order: '',
       options: this.fb.array([this.createOption(1)]),
       answerId: ''
     });
+    this.technologyForm.reset();
     this.editMode = false;
     this.currentQuizId = undefined;
     this.formVisible = false;
     this.isOptionsInvalid = false;
+    this.technologySelected = false;
   }
 
-  showForm(): void {
+  showTechnologyForm(): void {
     this.formVisible = true;
   }
 
-  hideForm(): void {
-    this.formVisible = false;
-    this.resetForm();
-  }
-
-  scrollToForm(): void {
-    if (this.formSection) {
-      this.formSection.nativeElement.scrollIntoView({ behavior: 'smooth' });
+  onTechnologySelect(): void {
+    if (this.technologyForm.valid) {
+      this.selectedTechnology = this.technologyForm.get('technology')?.value;
+      this.technologySelected = true;
+      this.loadQuizzes(); 
     }
   }
+  
 
   addOption(): void {
     const newOrder = this.options.length + 1;
@@ -181,11 +186,13 @@ export class CreatequizComponent implements OnInit {
     this.addOrUpdateQuiz();
   }
 
-  onTechnologySelect(): void {
-    if (this.technologyForm.valid) {
-      this.selectedTechnology = this.technologyForm.get('technology')?.value;
-      this.technologySelected = true;
-      this.formVisible = true;
+  scrollToForm(): void {
+    if (this.formSection) {
+      this.formSection.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
+  }
+
+  hideForms(): void {
+    this.resetForms();
   }
 }
