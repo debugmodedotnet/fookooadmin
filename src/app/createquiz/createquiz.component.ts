@@ -65,7 +65,7 @@ export class CreatequizComponent implements OnInit {
 
   loadQuizzes(): void {
     if (this.selectedTechnology) {
-      this.firestore.collection<IQuizQuestion>(`quiz/${this.selectedTechnology}/quizzes`).valueChanges({ idField: 'id' }).subscribe(
+      this.firestore.collection<IQuizQuestion>(`quiz/${this.selectedTechnology}/questions`).valueChanges({ idField: 'id' }).subscribe(
         (data: IQuizQuestion[]) => {
           console.log('Quizzes loaded:', data);
           this.quiz = data;
@@ -78,7 +78,7 @@ export class CreatequizComponent implements OnInit {
       console.warn('No technology selected.');
     }
   }
-  
+
 
   addOrUpdateQuiz(): void {
     if (this.editMode && this.currentQuizId) {
@@ -89,7 +89,7 @@ export class CreatequizComponent implements OnInit {
   }
 
   addQuiz(): void {
-    this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('quizzes').add(this.quizForm.value)
+    this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('questions').add(this.quizForm.value)
       .then(() => {
         this.resetForms();
         this.loadQuizzes();
@@ -100,7 +100,7 @@ export class CreatequizComponent implements OnInit {
   }
 
   updateQuiz(id: string, quiz: IQuizQuestion): void {
-    this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('quizzes').doc(id).update(quiz)
+    this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('questions').doc(id).update(quiz)
       .then(() => {
         this.resetForms();
         this.loadQuizzes();
@@ -128,7 +128,7 @@ export class CreatequizComponent implements OnInit {
 
   deleteQuiz(id: string): void {
     if (confirm('Are you sure you want to delete this quiz?')) {
-      this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('quizzes').doc(id).delete()
+      this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('questions').doc(id).delete()
         .then(() => {
           this.loadQuizzes();
         })
@@ -161,10 +161,10 @@ export class CreatequizComponent implements OnInit {
     if (this.technologyForm.valid) {
       this.selectedTechnology = this.technologyForm.get('technology')?.value;
       this.technologySelected = true;
-      this.loadQuizzes(); 
+      this.loadQuizzes();
     }
   }
-  
+
 
   addOption(): void {
     const newOrder = this.options.length + 1;

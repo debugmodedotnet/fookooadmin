@@ -19,7 +19,7 @@ export class QuizService {
 
   getQuestion(technology: string, questionIdsToExclude: string[], orderValue: number = getRandomInt(1, this.maxOrderValue)): Observable<IQuizQuestion[]> {
     let collection: AngularFirestoreCollection<IQuizQuestion>;
-    const collectionPath = `${this.quizCollection}/${technology}/quizzes`;
+    const collectionPath = `${this.quizCollection}/${technology}/questions`;
 
     if (questionIdsToExclude.length) {
       collection = this.firestore.collection<IQuizQuestion>(collectionPath, ref => ref
@@ -53,12 +53,12 @@ export class QuizService {
 
   addQuestion(technology: string, questionData: any): Promise<void> {
     const id = this.firestore.createId();
-    const collectionPath = `${this.quizCollection}/${technology}/quizzes`;
+    const collectionPath = `${this.quizCollection}/${technology}/questions`;
     return this.firestore.collection(collectionPath).doc(id).set(questionData);
   }
 
-  getQuizzesByTechnology(technology: string): Observable<IQuizQuestion[]> {
-    const collectionPath = `${this.quizCollection}/${technology}/quizzes`;
+  getquestionsByTechnology(technology: string): Observable<IQuizQuestion[]> {
+    const collectionPath = `${this.quizCollection}/${technology}/questions`;
     return this.firestore.collection<IQuizQuestion>(collectionPath).snapshotChanges().pipe(
       map(changes =>
         changes.map(a => {
@@ -85,13 +85,13 @@ export class QuizService {
   }
 
   async updateQuiz(technology: string, id: string, quizData: IQuizQuestion): Promise<void> {
-    const collectionPath = `${this.quizCollection}/${technology}/quizzes`;
+    const collectionPath = `${this.quizCollection}/${technology}/questions`;
     const quizRef = this.firestore.doc(`${collectionPath}/${id}`);
     await quizRef.update(quizData);
   }
 
   async deleteQuiz(technology: string, id: string): Promise<void> {
-    const collectionPath = `${this.quizCollection}/${technology}/quizzes`;
+    const collectionPath = `${this.quizCollection}/${technology}/questions`;
     const quizRef = this.firestore.doc(`${collectionPath}/${id}`);
     await quizRef.delete();
   }
