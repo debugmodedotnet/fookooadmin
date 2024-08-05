@@ -1,23 +1,17 @@
 <section class="create-quiz-section text-center py-5">
   <div class="container-boxed">
     <h2 class="section-title font-36 nmc-dark-grey font-family-poppins text-center mb-5">
-      Create Quiz
+      Quiz Settings
     </h2>
-
-    <!-- Button to show the form for adding a new quiz -->
-    <div class="add-quiz-container mb-4">
-      <button class="btn btn-light-orange btn-sm mb-2" (click)="showForm()">
-        Add New Quiz
-      </button>
-    </div>
-
+    
     <!-- Form for adding or updating a quiz -->
     <section id="new_quiz" *ngIf="formVisible">
       <div class="container-boxed pt-4 pb-5">
-        <div class="card p-4 mb-4 mx-auto" style="max-width: 600px;">
+        <div class="card p-4 mb-4 mx-auto" style="max-width: 700px;">
           <h3 class="section-title font-36 nmc-dark-grey font-family-poppins text-center mb-4">
             {{ editMode ? "Edit" : "Add" }} Quiz
           </h3>
+          
           <form [formGroup]="quizForm" (ngSubmit)="onSubmit()">
             <div class="form-group mt-3">
               <label for="question" class="form-label required">Question</label>
@@ -97,8 +91,12 @@
 
     <!-- Table displaying the list of quizzes -->
     <section id="quiz-list" *ngIf="!formVisible">
-      <div class="container mt-5">
-        <h3 class="section-title font-30 nmc-dark-grey font-family-poppins text-center mb-4">Quiz List</h3>
+      <div class="d-flex justify-content-end mb-3" >
+        <button class="nmc-btn-primary" (click)="showForm()" type="button">
+          Add New Quiz
+        </button>
+      </div>
+      <div class="container mt-5" style="max-width: 900px;">
         <div class="table-responsive">
           <table class="table table-bordered table-striped">
             <thead class="table-dark">
@@ -120,7 +118,7 @@
                 </td>
                 <td>
                   <div class="d-flex">
-                    <button (click)="onEdit(quiz.id)" class="btn btn-warning btn-sm me-2">Edit</button>
+                    <button (click)="editQuiz(quiz)" class="btn btn-warning btn-sm me-2">Edit</button>
                     <button (click)="deleteQuiz(quiz.id)" class="btn btn-danger">Delete</button>
 
                   </div>
