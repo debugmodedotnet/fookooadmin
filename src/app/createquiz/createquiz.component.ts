@@ -1,32 +1,37 @@
+import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild, inject, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import { IQuizQuestion } from '../modules/quiz-question';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { QuizService } from '../services/quiz.service';
 
 @Component({
   selector: 'app-createquiz',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './createquiz.component.html',
   styleUrls: ['./createquiz.component.scss']
 })
 export class CreatequizComponent implements OnInit {
+
   @ViewChild('formSection') formSection!: ElementRef;
 
   quizForm: FormGroup;
+  technologyForm: FormGroup;
   quiz: IQuizQuestion[] = [];
+
+  technologies = ['JavaScript', 'Python', 'Angular', 'React'];
   editMode = false;
   currentQuizId?: string;
   formVisible = false;
   isOptionsInvalid = false;
-  totalQuizCount = 0;
+  selectedTechnology?: string;
+  technologySelected = false;
 
   private firestore = inject(AngularFirestore);
-  private router = inject(Router);
   private fb = inject(FormBuilder);
 
   constructor() {
@@ -35,6 +40,10 @@ export class CreatequizComponent implements OnInit {
       order: ['', [Validators.required]],
       options: this.fb.array([this.createOption(1)], [Validators.required, Validators.minLength(2)]),
       answerId: ['', [Validators.required]]
+    });
+
+    this.technologyForm = this.fb.group({
+      technology: ['', [Validators.required]]
     });
   }
 
@@ -55,21 +64,23 @@ export class CreatequizComponent implements OnInit {
   }
 
   loadQuizzes(): void {
-    this.firestore.collection<IQuizQuestion>('quiz').valueChanges({ idField: 'id' }).subscribe(
-      (data: IQuizQuestion[]) => {
-        this.quiz = data;
-        this.totalQuizCount = data.length;
-      },
-      error => {
-        console.error('Error loading quizzes:', error);
-      }
-    );
+    if (this.selectedTechnology) {
+      this.firestore.collection<IQuizQuestion>(`quiz/${this.selectedTechnology}/questions`).valueChanges({ idField: 'id' }).subscribe(
+        (data: IQuizQuestion[]) => {
+          console.log('Quizzes loaded:', data);
+          this.quiz = data;
+        },
+        error => {
+          console.error('Error loading quizzes:', error);
+        }
+      );
+    } else {
+      console.warn('No technology selected.');
+    }
   }
 
-  addOrUpdateQuiz(): void {
-    const quizId = `quiz${this.totalQuizCount + 1}`;
-    this.quizForm?.get('order')?.setValue(quizId);
 
+  addOrUpdateQuiz(): void {
     if (this.editMode && this.currentQuizId) {
       this.updateQuiz(this.currentQuizId, this.quizForm.value);
     } else {
@@ -78,9 +89,9 @@ export class CreatequizComponent implements OnInit {
   }
 
   addQuiz(): void {
-    this.firestore.collection('quiz').add(this.quizForm.value)
+    this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('questions').add(this.quizForm.value)
       .then(() => {
-        this.resetForm();
+        this.resetForms();
         this.loadQuizzes();
       })
       .catch(error => {
@@ -89,9 +100,9 @@ export class CreatequizComponent implements OnInit {
   }
 
   updateQuiz(id: string, quiz: IQuizQuestion): void {
-    this.firestore.collection('quiz').doc(id).update(quiz)
+    this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('questions').doc(id).update(quiz)
       .then(() => {
-        this.resetForm();
+        this.resetForms();
         this.loadQuizzes();
       })
       .catch(error => {
@@ -104,6 +115,7 @@ export class CreatequizComponent implements OnInit {
     this.editMode = true;
     this.currentQuizId = quiz.id;
     this.formVisible = true;
+    this.technologySelected = true;
 
     this.options.clear();
     quiz.options.forEach((option, index) => {
@@ -116,7 +128,7 @@ export class CreatequizComponent implements OnInit {
 
   deleteQuiz(id: string): void {
     if (confirm('Are you sure you want to delete this quiz?')) {
-      this.firestore.collection('quiz').doc(id).delete()
+      this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('questions').doc(id).delete()
         .then(() => {
           this.loadQuizzes();
         })
@@ -126,33 +138,33 @@ export class CreatequizComponent implements OnInit {
     }
   }
 
-  resetForm(): void {
+  resetForms(): void {
     this.quizForm.reset({
       question: '',
       order: '',
       options: this.fb.array([this.createOption(1)]),
       answerId: ''
     });
+    this.technologyForm.reset();
     this.editMode = false;
     this.currentQuizId = undefined;
     this.formVisible = false;
     this.isOptionsInvalid = false;
+    this.technologySelected = false;
   }
 
-  showForm(): void {
+  showTechnologyForm(): void {
     this.formVisible = true;
   }
 
-  hideForm(): void {
-    this.formVisible = false;
-    this.resetForm();
-  }
-
-  scrollToForm(): void {
-    if (this.formSection) {
-      this.formSection.nativeElement.scrollIntoView({ behavior: 'smooth' });
+  onTechnologySelect(): void {
+    if (this.technologyForm.valid) {
+      this.selectedTechnology = this.technologyForm.get('technology')?.value;
+      this.technologySelected = true;
+      this.loadQuizzes();
     }
   }
+
 
   addOption(): void {
     const newOrder = this.options.length + 1;
@@ -171,10 +183,16 @@ export class CreatequizComponent implements OnInit {
       return;
     }
 
-    if (this.editMode && this.currentQuizId) {
-      this.updateQuiz(this.currentQuizId, this.quizForm.value);
-    } else {
-      this.addQuiz();
+    this.addOrUpdateQuiz();
+  }
+
+  scrollToForm(): void {
+    if (this.formSection) {
+      this.formSection.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
+  }
+
+  hideForms(): void {
+    this.resetForms();
   }
 }

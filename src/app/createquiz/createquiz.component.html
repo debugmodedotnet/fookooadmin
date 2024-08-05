@@ -1,17 +1,120 @@
 <section class="create-quiz-section text-center py-5">
   <div class="container-boxed">
-    <h2 class="section-title font-36 nmc-dark-grey font-family-poppins text-center mb-5">
-      Quiz Settings
-    </h2>
-    
-    <!-- Form for adding or updating a quiz -->
-    <section id="new_quiz" *ngIf="formVisible">
+    <!-- Table displaying the list of quizzes -->
+    <section id="quiz-list" *ngIf="!formVisible">
+      <div class="d-flex justify-content-end mb-3">
+        <button
+          class="nmc-btn-primary"
+          (click)="showTechnologyForm()"
+          type="button"
+        >
+          Add New Quiz
+        </button>
+      </div>
+
+      <div class="container mt-5" style="max-width: 900px">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+              <tr>
+                <th>Order</th>
+                <th>Question</th>
+                <th>Options</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let quiz of quiz">
+                <td>{{ quiz.order }}</td>
+                <td>{{ quiz.question }}</td>
+                <td>
+                  <ul>
+                    <li *ngFor="let option of quiz.options">
+                      {{ option.value }}
+                    </li>
+                  </ul>
+                </td>
+                <td>
+                  <div class="d-flex">
+                    <button
+                      (click)="editQuiz(quiz)"
+                      class="btn btn-warning btn-sm me-2"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      (click)="deleteQuiz(quiz.id)"
+                      class="btn btn-danger"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Form for selecting technology -->
+    <section id="select_technology" *ngIf="formVisible && !technologySelected">
       <div class="container-boxed pt-4 pb-5">
-        <div class="card p-4 mb-4 mx-auto" style="max-width: 700px;">
-          <h3 class="section-title font-36 nmc-dark-grey font-family-poppins text-center mb-4">
+        <div class="card p-4 mb-4 mx-auto" style="max-width: 700px">
+          <h3
+            class="section-title font-36 nmc-dark-grey font-family-poppins text-center mb-4"
+          >
+            Select Technology
+          </h3>
+          <form [formGroup]="technologyForm" (ngSubmit)="onTechnologySelect()">
+            <div class="form-group mt-3">
+              <label for="technology" class="form-label required"
+                >Technology</label
+              >
+              <select
+                id="technology"
+                class="form-control h-3 rounded-3"
+                formControlName="technology"
+              >
+                <option *ngFor="let tech of technologies" [value]="tech">
+                  {{ tech }}
+                </option>
+              </select>
+              <div
+                *ngIf="
+                  technologyForm.get('technology')?.touched &&
+                  technologyForm.get('technology')?.invalid
+                "
+                class="text-danger"
+              >
+                Please select a technology
+              </div>
+            </div>
+            <div class="d-flex justify-content-end align-items-center mt-5">
+              <button
+                type="submit"
+                class="btn btn-light-orange ms-2"
+                [disabled]="!technologyForm.valid"
+              >
+                Next
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Form for adding or updating a quiz -->
+    <section id="new_quiz" *ngIf="formVisible && technologySelected">
+      <div class="container-boxed pt-4 pb-5">
+        <div class="card p-4 mb-4 mx-auto" style="max-width: 700px">
+          <h3
+            class="section-title font-36 nmc-dark-grey font-family-poppins text-center mb-4"
+          >
             {{ editMode ? "Edit" : "Add" }} Quiz
           </h3>
-          
+
           <form [formGroup]="quizForm" (ngSubmit)="onSubmit()">
             <div class="form-group mt-3">
               <label for="question" class="form-label required">Question</label>
@@ -22,7 +125,13 @@
                 formControlName="question"
                 placeholder="Enter question"
               />
-              <div *ngIf="quizForm.get('question')?.touched && quizForm.get('question')?.invalid" class="text-danger">
+              <div
+                *ngIf="
+                  quizForm.get('question')?.touched &&
+                  quizForm.get('question')?.invalid
+                "
+                class="text-danger"
+              >
                 Please enter a question
               </div>
             </div>
@@ -39,16 +148,27 @@
             </div>
 
             <div formArrayName="options" class="options-container mt-3">
-              <div *ngFor="let option of options.controls; let i = index" [formGroupName]="i" class="option-group mb-2">
-                <label for="option{{i}}" class="form-label">Option {{i + 1}}</label>
+              <div
+                *ngFor="let option of options.controls; let i = index"
+                [formGroupName]="i"
+                class="option-group mb-2"
+              >
+                <label for="option{{ i }}" class="form-label"
+                  >Option {{ i + 1 }}</label
+                >
                 <input
-                  id="option{{i}}"
+                  id="option{{ i }}"
                   formControlName="value"
                   type="text"
                   class="form-control h-3 rounded-3"
                   placeholder="Enter option"
                 />
-                <button *ngIf="options.length > 1" type="button" (click)="removeOption(i)" class="btn btn-danger btn-sm mt-2">
+                <button
+                  *ngIf="options.length > 1"
+                  type="button"
+                  (click)="removeOption(i)"
+                  class="btn btn-danger btn-sm mt-2"
+                >
                   Remove
                 </button>
               </div>
@@ -57,75 +177,56 @@
               Please enter at least two options
             </div>
 
-            <button type="button" (click)="addOption()" class="btn btn-light-orange mt-3">
+            <button
+              type="button"
+              (click)="addOption()"
+              class="btn btn-light-orange mt-3"
+            >
               Add Option
             </button>
 
             <div class="form-group mt-3">
-              <label for="answerId" class="form-label required">Correct Answer</label>
+              <label for="answerId" class="form-label required"
+                >Correct Answer</label
+              >
               <select
                 id="answerId"
                 class="form-control h-3 rounded-3"
                 formControlName="answerId"
-                [ngClass]="{'is-invalid': isOptionsInvalid}"
+                [ngClass]="{ 'is-invalid': isOptionsInvalid }"
               >
-                <option *ngFor="let option of options.controls" [value]="option.get('id')?.value">
-                  {{ option.get('value')?.value }}
+                <option
+                  *ngFor="let option of options.controls"
+                  [value]="option.get('id')?.value"
+                >
+                  {{ option.get("value")?.value }}
                 </option>
               </select>
             </div>
-            <div *ngIf="!quizForm.get('answerId')?.value && isOptionsInvalid" class="text-danger">
+            <div
+              *ngIf="!quizForm.get('answerId')?.value && isOptionsInvalid"
+              class="text-danger"
+            >
               Please choose a correct answer
             </div>
 
             <div class="d-flex justify-content-end align-items-center mt-5">
-              <button type="button" (click)="hideForm()" class="btn btn-secondary">Cancel</button>
-              <button type="submit" class="btn btn-light-orange ms-2" [disabled]="!quizForm.valid">
+              <button
+                type="button"
+                (click)="hideForms()"
+                class="btn btn-secondary"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="btn btn-light-orange ms-2"
+                [disabled]="!quizForm.valid"
+              >
                 {{ editMode ? "Update" : "Add" }}
               </button>
             </div>
           </form>
-        </div>
-      </div>
-    </section>
-
-    <!-- Table displaying the list of quizzes -->
-    <section id="quiz-list" *ngIf="!formVisible">
-      <div class="d-flex justify-content-end mb-3" >
-        <button class="nmc-btn-primary" (click)="showForm()" type="button">
-          Add New Quiz
-        </button>
-      </div>
-      <div class="container mt-5" style="max-width: 900px;">
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-              <tr>
-                <th>Order</th>
-                <th>Question</th>
-                <th>Options</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let quiz of quiz">
-                <td>{{ quiz.order }}</td>
-                <td>{{ quiz.question }}</td>
-                <td>
-                  <ul>
-                    <li *ngFor="let option of quiz.options">{{ option.value }}</li>
-                  </ul>
-                </td>
-                <td>
-                  <div class="d-flex">
-                    <button (click)="editQuiz(quiz)" class="btn btn-warning btn-sm me-2">Edit</button>
-                    <button (click)="deleteQuiz(quiz.id)" class="btn btn-danger">Delete</button>
-
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </div>
     </section>
