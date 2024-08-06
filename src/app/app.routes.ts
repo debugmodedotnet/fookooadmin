@@ -8,7 +8,6 @@ export const routes: Routes = [
     { path: 'youtube', loadComponent: () => import('./youtube-setting/youtube-setting.component').then(m => m.YoutubeSettingComponent) },
 
     { path: 'quiz', loadComponent: () => import('./createquiz/createquiz.component').then(m => m.CreatequizComponent) },
-    //{ path: 'quiz', loadComponent: () => import('./quiz-management/quiz-management.component').then(m => m.QuizManagementComponent) },
 
     { path: 'instructor-setting', loadComponent: () => import('./instructor-setting/instructor-setting.component').then(m => m.InstructorSettingComponent) },
 ];

@@ -8,7 +8,7 @@ import { IEventAgenda } from '../../modules/event-agenda';
 @Component({
   selector: 'app-add-agenda',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [ReactiveFormsModule, RouterModule],
   templateUrl: './add-agenda.component.html',
   styleUrl: './add-agenda.component.scss'
 })

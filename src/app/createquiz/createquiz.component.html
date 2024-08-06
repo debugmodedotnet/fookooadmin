@@ -6,9 +6,16 @@
       Manage Quiz
     </h2>
 
-    <section *ngIf="!formVisible">
+    @if(!(formVisible || isAddingNewTechnology)){
+    <section>
       <div class="d-flex justify-content-end mb-3">
-        <button class="nmc-btn-primary" type="button">Add New Quiz</button>
+        <button
+          class="nmc-btn-primary"
+          (click)="showCreateTechnologyForm()"
+          type="button"
+        >
+          Add New Quiz
+        </button>
 
         <button
           class="nmc-btn-primary ms-3"
@@ -22,7 +29,8 @@
       <div class="container mt-5" style="max-width: 900px">
         <div class="table-responsive">
           <!-- Technology Table -->
-          <div *ngIf="showTechnologyTable">
+          @if(showTechnologyTable){
+          <div>
             <table class="table table-bordered table-striped">
               <thead class="table-dark">
                 <tr>
@@ -34,7 +42,8 @@
               </thead>
 
               <tbody>
-                <tr *ngFor="let tech of technologies">
+                @for(tech of technologies; track tech;){
+                <tr>
                   <td>{{ tech.Name }}</td>
                   <td>{{ tech.isActive ? "Yes" : "No" }}</td>
                   <td>{{ tech.isPrivate ? "Yes" : "No" }}</td>
@@ -46,17 +55,30 @@
                       >
                         View Questions
                       </button>
-                      <button class="btn btn-warning btn-sm me-2">Edit</button>
-                      <button class="btn btn-danger">Delete</button>
+                      <button
+                        class="btn btn-warning btn-sm me-2"
+                        (click)="editTechnology(tech)"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        class="btn btn-danger"
+                        (click)="deleteTechnology(tech)"
+                      >
+                        Delete
+                      </button>
                     </div>
                   </td>
                 </tr>
+                }
               </tbody>
             </table>
           </div>
+          }
 
           <!-- Questions Table -->
-          <div *ngIf="showQuestionsTable">
+          @if(showQuestionsTable){
+          <div>
             <div class="d-flex justify-content-end mb-3">
               <button class="btn btn-secondary" (click)="hideQuestionsTable()">
                 Back
@@ -74,26 +96,29 @@
               </thead>
 
               <tbody>
-                <tr *ngFor="let quiz of quizzes">
+                @for(quiz of quizzes; track quiz;){
+                <tr>
                   <td>{{ quiz.order }}</td>
                   <td>{{ quiz.question }}</td>
                   <td>
                     <ul>
-                      <li *ngFor="let option of quiz.options">
+                      @for(option of quiz.options; track option;){
+                      <li>
                         {{ option.value }}
                       </li>
+                      }
                     </ul>
                   </td>
                   <td>
                     <div class="d-flex">
                       <button
-                        (click)="editQuiz(quiz)"
+                        (click)="editQuestions(quiz)"
                         class="btn btn-warning btn-sm me-2"
                       >
                         Edit
                       </button>
                       <button
-                        (click)="deleteQuiz(quiz.id)"
+                        (click)="deleteQuestions(quiz.id)"
                         class="btn btn-danger"
                       >
                         Delete
@@ -101,15 +126,19 @@
                     </div>
                   </td>
                 </tr>
+                }
               </tbody>
             </table>
           </div>
+          }
         </div>
       </div>
     </section>
+    }
 
     <!-- Form for selecting technology -->
-    <section id="select_technology" *ngIf="formVisible && !technologySelected">
+    @if(formVisible && !technologySelected){
+    <section id="select_technology">
       <div class="container-boxed pt-4 pb-5">
         <div class="card p-4 mb-4 mx-auto" style="max-width: 700px">
           <h3
@@ -127,19 +156,18 @@
                 <option value="select technology" selected>
                   Select Technology
                 </option>
-                <option *ngFor="let tech of technologies" [value]="tech.Name">
+
+                @for(tech of technologies; track tech;){
+                <option [value]="tech.Name">
                   {{ tech.Name }}
                 </option>
+                }
               </select>
-              <div
-                *ngIf="
-                  technologyForm.get('technology')?.touched &&
-                  technologyForm.get('technology')?.invalid
-                "
-                class="text-danger"
-              >
-                Please select a technology
-              </div>
+
+              @if( technologyForm.get('technology')?.touched &&
+              technologyForm.get('technology')?.invalid){
+              <div class="text-danger">Please select a technology</div>
+              }
             </div>
 
             <div class="d-flex justify-content-end align-items-center mt-5">
@@ -163,9 +191,147 @@
         </div>
       </div>
     </section>
+    }
+
+    <!-- Form for adding a new technology -->
+    @if(isAddingNewTechnology){
+    <section id="new_technology">
+      <div class="container-boxed pt-4 pb-5">
+        <div class="card p-4 mb-4 mx-auto" style="max-width: 700px">
+          <h3
+            class="section-title font-36 nmc-dark-grey font-family-poppins text-center mb-4"
+          >
+            {{ technologyEditMode ? "Edit" : "Add" }} Technology
+          </h3>
+
+          <form
+            [formGroup]="technologyCreationForm"
+            (ngSubmit)="createTechnology()"
+          >
+            <div class="row">
+              <div class="col-6 form-group mt-3">
+                <label for="name" class="form-label required"
+                  >Technology Name</label
+                >
+                <input
+                  type="text"
+                  id="name"
+                  class="form-control h-3 rounded-3"
+                  formControlName="Name"
+                  placeholder="Enter technology name"
+                />
+                @if( technologyCreationForm.get('Name')?.touched &&
+                technologyCreationForm.get('Name')?.invalid){
+                <div class="text-danger">*Please enter a technology name</div>
+                }
+              </div>
+
+              <div class="col-6 form-group mt-3">
+                <label for="logo" class="form-label">Logo URL</label>
+                <input
+                  type="text"
+                  id="logo"
+                  class="form-control h-3 rounded-3"
+                  formControlName="logo"
+                  placeholder="Enter logo URL"
+                />
+              </div>
+
+              <div class="col-6 form-group mt-3">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input
+                  type="date"
+                  id="startDate"
+                  class="form-control h-3 rounded-3"
+                  formControlName="StartDate"
+                />
+              </div>
+
+              <div class="col-6 form-group mt-3">
+                <label for="endDate" class="form-label">End Date</label>
+                <input
+                  type="date"
+                  id="endDate"
+                  class="form-control h-3 rounded-3"
+                  formControlName="EndDate"
+                />
+              </div>
+
+              <div class="col-6 form-group mt-3">
+                <label for="totalMarks" class="form-label">Total Marks</label>
+                <input
+                  type="number"
+                  id="totalMarks"
+                  class="form-control h-3 rounded-3"
+                  formControlName="TotalMarks"
+                  placeholder="Enter total marks"
+                />
+              </div>
+
+              <div class="col-6 form-group mt-3">
+                <label for="numberOfQuestions" class="form-label"
+                  >Number of Questions</label
+                >
+                <input
+                  type="number"
+                  id="numberOfQuestions"
+                  class="form-control h-3 rounded-3"
+                  formControlName="numberOfQuestions"
+                  placeholder="Enter number of questions"
+                />
+              </div>
+
+              <div class="col-3 form-group mt-3">
+                <input
+                  type="checkbox"
+                  id="isPrivate"
+                  class="form-check-input"
+                  formControlName="isPrivate"
+                />
+                <label for="isPrivate" class="form-label d-inline ms-2"
+                  >Is Private</label
+                >
+              </div>
+
+              <div class="col-3 form-group mt-3">
+                <input
+                  type="checkbox"
+                  id="isActive"
+                  class="form-check-input"
+                  formControlName="isActive"
+                />
+                <label for="isActive" class="form-label d-inline ms-2"
+                  >Is Active</label
+                >
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-end align-items-center mt-5">
+              <button
+                type="button"
+                (click)="hideTechnologyForm()"
+                class="btn btn-secondary"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="submit"
+                class="btn btn-light-orange ms-2"
+                [disabled]="!technologyCreationForm.valid"
+              >
+                {{ technologyEditMode ? "Update" : "Add" }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+    }
 
     <!-- Form for adding or updating a quiz -->
-    <section id="new_quiz" *ngIf="formVisible && technologySelected">
+    @if(formVisible && technologySelected){
+    <section id="new_quiz">
       <div class="container-boxed pt-4 pb-5">
         <div class="card p-4 mb-4 mx-auto" style="max-width: 700px">
           <h3
@@ -184,15 +350,11 @@
                 formControlName="question"
                 placeholder="Enter question"
               />
-              <div
-                *ngIf="
-                  quizForm.get('question')?.touched &&
-                  quizForm.get('question')?.invalid
-                "
-                class="text-danger"
-              >
-                *Please enter a question
-              </div>
+
+              @if( quizForm.get('question')?.touched &&
+              quizForm.get('question')?.invalid){
+              <div class="text-danger">*Please enter a question</div>
+              }
             </div>
 
             <div class="form-group mt-3">
@@ -207,11 +369,8 @@
             </div>
 
             <div formArrayName="options" class="options-container mt-3">
-              <div
-                *ngFor="let option of options.controls; let i = index"
-                [formGroupName]="i"
-                class="option-group mb-2"
-              >
+              @for(option of options.controls; track option; let i = $index;){
+              <div [formGroupName]="i" class="option-group mb-2">
                 <label for="option{{ i }}" class="form-label"
                   >Option {{ i + 1 }}</label
                 >
@@ -222,19 +381,22 @@
                   class="form-control h-3 rounded-3"
                   placeholder="Enter option"
                 />
+
+                @if(options.length > 1){
                 <button
-                  *ngIf="options.length > 1"
                   type="button"
                   (click)="removeOption(i)"
                   class="btn btn-danger btn-sm mt-2"
                 >
-                  Remove
-                </button>
+                  Remove</button
+                >}
               </div>
+              }
             </div>
-            <div *ngIf="options.controls.length < 2" class="text-danger">
-              *Please enter at least two options
-            </div>
+
+            @if(options.controls.length < 2){
+            <div class="text-danger">*Please enter at least two options</div>
+            }
 
             <button
               type="button"
@@ -254,21 +416,17 @@
                 formControlName="answerId"
                 [ngClass]="{ 'is-invalid': isOptionsInvalid }"
               >
-                <option
-                  *ngFor="let option of options.controls; let i = index"
-                  [value]="option.get('id')?.value"
-                >
+                @for(option of options.controls; track option; let i = $index;){
+                <option [value]="option.get('id')?.value">
                   Option {{ i + 1 }}
                 </option>
+                }
               </select>
             </div>
 
-            <div
-              *ngIf="!quizForm.get('answerId')?.value && isOptionsInvalid"
-              class="text-danger"
-            >
-              *Please choose a correct answer
-            </div>
+            @if(!quizForm.get('answerId')?.value && isOptionsInvalid){
+            <div class="text-danger">*Please choose a correct answer</div>
+            }
 
             <div class="d-flex justify-content-end align-items-center mt-5">
               <button
@@ -291,5 +449,6 @@
         </div>
       </div>
     </section>
+    }
   </div>
 </section>

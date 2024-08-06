@@ -10,7 +10,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 @Component({
   selector: 'app-add-speakers',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [ReactiveFormsModule, RouterModule],
   templateUrl: './add-speakers.component.html',
   styleUrl: './add-speakers.component.scss'
 })
@@ -54,7 +54,7 @@ export class AddSpeakersComponent {
       Info: ['', Validators.required],
       Github: ['', [Validators.pattern('https://github.com/.*')]],
       LinkedIn: ['', [Validators.required, Validators.pattern('https://www.linkedin.com/.*')]],
-      X: ['', [ Validators.pattern('https://x.com/.*')]]
+      X: ['', [Validators.pattern('https://x.com/.*')]]
     });
   }
 

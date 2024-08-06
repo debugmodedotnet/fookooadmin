@@ -1,9 +1,9 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { Component, ElementRef, ViewChild, inject, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import { IQuizQuestion } from '../modules/quiz-question';
 import { IQuizTechnology } from '../modules/quiz-technology';
@@ -11,7 +11,7 @@ import { IQuizTechnology } from '../modules/quiz-technology';
 @Component({
   selector: 'app-createquiz',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterModule],
+  imports: [ReactiveFormsModule, RouterModule, NgClass],
   templateUrl: './createquiz.component.html',
   styleUrls: ['./createquiz.component.scss']
 })
@@ -21,6 +21,7 @@ export class CreatequizComponent implements OnInit {
 
   quizForm: FormGroup;
   technologyForm: FormGroup;
+  technologyCreationForm: FormGroup;
   quizzes: IQuizQuestion[] = [];
   technologies: IQuizTechnology[] = [];
 
@@ -29,10 +30,12 @@ export class CreatequizComponent implements OnInit {
 
   formVisible = false;
   editMode = false;
+  technologyEditMode = false;
   isOptionsInvalid = false;
   technologySelected = false;
   showQuestionsTable = false;
   showTechnologyTable = true;
+  isAddingNewTechnology = false;
 
   private firestore = inject(AngularFirestore);
   private fb = inject(FormBuilder);
@@ -47,6 +50,17 @@ export class CreatequizComponent implements OnInit {
 
     this.technologyForm = this.fb.group({
       technology: ['select technology', [Validators.required]],
+    });
+
+    this.technologyCreationForm = this.fb.group({
+      Name: ['', [Validators.required]],
+      logo: [''],
+      StartDate: [''],
+      EndDate: [''],
+      TotalMarks: [''],
+      numberOfQuestions: [''],
+      isPrivate: [false],
+      isActive: [true],
     });
   }
 
@@ -66,6 +80,17 @@ export class CreatequizComponent implements OnInit {
     });
   }
 
+  addOption(): void {
+    const newOrder = this.options.length + 1;
+    this.options.push(this.createOption(newOrder));
+  }
+
+  removeOption(index: number): void {
+    if (this.options.length > 1) {
+      this.options.removeAt(index);
+    }
+  }
+
   loadTechnologies(): void {
     this.firestore.collection<IQuizTechnology>('quiz').valueChanges({ idField: 'id' }).subscribe(
       (data: IQuizTechnology[]) => {
@@ -77,10 +102,17 @@ export class CreatequizComponent implements OnInit {
     );
   }
 
-  loadQuizzes(): void {
+  viewQuestions(tech: IQuizTechnology): void {
+    this.selectedTechnology = tech.Name;
+    this.showTechnologyTable = false;
+    this.showQuestionsTable = true;
+    this.loadQuestions();
+  }
+
+  loadQuestions(): void {
     if (this.selectedTechnology) {
       this.firestore.collection<IQuizQuestion>(`quiz/${this.selectedTechnology}/questions`).valueChanges({ idField: 'id' }).subscribe(
-        (data: IQuizQuestion[]) => {          
+        (data: IQuizQuestion[]) => {
           this.quizzes = data;
         },
         error => {
@@ -92,49 +124,42 @@ export class CreatequizComponent implements OnInit {
     }
   }
 
-  viewQuestions(tech: IQuizTechnology): void {
-    this.selectedTechnology = tech.Name;
-    this.showTechnologyTable = false; 
-    this.showQuestionsTable = true;  
-    this.loadQuizzes();
-  }
-
   hideQuestionsTable(): void {
-    this.showTechnologyTable = true; 
-    this.showQuestionsTable = false; 
+    this.showTechnologyTable = true;
+    this.showQuestionsTable = false;
   }
 
-  addOrUpdateQuiz(): void {
+  addOrUpdateQuestions(): void {
     if (this.editMode && this.currentQuizId) {
-      this.updateQuiz(this.currentQuizId, this.quizForm.value);
+      this.updateQuestions(this.currentQuizId, this.quizForm.value);
     } else {
-      this.addQuiz();
+      this.addQuestions();
     }
   }
 
-  addQuiz(): void {
+  addQuestions(): void {
     this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('questions').add(this.quizForm.value)
       .then(() => {
         this.resetForms();
-        this.loadQuizzes();
+        this.loadQuestions();
       })
       .catch(error => {
         console.error('Error adding quiz:', error);
       });
   }
 
-  updateQuiz(id: string, quiz: IQuizQuestion): void {
+  updateQuestions(id: string, quiz: IQuizQuestion): void {
     this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('questions').doc(id).update(quiz)
       .then(() => {
         this.resetForms();
-        this.loadQuizzes();
+        this.loadQuestions();
       })
       .catch(error => {
         console.error('Error updating quiz:', error);
       });
   }
 
-  editQuiz(quiz: IQuizQuestion): void {
+  editQuestions(quiz: IQuizQuestion): void {
     this.quizForm.patchValue(quiz);
     this.editMode = true;
     this.currentQuizId = quiz.id;
@@ -150,15 +175,129 @@ export class CreatequizComponent implements OnInit {
     this.scrollToForm();
   }
 
-  deleteQuiz(id: string): void {
+  deleteQuestions(id: string): void {
     if (confirm('Are you sure you want to delete this quiz?')) {
       this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('questions').doc(id).delete()
         .then(() => {
-          this.loadQuizzes();
+          this.loadQuestions();
         })
         .catch(error => {
           console.error('Error deleting quiz:', error);
         });
+    }
+  }
+
+  showCreateTechnologyForm(): void {
+    this.isAddingNewTechnology = true;
+    this.formVisible = false;
+    this.technologyEditMode = false;
+  }
+
+  // createTechnology(): void {
+  //   const techName = this.technologyCreationForm.value.Name;
+  //   this.firestore.collection('quiz').doc(techName).get().subscribe(docSnapshot => {
+  //     if (docSnapshot.exists) {
+  //       alert('Technology name already exists. Please choose a different name.');
+  //     } else {
+  //       this.firestore.collection('quiz').doc(techName).set(this.technologyCreationForm.value)
+  //         .then(() => {
+  //           this.resetForms();
+  //           this.loadTechnologies();
+  //         })
+  //         .catch(error => {
+  //           console.error('Error adding technology:', error);
+  //         });
+  //     }
+  //   });
+  // }
+
+  createTechnology(): void {
+    const techData = this.technologyCreationForm.getRawValue();
+    const techName = techData.Name;
+
+    if (this.technologyEditMode) {
+      this.firestore.collection('quiz').doc(techName).update({
+        logo: techData.logo,
+        StartDate: techData.StartDate,
+        EndDate: techData.EndDate,
+        TotalMarks: techData.TotalMarks,
+        numberOfQuestions: techData.numberOfQuestions,
+        isPrivate: techData.isPrivate,
+        isActive: techData.isActive,
+      })
+        .then(() => {
+          this.resetForms();
+          this.loadTechnologies();
+          this.technologyCreationForm.get('Name')?.enable();
+        })
+        .catch(error => {
+          console.error('Error updating technology:', error);
+        });
+    } else {
+      this.firestore.collection('quiz').doc(techName).set(techData)
+        .then(() => {
+          this.resetForms();
+          this.loadTechnologies();
+        })
+        .catch(error => {
+          console.error('Error adding technology:', error);
+        });
+    }
+  }
+
+
+  editTechnology(tech: IQuizTechnology): void {
+    this.technologyCreationForm.patchValue(tech);
+    this.isAddingNewTechnology = true;
+    this.technologyEditMode = true;
+    this.scrollToForm();
+
+    if (this.technologyEditMode) {
+      this.technologyCreationForm.get('Name')?.disable();
+    }
+  }
+
+  deleteTechnology(tech: IQuizTechnology): void {
+    if (confirm('Are you sure you want to delete this technology?')) {
+      this.firestore.collection('quiz').doc(tech.Name).delete()
+        .then(() => {
+          this.loadTechnologies();
+        })
+        .catch(error => {
+          console.error('Error deleting technology:', error);
+        });
+    }
+  }
+
+  showTechnologyForm(): void {
+    this.formVisible = true;
+  }
+
+  hideTechnologyForm(): void {
+    this.isAddingNewTechnology = false;
+    this.formVisible = false;
+  }
+
+  onTechnologySelect(): void {
+    if (this.technologyForm.valid) {
+      this.selectedTechnology = this.technologyForm.get('technology')?.value;
+      this.technologySelected = true;
+      this.loadQuestions();
+    }
+  }
+
+  onSubmit(): void {
+    if (this.quizForm.invalid) {
+      this.isOptionsInvalid = true;
+      return;
+    }
+
+    this.addOrUpdateQuestions();
+  }
+
+  scrollToForm(): void {
+    if (this.formSection) {
+      this.formSection.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
   }
 
@@ -170,53 +309,14 @@ export class CreatequizComponent implements OnInit {
       answerId: '',
     });
     this.technologyForm.reset();
+    this.technologyCreationForm.reset();
+    this.technologyEditMode = false;
     this.editMode = false;
     this.currentQuizId = undefined;
     this.formVisible = false;
     this.isOptionsInvalid = false;
     this.technologySelected = false;
-  }
-
-  showTechnologyForm(): void {
-    this.formVisible = true;
-  }
-
-  onTechnologySelect(): void {
-    if (this.technologyForm.valid) {
-      this.selectedTechnology = this.technologyForm.get('technology')?.value;
-      this.technologySelected = true;
-      this.loadQuizzes();
-    }
-  }
-
-  addOption(): void {
-    const newOrder = this.options.length + 1;
-    this.options.push(this.createOption(newOrder));
-  }
-
-  removeOption(index: number): void {
-    if (this.options.length > 1) {
-      this.options.removeAt(index);
-    }
-  }
-
-  onSubmit(): void {
-    if (this.quizForm.invalid) {
-      this.isOptionsInvalid = true;
-      return;
-    }
-
-    this.addOrUpdateQuiz();
-  }
-
-  scrollToForm(): void {
-    if (this.formSection) {
-      this.formSection.nativeElement.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
-
-  hideTechnologyForm() {
-    this.formVisible = false;
+    this.isAddingNewTechnology = false;
   }
 
   hideForms(): void {

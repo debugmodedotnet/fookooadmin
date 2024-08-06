@@ -34,15 +34,11 @@
               formControlName="Title"
               placeholder="Enter Title"
             />
-            <div
-              *ngIf="
-                agendaForm.get('Title')?.invalid &&
-                agendaForm.get('Title')?.touched
-              "
-              class="error"
-            >
-              Title is required.
-            </div>
+
+            @if( agendaForm.get('Title')?.invalid &&
+            agendaForm.get('Title')?.touched){
+            <div class="error">Title is required.</div>
+            }
           </div>
 
           <div class="col-6">
@@ -54,15 +50,11 @@
               formControlName="Speaker"
               placeholder="Enter Speaker"
             />
-            <div
-              *ngIf="
-                agendaForm.get('Speaker')?.invalid &&
-                agendaForm.get('Speaker')?.touched
-              "
-              class="error"
-            >
-              Speaker is required.
-            </div>
+
+            @if( agendaForm.get('Speaker')?.invalid &&
+            agendaForm.get('Speaker')?.touched){
+            <div class="error">Speaker is required.</div>
+            }
           </div>
 
           <div class="col-6 mt-3">
@@ -74,15 +66,11 @@
               formControlName="Tech"
               placeholder="Enter Technology"
             />
-            <div
-              *ngIf="
-                agendaForm.get('Tech')?.invalid &&
-                agendaForm.get('Tech')?.touched
-              "
-              class="error"
-            >
-              Technology is required.
-            </div>
+
+            @if( agendaForm.get('Tech')?.invalid &&
+            agendaForm.get('Tech')?.touched){
+            <div class="error">Technology is required.</div>
+            }
           </div>
 
           <div class="col-6 mt-3">
@@ -94,15 +82,11 @@
               formControlName="Time"
               placeholder="Enter Time"
             />
-            <div
-              *ngIf="
-                agendaForm.get('Time')?.invalid &&
-                agendaForm.get('Time')?.touched
-              "
-              class="error"
-            >
-              Time is required.
-            </div>
+
+            @if( agendaForm.get('Time')?.invalid &&
+            agendaForm.get('Time')?.touched){
+            <div class="error">Time is required.</div>
+            }
           </div>
 
           <div class="col-12 mt-3">
@@ -114,15 +98,11 @@
               formControlName="Info"
               placeholder="Enter Info"
             />
-            <div
-              *ngIf="
-                agendaForm.get('Info')?.invalid &&
-                agendaForm.get('Info')?.touched
-              "
-              class="error"
-            >
-              Info is required.
-            </div>
+
+            @if( agendaForm.get('Info')?.invalid &&
+            agendaForm.get('Info')?.touched){
+            <div class="error">Info is required.</div>
+            }
           </div>
 
           <div class="col-12 mt-3">
