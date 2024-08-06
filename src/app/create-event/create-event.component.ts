@@ -14,7 +14,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 @Component({
   selector: 'app-create-event',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, RouterModule],
+  imports: [ReactiveFormsModule, RouterModule],
   templateUrl: './create-event.component.html',
   styleUrl: './create-event.component.scss',
 })
@@ -55,7 +55,7 @@ export class CreateEventComponent implements OnInit {
       displayAtHomePage: new FormControl(false),
       isActive: new FormControl(false),
       isPrivate: new FormControl(false),
-      
+
     });
   }
 

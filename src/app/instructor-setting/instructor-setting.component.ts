@@ -9,7 +9,7 @@ import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-instructor-setting',
   standalone: true,
-  imports: [ReactiveFormsModule, NgFor, NgIf],
+  imports: [ReactiveFormsModule],
   templateUrl: './instructor-setting.component.html',
   styleUrls: ['./instructor-setting.component.scss']
 })
@@ -21,7 +21,7 @@ export class InstructorSettingComponent implements OnInit {
   currentInstructorId?: string;
   formVisible = false;
   photoURL: string | null = null;
-  skills: string[] = ['Angular', 'React', 'Azure', 'GenAI','Javascript','Dotnet'];
+  skills: string[] = ['Angular', 'React', 'Azure', 'GenAI', 'Javascript', 'Dotnet'];
 
   private storage = inject(AngularFireStorage);
   private instructorService = inject(InstructorService);
@@ -34,7 +34,7 @@ export class InstructorSettingComponent implements OnInit {
       Position: ['', Validators.required],
       Email: ['', [Validators.email]],
       Github: ['', [Validators.pattern('https://github.com/.*')]],
-      Twitter: ['', [ Validators.pattern('https://x.com/.*')]],
+      Twitter: ['', [Validators.pattern('https://x.com/.*')]],
       LinkedIn: ['', [Validators.required, Validators.pattern('https://www.linkedin.com/.*')]],
       Skill1: ['', Validators.required],
       Skill2: [''],
@@ -62,7 +62,7 @@ export class InstructorSettingComponent implements OnInit {
       error => console.error('Error loading instructors:', error)
     );
   }
-  
+
 
   addOrUpdateInstructor(): void {
     if (this.instructorForm.valid) {
@@ -70,7 +70,7 @@ export class InstructorSettingComponent implements OnInit {
         ...this.instructorForm.value,
         InstructorImg: this.photoURL
       };
-  
+
       if (this.editMode && this.currentInstructorId) {
         this.updateInstructor(this.currentInstructorId, instructorData);
       } else {
@@ -88,7 +88,7 @@ export class InstructorSettingComponent implements OnInit {
       });
     }
   }
-  
+
 
   addInstructor(instructor: IInstructor): void {
     this.instructorService.addInstructor(instructor).then(() => {
@@ -122,8 +122,8 @@ export class InstructorSettingComponent implements OnInit {
       console.error('Instructor ID is not defined or is empty:', instructor);
     }
   }
-  
-  
+
+
 
   deleteInstructor(id: string | undefined): void {
     if (id) {
@@ -136,7 +136,7 @@ export class InstructorSettingComponent implements OnInit {
       console.error('Instructor ID is not defined or is empty, cannot delete.');
     }
   }
-  
+
 
   resetForm(): void {
     this.instructorForm.reset({

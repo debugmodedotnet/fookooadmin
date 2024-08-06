@@ -34,30 +34,33 @@
               formControlName="Name"
               placeholder="Enter Name"
             />
-            <div
-              *ngIf="
-                speakerForm.get('Name')?.invalid &&
-                speakerForm.get('Name')?.touched
-              "
-              class="error"
-            >
-              Name is required.
-            </div>
+
+            @if(speakerForm.get('Name')?.invalid &&
+            speakerForm.get('Name')?.touched){
+            <div class="error">Name is required.</div>
+            }
           </div>
 
-          <div class="col-6 mt-4">
+          <div class="col-6">
             <label for="image" class="form-label">Speaker Image</label>
             <input
               type="file"
               id="image"
               class="form-control h-3 rounded-3"
-              (change)="uploadImage($event)" />
+              (change)="uploadImage($event)"
+            />
           </div>
-          
+
           <!-- Displaying the uploaded image -->
-          <div *ngIf="imagePreviewUrl" class="mt-2">
-            <img [src]="imagePreviewUrl" alt="Speaker Image" class="img-thumbnail" />
+          @if(imagePreviewUrl){
+          <div class="mt-2">
+            <img
+              [src]="imagePreviewUrl"
+              alt="Speaker Image"
+              class="img-thumbnail"
+            />
           </div>
+          }
 
           <div class="col-6 mt-3">
             <label for="position" class="form-label required">Position</label>
@@ -68,15 +71,11 @@
               formControlName="Position"
               placeholder="Enter Position"
             />
-            <div
-              *ngIf="
-                speakerForm.get('Position')?.invalid &&
-                speakerForm.get('Position')?.touched
-              "
-              class="error"
-            >
-              Position is required.
-            </div>
+
+            @if(speakerForm.get('Position')?.invalid &&
+            speakerForm.get('Position')?.touched){
+            <div class="error">Position is required.</div>
+            }
           </div>
 
           <div class="col-6 mt-3">
@@ -88,15 +87,11 @@
               formControlName="Info"
               placeholder="Enter Info"
             />
-            <div
-              *ngIf="
-                speakerForm.get('Info')?.invalid &&
-                speakerForm.get('Info')?.touched
-              "
-              class="error"
-            >
-              Info is required.
-            </div>
+
+            @if(speakerForm.get('Info')?.invalid &&
+            speakerForm.get('Info')?.touched){
+            <div class="error">Info is required.</div>
+            }
           </div>
 
           <div class="col-4 mt-3">
@@ -121,19 +116,15 @@
             />
           </div>
 
-          <div
-            *ngIf="
-              speakerForm.get('LinkedIn')?.invalid &&
-              speakerForm.get('LinkedIn')?.touched
-            "
-          >
-            <small *ngIf="speakerForm.get('LinkedIn')?.errors?.['required']"
-              >LinkedIn URL is required.</small
-            >
-            <small *ngIf="speakerForm.get('LinkedIn')?.errors?.['pattern']"
-              >Invalid LinkedIn URL format.</small
-            >
+          @if(speakerForm.get('LinkedIn')?.invalid &&
+          speakerForm.get('LinkedIn')?.touched){
+          <div>
+            @if(speakerForm.get('LinkedIn')?.errors?.['required']){
+            <small>LinkedIn URL is required.</small>}
+            @if(speakerForm.get('LinkedIn')?.errors?.['pattern']){
+            <small>Invalid LinkedIn URL format.</small>}
           </div>
+          }
 
           <div class="col-4 mt-3">
             <label for="x" class="form-label">X (Twitter)</label>
