@@ -6,8 +6,7 @@
       Manage Quiz
     </h2>
 
-    <!-- Table displaying the list of quizzes -->
-    <section id="quiz-list" *ngIf="!formVisible">
+    <section *ngIf="!formVisible">
       <div class="d-flex justify-content-end mb-3">
         <button class="nmc-btn-primary" type="button">Add New Quiz</button>
 
@@ -23,73 +22,88 @@
       <div class="container mt-5" style="max-width: 900px">
         <div class="table-responsive">
           <!-- Technology Table -->
-          <!-- <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-              <tr>
-                <th>Technology</th>
-                <th>Active</th>
-                <th>Private</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
+          <div *ngIf="showTechnologyTable">
+            <table class="table table-bordered table-striped">
+              <thead class="table-dark">
+                <tr>
+                  <th>Technology</th>
+                  <th>isActive</th>
+                  <th>isPrivate</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              <tr *ngFor="let tech of technologies">
-                <td>{{ tech.name }}</td>
-                <td>{{ tech.isActive }}</td>
-                <td>{{ tech.isPrivate }}</td>
-                <td>
-                  <div class="d-flex">
-                    <button class="btn btn-primary btn-sm me-2">View Questions</button>
-                    <button class="btn btn-warning btn-sm me-2">Edit</button>
-                    <button class="btn btn-danger">Delete</button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table> -->
+              <tbody>
+                <tr *ngFor="let tech of technologies">
+                  <td>{{ tech.Name }}</td>
+                  <td>{{ tech.isActive ? "Yes" : "No" }}</td>
+                  <td>{{ tech.isPrivate ? "Yes" : "No" }}</td>
+                  <td>
+                    <div class="d-flex">
+                      <button
+                        class="btn btn-primary btn-sm me-2"
+                        (click)="viewQuestions(tech)"
+                      >
+                        View Questions
+                      </button>
+                      <button class="btn btn-warning btn-sm me-2">Edit</button>
+                      <button class="btn btn-danger">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
           <!-- Questions Table -->
-          <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-              <tr>
-                <th>Order</th>
-                <th>Question</th>
-                <th>Options</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
+          <div *ngIf="showQuestionsTable">
+            <div class="d-flex justify-content-end mb-3">
+              <button class="btn btn-secondary" (click)="hideQuestionsTable()">
+                Back
+              </button>
+            </div>
 
-            <tbody>
-              <tr *ngFor="let quiz of quiz">
-                <td>{{ quiz.order }}</td>
-                <td>{{ quiz.question }}</td>
-                <td>
-                  <ul>
-                    <li *ngFor="let option of quiz.options">
-                      {{ option.value }}
-                    </li>
-                  </ul>
-                </td>
-                <td>
-                  <div class="d-flex">
-                    <button
-                      (click)="editQuiz(quiz)"
-                      class="btn btn-warning btn-sm me-2"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      (click)="deleteQuiz(quiz.id)"
-                      class="btn btn-danger"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+            <table class="table table-bordered table-striped">
+              <thead class="table-dark">
+                <tr>
+                  <th>Order</th>
+                  <th>Question</th>
+                  <th>Options</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let quiz of quizzes">
+                  <td>{{ quiz.order }}</td>
+                  <td>{{ quiz.question }}</td>
+                  <td>
+                    <ul>
+                      <li *ngFor="let option of quiz.options">
+                        {{ option.value }}
+                      </li>
+                    </ul>
+                  </td>
+                  <td>
+                    <div class="d-flex">
+                      <button
+                        (click)="editQuiz(quiz)"
+                        class="btn btn-warning btn-sm me-2"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        (click)="deleteQuiz(quiz.id)"
+                        class="btn btn-danger"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </section>
@@ -113,8 +127,8 @@
                 <option value="select technology" selected>
                   Select Technology
                 </option>
-                <option *ngFor="let tech of technologies" [value]="tech">
-                  {{ tech }}
+                <option *ngFor="let tech of technologies" [value]="tech.Name">
+                  {{ tech.Name }}
                 </option>
               </select>
               <div
@@ -129,6 +143,14 @@
             </div>
 
             <div class="d-flex justify-content-end align-items-center mt-5">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="hideTechnologyForm()"
+              >
+                Back
+              </button>
+
               <button
                 type="submit"
                 class="btn btn-light-orange ms-2"
