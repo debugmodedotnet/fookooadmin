@@ -84,7 +84,7 @@ export class CreateEventComponent implements OnInit {
         finalize(() => {
           fileRef.getDownloadURL().subscribe(url => {
             this.photoURL = url;
-            this.eventForm.patchValue({ ImageUpload: this.photoURL });
+            this.eventForm.patchValue({ EventImage: this.photoURL });
           });
         })
       ).subscribe();
