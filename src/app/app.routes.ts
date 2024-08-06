@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
     { path: 'event', loadComponent: () => import('./create-event/create-event.component').then(m => m.CreateEventComponent) },
-    //{ path: 'event-form', loadComponent: () => import('./event-form/event-form.component').then(m => m.EventFormComponent) },
     { path: 'add-speakers/:eventId', loadComponent: () => import('./create-event/add-speakers/add-speakers.component').then(m => m.AddSpeakersComponent) },
     { path: 'add-agenda/:eventId', loadComponent: () => import('./create-event/add-agenda/add-agenda.component').then(m => m.AddAgendaComponent) },
 
