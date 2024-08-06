@@ -6,7 +6,6 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import { IQuizQuestion } from '../modules/quiz-question';
-import { QuizService } from '../services/quiz.service';
 
 @Component({
   selector: 'app-createquiz',
@@ -39,11 +38,11 @@ export class CreatequizComponent implements OnInit {
       question: ['', [Validators.required]],
       order: ['', [Validators.required]],
       options: this.fb.array([this.createOption(1)], [Validators.required, Validators.minLength(2)]),
-      answerId: ['', [Validators.required]]
+      answerId: ['', [Validators.required]],
     });
 
     this.technologyForm = this.fb.group({
-      technology: ['', [Validators.required]]
+      technology: ['select technology', [Validators.required]],     
     });
   }
 
@@ -78,7 +77,6 @@ export class CreatequizComponent implements OnInit {
       console.warn('No technology selected.');
     }
   }
-
 
   addOrUpdateQuiz(): void {
     if (this.editMode && this.currentQuizId) {
@@ -143,7 +141,7 @@ export class CreatequizComponent implements OnInit {
       question: '',
       order: '',
       options: this.fb.array([this.createOption(1)]),
-      answerId: ''
+      answerId: '',
     });
     this.technologyForm.reset();
     this.editMode = false;
@@ -164,7 +162,6 @@ export class CreatequizComponent implements OnInit {
       this.loadQuizzes();
     }
   }
-
 
   addOption(): void {
     const newOrder = this.options.length + 1;

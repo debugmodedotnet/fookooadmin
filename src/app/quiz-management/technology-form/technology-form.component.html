@@ -1,0 +1,65 @@
+<form [formGroup]="technologyForm" (ngSubmit)="onSubmit()">
+  <div class="form-group mt-3">
+    <label for="name">Technology Name</label>
+    <input id="name" formControlName="name" class="form-control" />
+  </div>
+
+  <div class="form-group mt-3">
+    <label for="logo">Technology Logo</label>
+    <input id="logo" formControlName="logo" class="form-control" />
+  </div>
+
+  <div class="form-group mt-3">
+    <label for="startDate">Start Date</label>
+    <input
+      id="startDate"
+      type="date"
+      formControlName="startDate"
+      class="form-control"
+    />
+  </div>
+
+  <div class="form-group mt-3">
+    <label for="endDate">End Date</label>
+    <input
+      id="endDate"
+      type="date"
+      formControlName="endDate"
+      class="form-control"
+    />
+  </div>
+
+  <div class="form-group mt-3">
+    <label for="totalMarks">Total Marks</label>
+    <input
+      id="totalMarks"
+      type="number"
+      formControlName="totalMarks"
+      class="form-control"
+    />
+  </div>
+
+  <div class="form-group mt-3">
+    <label for="numberOfQuestions">Number of Questions</label>
+    <input
+      id="numberOfQuestions"
+      type="number"
+      formControlName="numberOfQuestions"
+      class="form-control"
+    />
+  </div>
+
+  <div class="form-group mt-3">
+    <label for="isPrivate">Is Private</label>
+    <input id="isPrivate" type="checkbox" formControlName="isPrivate" />
+  </div>
+
+  <div class="form-group mt-3">
+    <label for="isActive">Is Active</label>
+    <input id="isActive" type="checkbox" formControlName="isActive" />
+  </div>
+
+  <div class="d-flex justify-content-end align-items-center mt-4">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form>
