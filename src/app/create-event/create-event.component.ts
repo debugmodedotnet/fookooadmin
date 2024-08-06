@@ -292,11 +292,9 @@ export class CreateEventComponent implements OnInit {
       isPaid: false,
       isCertificateProvided: false,
       displayAtHomePage: false,
-      Speakers: [],
-      Agenda: [],
+ 
     });
-    this.speakersFormArray.clear();
-    this.agendaFormArray.clear();
+
     this.editMode = false;
     this.currentEventId = undefined;
     this.hideForm();
