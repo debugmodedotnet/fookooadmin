@@ -186,6 +186,7 @@ export class CreateEventComponent implements OnInit {
   }
 
   showForm() {
+    this.resetForm();
     this.formVisible = true;
   }
 
