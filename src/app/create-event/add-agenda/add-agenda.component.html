@@ -23,107 +23,137 @@
     <!-- Agenda Form -->
     @if(formVisible){
     <div class="form-wrapper rounded-4 w-100">
-        <form [formGroup]="agendaForm" (ngSubmit)="addOrUpdateAgenda()">
-            <div class="row form-group mt-3 p-4">
-              <div class="col-6">
-                <label for="title" class="form-label required">Title</label>
-                <input
-                  id="title"
-                  type="text"
-                  class="form-control h-3 rounded-3"
-                  formControlName="Title"
-                  placeholder="Enter Title"
-                />
-                <div *ngIf="agendaForm.get('Title')?.invalid && agendaForm.get('Title')?.touched" class="error">
-                  Title is required.
-                </div>
-              </div>
-    
-              <div class="col-6">
-                <label for="speaker" class="form-label required">Speaker</label>
-                <input
-                  id="speaker"
-                  type="text"
-                  class="form-control h-3 rounded-3"
-                  formControlName="Speaker"
-                  placeholder="Enter Speaker"
-                />
-                <div *ngIf="agendaForm.get('Speaker')?.invalid && agendaForm.get('Speaker')?.touched" class="error">
-                  Speaker is required.
-                </div>
-              </div>
-    
-              <div class="col-6 mt-3">
-                <label for="tech" class="form-label required">Technology</label>
-                <input
-                  id="tech"
-                  type="text"
-                  class="form-control h-3 rounded-3"
-                  formControlName="Tech"
-                  placeholder="Enter Technology"
-                />
-                <div *ngIf="agendaForm.get('Tech')?.invalid && agendaForm.get('Tech')?.touched" class="error">
-                  Technology is required.
-                </div>
-              </div>
-    
-              <div class="col-6 mt-3">
-                <label for="time" class="form-label required">Time</label>
-                <input
-                  id="time"
-                  type="text"
-                  class="form-control h-3 rounded-3"
-                  formControlName="Time"
-                  placeholder="Enter Time"
-                />
-                <div *ngIf="agendaForm.get('Time')?.invalid && agendaForm.get('Time')?.touched" class="error">
-                  Time is required.
-                </div>
-              </div>
-    
-              <div class="col-12 mt-3">
-                <label for="info" class="form-label required">Info</label>
-                <input
-                  id="info"
-                  type="text"
-                  class="form-control h-3 rounded-3"
-                  formControlName="Info"
-                  placeholder="Enter Info"
-                />
-                <div *ngIf="agendaForm.get('Info')?.invalid && agendaForm.get('Info')?.touched" class="error">
-                  Info is required.
-                </div>
-              </div>
-    
-              <div class="col-12 mt-3">
-                <label for="speakerImg" class="form-label">Speaker Image URL</label>
-                <input
-                  id="speakerImg"
-                  type="text"
-                  class="form-control h-3 rounded-3"
-                  formControlName="SpeakerImg"
-                  placeholder="Enter Speaker Image URL"
-                />
-              </div>
+      <form [formGroup]="agendaForm" (ngSubmit)="addOrUpdateAgenda()">
+        <div class="row form-group mt-3 p-4">
+          <div class="col-6">
+            <label for="title" class="form-label required">Title</label>
+            <input
+              id="title"
+              type="text"
+              class="form-control h-3 rounded-3"
+              formControlName="Title"
+              placeholder="Enter Title"
+            />
+            <div
+              *ngIf="
+                agendaForm.get('Title')?.invalid &&
+                agendaForm.get('Title')?.touched
+              "
+              class="error"
+            >
+              Title is required.
             </div>
-    
-            <div class="d-flex justify-content-end p-4">
-              <button
-                type="button"
-                class="nmc-btn-primary font-14 fw-semibold box-shadow-none py-2 h-auto nmc-bg-medium-grey"
-                (click)="hideForm()"
-              >
-                Cancel
-              </button>
-    
-              <button
-                class="nmc-btn-primary font-14 fw-semibold box-shadow-none py-2 h-auto ms-3"
-                type="submit"
-              >
-                {{ isEditMode ? "Update Agenda" : "Add Agenda" }}
-              </button>
+          </div>
+
+          <div class="col-6">
+            <label for="speaker" class="form-label">Speaker</label>
+            <input
+              id="speaker"
+              type="text"
+              class="form-control h-3 rounded-3"
+              formControlName="Speaker"
+              placeholder="Enter Speaker"
+            />
+            <div
+              *ngIf="
+                agendaForm.get('Speaker')?.invalid &&
+                agendaForm.get('Speaker')?.touched
+              "
+              class="error"
+            >
+              Speaker is required.
             </div>
-          </form>
+          </div>
+
+          <div class="col-6 mt-3">
+            <label for="tech" class="form-label">Technology</label>
+            <input
+              id="tech"
+              type="text"
+              class="form-control h-3 rounded-3"
+              formControlName="Tech"
+              placeholder="Enter Technology"
+            />
+            <div
+              *ngIf="
+                agendaForm.get('Tech')?.invalid &&
+                agendaForm.get('Tech')?.touched
+              "
+              class="error"
+            >
+              Technology is required.
+            </div>
+          </div>
+
+          <div class="col-6 mt-3">
+            <label for="time" class="form-label required">Time</label>
+            <input
+              id="time"
+              type="text"
+              class="form-control h-3 rounded-3"
+              formControlName="Time"
+              placeholder="Enter Time"
+            />
+            <div
+              *ngIf="
+                agendaForm.get('Time')?.invalid &&
+                agendaForm.get('Time')?.touched
+              "
+              class="error"
+            >
+              Time is required.
+            </div>
+          </div>
+
+          <div class="col-12 mt-3">
+            <label for="info" class="form-label">Info</label>
+            <input
+              id="info"
+              type="text"
+              class="form-control h-3 rounded-3"
+              formControlName="Info"
+              placeholder="Enter Info"
+            />
+            <div
+              *ngIf="
+                agendaForm.get('Info')?.invalid &&
+                agendaForm.get('Info')?.touched
+              "
+              class="error"
+            >
+              Info is required.
+            </div>
+          </div>
+
+          <div class="col-12 mt-3">
+            <label for="speakerImg" class="form-label">Speaker Image URL</label>
+            <input
+              id="speakerImg"
+              type="text"
+              class="form-control h-3 rounded-3"
+              formControlName="SpeakerImg"
+              placeholder="Enter Speaker Image URL"
+            />
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end p-4">
+          <button
+            type="button"
+            class="nmc-btn-primary font-14 fw-semibold box-shadow-none py-2 h-auto nmc-bg-medium-grey"
+            (click)="hideForm()"
+          >
+            Cancel
+          </button>
+
+          <button
+            class="nmc-btn-primary font-14 fw-semibold box-shadow-none py-2 h-auto ms-3"
+            type="submit"
+          >
+            {{ isEditMode ? "Update Agenda" : "Add Agenda" }}
+          </button>
+        </div>
+      </form>
     </div>
     }
 

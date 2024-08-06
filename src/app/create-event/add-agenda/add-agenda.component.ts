@@ -43,9 +43,9 @@ export class AddAgendaComponent {
 
   initForm(): void {
     this.agendaForm = this.fb.group({
-      Info: ['', Validators.required],
-      Speaker: ['', Validators.required],
-      Tech:['', Validators.required],
+      Info: [''],
+      Speaker: [''],
+      Tech: [''],
       Time: ['', Validators.required],
       Title: ['', Validators.required],
       SpeakerImg: [''],

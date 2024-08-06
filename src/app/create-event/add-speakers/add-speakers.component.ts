@@ -44,11 +44,11 @@ export class AddSpeakersComponent {
   initForm(): void {
     this.speakerForm = this.fb.group({
       Name: ['', Validators.required],
-      Image: ['', Validators.required],
+      Image: [''],
       Position: ['', Validators.required],
       Info: ['', Validators.required],
       Github: [''],
-      LinkedIn: [''],
+      LinkedIn: ['', [Validators.required, Validators.pattern('https://www.linkedin.com/.*')]],
       X: ['']
     });
   }
