@@ -9,7 +9,7 @@
     <!-- Table displaying the list of quizzes -->
     <section id="quiz-list" *ngIf="!formVisible">
       <div class="d-flex justify-content-end mb-3">
-        <button class="nmc-btn-primary" type="button">Add New Quiz</button>
+        <button class="nmc-btn-primary" (click)="newQuizFormVisible = true">Add New Quiz</button>
 
         <button
           class="nmc-btn-primary ms-3"
@@ -19,7 +19,10 @@
           Add Questions
         </button>
       </div>
-
+    
+      <app-add-new-quiz *ngIf="newQuizFormVisible" (formClosed)="newQuizFormVisible = $event"></app-add-new-quiz>
+      
+      
       <div class="container mt-5" style="max-width: 900px">
         <div class="table-responsive">
           <!-- Technology Table -->

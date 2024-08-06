@@ -6,6 +6,8 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import { IQuizQuestion } from '../modules/quiz-question';
+import { AddNewQuizComponent } from '../add-new-quiz/add-new-quiz.component';
+
 
 @Component({
   selector: 'app-createquiz',
@@ -15,9 +17,10 @@ import { IQuizQuestion } from '../modules/quiz-question';
   styleUrls: ['./createquiz.component.scss']
 })
 export class CreatequizComponent implements OnInit {
-
+  
   @ViewChild('formSection') formSection!: ElementRef;
 
+  newQuizFormVisible = false;
   quizForm: FormGroup;
   technologyForm: FormGroup;
   quiz: IQuizQuestion[] = [];

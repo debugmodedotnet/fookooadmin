@@ -1,0 +1,69 @@
+<section class="create-quiz-section py-5">
+    <div class="container-boxed">
+      <div class="card p-4 mb-4 mx-auto form-wrapper">
+        <h3 class="section-title font-36 nmc-dark-grey font-family-poppins text-center mb-4">
+          Add New Quiz
+        </h3>
+  
+        <form [formGroup]="newQuizForm" (ngSubmit)="onSubmit()">
+          <div class="form-group mt-3">
+            <label for="quizName" class="form-label required">Quiz Name</label>
+            <select id="quizName" class="form-control" formControlName="name">
+              <option value="">Select Technology</option>
+              <option *ngFor="let tech of technologies" [value]="tech">{{ tech }}</option>
+            </select>
+          </div>
+  
+          <div class="form-group mt-3">
+            <label for="quizLogo" class="form-label">Logo</label>
+            <input type="file" id="quizLogo" class="form-control" formControlName="logo">
+          </div>
+  
+          <div class="form-group mt-3">
+            <label for="startDate" class="form-label required">Start Date</label>
+            <input type="date" id="startDate" class="form-control" formControlName="startDate">
+          </div>
+  
+          <div class="form-group mt-3">
+            <label for="endDate" class="form-label required">End Date</label>
+            <input type="date" id="endDate" class="form-control" formControlName="endDate">
+          </div>
+  
+          <div class="form-group mt-3">
+            <label for="totalMarks" class="form-label required">Total Marks</label>
+            <input type="number" id="totalMarks" class="form-control" formControlName="totalMarks">
+          </div>
+  
+          <div class="form-group mt-3">
+            <label for="passingMarks" class="form-label required">Passing Marks</label>
+            <input type="number" id="passingMarks" class="form-control" formControlName="passingMarks">
+          </div>
+  
+          <div class="form-group mt-3">
+            <label for="numberOfQuestions" class="form-label required">Number of Questions</label>
+            <input type="number" id="numberOfQuestions" class="form-control" formControlName="numberOfQuestions">
+          </div>
+  
+          <div class="form-group mt-3">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="isPrivate" formControlName="isPrivate">
+              <label class="form-check-label" for="isPrivate">Is Private</label>
+            </div>
+          </div>
+  
+          <div class="form-group mt-3">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="isActive" formControlName="isActive">
+              <label class="form-check-label" for="isActive">Is Active</label>
+            </div>
+          </div>
+  
+          <div class="d-flex justify-content-end align-items-center mt-5">
+            <button type="button" (click)="onCancel()" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-light-orange ms-2" [disabled]="!newQuizForm.valid">Add</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+  
