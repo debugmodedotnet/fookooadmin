@@ -6,6 +6,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import { IQuizQuestion } from '../modules/quiz-question';
+import { IQuizTechnology } from '../modules/quiz-technology';
 
 @Component({
   selector: 'app-createquiz',
@@ -20,15 +21,18 @@ export class CreatequizComponent implements OnInit {
 
   quizForm: FormGroup;
   technologyForm: FormGroup;
-  quiz: IQuizQuestion[] = [];
+  quizzes: IQuizQuestion[] = [];
+  technologies: IQuizTechnology[] = [];
 
-  technologies = ['JavaScript', 'Python', 'Angular', 'React'];
-  editMode = false;
   currentQuizId?: string;
-  formVisible = false;
-  isOptionsInvalid = false;
   selectedTechnology?: string;
+
+  formVisible = false;
+  editMode = false;
+  isOptionsInvalid = false;
   technologySelected = false;
+  showQuestionsTable = false;
+  showTechnologyTable = true;
 
   private firestore = inject(AngularFirestore);
   private fb = inject(FormBuilder);
@@ -42,12 +46,12 @@ export class CreatequizComponent implements OnInit {
     });
 
     this.technologyForm = this.fb.group({
-      technology: ['select technology', [Validators.required]],     
+      technology: ['select technology', [Validators.required]],
     });
   }
 
   ngOnInit(): void {
-    this.loadQuizzes();
+    this.loadTechnologies();
   }
 
   get options(): FormArray {
@@ -62,12 +66,22 @@ export class CreatequizComponent implements OnInit {
     });
   }
 
+  loadTechnologies(): void {
+    this.firestore.collection<IQuizTechnology>('quiz').valueChanges({ idField: 'id' }).subscribe(
+      (data: IQuizTechnology[]) => {
+        this.technologies = data;
+      },
+      error => {
+        console.error('Error loading technologies:', error);
+      }
+    );
+  }
+
   loadQuizzes(): void {
     if (this.selectedTechnology) {
       this.firestore.collection<IQuizQuestion>(`quiz/${this.selectedTechnology}/questions`).valueChanges({ idField: 'id' }).subscribe(
-        (data: IQuizQuestion[]) => {
-          console.log('Quizzes loaded:', data);
-          this.quiz = data;
+        (data: IQuizQuestion[]) => {          
+          this.quizzes = data;
         },
         error => {
           console.error('Error loading quizzes:', error);
@@ -76,6 +90,18 @@ export class CreatequizComponent implements OnInit {
     } else {
       console.warn('No technology selected.');
     }
+  }
+
+  viewQuestions(tech: IQuizTechnology): void {
+    this.selectedTechnology = tech.Name;
+    this.showTechnologyTable = false; 
+    this.showQuestionsTable = true;  
+    this.loadQuizzes();
+  }
+
+  hideQuestionsTable(): void {
+    this.showTechnologyTable = true; 
+    this.showQuestionsTable = false; 
   }
 
   addOrUpdateQuiz(): void {
@@ -187,6 +213,10 @@ export class CreatequizComponent implements OnInit {
     if (this.formSection) {
       this.formSection.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
+  }
+
+  hideTechnologyForm() {
+    this.formVisible = false;
   }
 
   hideForms(): void {
