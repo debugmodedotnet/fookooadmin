@@ -216,6 +216,16 @@
             <input type="checkbox" formControlName="displayAtHomePage" />
             Display At HomePage
           </div>
+
+          <div class="col-2 mt-4">
+            <input type="checkbox" formControlName="isActive" />
+            Is Active?
+          </div>
+  
+          <div class="col-2 mt-4">
+            <input type="checkbox" formControlName="isPrivate" />
+            Is Private?
+          </div>
         </div>
 
         <div class="d-flex justify-content-end p-4">
@@ -227,12 +237,12 @@
             Cancel
           </button>
 
-          <button
+          <button (click)="addOrUpdateEvent()"
             type="submit"
             class="nmc-btn-primary font-14 fw-semibold box-shadow-none py-2 h-auto ms-3"
-            [disabled]="!eventForm.valid"
+            
           >
-            {{ editMode !== null ? "Update" : "Add" }} Event
+          {{ editMode ? "Update" : "Add" }} Event
           </button>
         </div>
       </form>
