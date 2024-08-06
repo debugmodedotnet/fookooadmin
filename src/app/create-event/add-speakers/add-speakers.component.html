@@ -117,14 +117,28 @@
           </div>
 
           <div class="col-4 mt-3">
-            <label for="linkedin" class="form-label">LinkedIn</label>
+            <label for="linkedin" class="form-label required">LinkedIn</label>
             <input
               id="linkedin"
-              type="text"
+              type="url"
               class="form-control h-3 rounded-3"
               formControlName="LinkedIn"
               placeholder="Enter LinkedIn URL"
             />
+          </div>
+
+          <div
+            *ngIf="
+              speakerForm.get('LinkedIn')?.invalid &&
+              speakerForm.get('LinkedIn')?.touched
+            "
+          >
+            <small *ngIf="speakerForm.get('LinkedIn')?.errors?.['required']"
+              >LinkedIn URL is required.</small
+            >
+            <small *ngIf="speakerForm.get('LinkedIn')?.errors?.['pattern']"
+              >Invalid LinkedIn URL format.</small
+            >
           </div>
 
           <div class="col-4 mt-3">
