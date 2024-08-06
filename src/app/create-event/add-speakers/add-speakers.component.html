@@ -45,24 +45,18 @@
             </div>
           </div>
 
-          <div class="col-6">
-            <label for="image" class="form-label required">Image URL</label>
+          <div class="col-6 mt-4">
+            <label for="image" class="form-label">Speaker Image</label>
             <input
+              type="file"
               id="image"
-              type="text"
               class="form-control h-3 rounded-3"
-              formControlName="Image"
-              placeholder="Enter Image URL"
-            />
-            <div
-              *ngIf="
-                speakerForm.get('Image')?.invalid &&
-                speakerForm.get('Image')?.touched
-              "
-              class="error"
-            >
-              Image URL is required.
-            </div>
+              (change)="uploadImage($event)" />
+          </div>
+          
+          <!-- Displaying the uploaded image -->
+          <div *ngIf="imagePreviewUrl" class="mt-2">
+            <img [src]="imagePreviewUrl" alt="Speaker Image" class="img-thumbnail" />
           </div>
 
           <div class="col-6 mt-3">

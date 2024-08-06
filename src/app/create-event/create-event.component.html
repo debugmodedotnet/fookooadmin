@@ -1,8 +1,7 @@
 <section class="pt-4 pb-5">
   <div class="container-boxed">
     <h2
-      class="section-title font-36 nmc-dark-grey font-family-poppins text-center mb-4"
-    >
+      class="section-title font-36 nmc-dark-grey font-family-poppins text-center mb-4">
       Manage Events
     </h2>
 
@@ -23,59 +22,51 @@
               type="text"
               class="form-control h-3 rounded-3"
               formControlName="Title"
-              placeholder="Enter Title"
-            />
+              placeholder="Enter Title" />
             <div
               *ngIf="
                 eventForm.get('Title')?.invalid &&
                 eventForm.get('Title')?.touched
               "
-              class="error"
-            >
+              class="error">
               Title is required.
             </div>
           </div>
 
           <div class="col-3">
-            <label for="totalSeats" class="form-label required"
-              >Total Seats</label
-            >
+            <label for="totalSeats" class="form-label required">Total
+              Seats</label>
             <input
               id="totalSeats"
               type="text"
               class="form-control h-3 rounded-3"
               formControlName="TotalSeats"
-              placeholder="Enter Total Seats"
-            />
+              placeholder="Enter Total Seats" />
             <div
               *ngIf="
                 eventForm.get('TotalSeats')?.invalid &&
                 eventForm.get('TotalSeats')?.touched
               "
-              class="error"
-            >
+              class="error">
               Total Seats is required.
             </div>
           </div>
 
           <div class="col-3">
-            <label for="registeredSeats" class="form-label required"
-              >Registered Seats</label
-            >
+            <label for="registeredSeats" class="form-label required">Registered
+              Seats</label>
             <input
               id="registeredSeats"
               type="text"
               class="form-control h-3 rounded-3"
               formControlName="RegisteredSeats"
-              placeholder="Enter Registered Seats"
-            />
+              placeholder="Enter Registered Seats" />
             <div
               *ngIf="
                 eventForm.get('RegisteredSeats')?.invalid &&
                 eventForm.get('RegisteredSeats')?.touched
               "
-              class="error"
-            >
+              class="error">
               Registered Seats is required.
             </div>
           </div>
@@ -86,8 +77,7 @@
             <select
               class="form-select form-control h-3 rounded-3"
               id="tech"
-              formControlName="Tech"
-            >
+              formControlName="Tech">
               <option selected>Choose...</option>
               <option value="Angular">Angular</option>
               <option value="React">React</option>
@@ -97,8 +87,7 @@
               *ngIf="
                 eventForm.get('Tech')?.invalid && eventForm.get('Tech')?.touched
               "
-              class="error"
-            >
+              class="error">
               Technology is required.
             </div>
           </div>
@@ -110,14 +99,12 @@
               type="text"
               class="form-control h-3 rounded-3"
               formControlName="Logo"
-              placeholder="Enter Logo URL"
-            />
+              placeholder="Enter Logo URL" />
             <div
               *ngIf="
                 eventForm.get('Logo')?.invalid && eventForm.get('Logo')?.touched
               "
-              class="error"
-            >
+              class="error">
               Logo is required.
             </div>
           </div>
@@ -129,53 +116,46 @@
               type="text"
               class="form-control h-3 rounded-3"
               formControlName="Tagline"
-              placeholder="Enter Tagline"
-            />
+              placeholder="Enter Tagline" />
             <div
               *ngIf="
                 eventForm.get('Tagline')?.invalid &&
                 eventForm.get('Tagline')?.touched
               "
-              class="error"
-            >
+              class="error">
               Tagline is required.
             </div>
           </div>
 
           <div class="col-4 mt-4">
-            <label for="shortDescription" class="form-label required"
-              >Short Description</label
-            >
+            <label for="shortDescription" class="form-label required">Short
+              Description</label>
             <input
               id="shortDescription"
               type="text"
               class="form-control h-3 rounded-3"
               formControlName="ShortDescription"
-              placeholder="Enter Short Description"
-            />
+              placeholder="Enter Short Description" />
             <div
               *ngIf="
                 eventForm.get('ShortDescription')?.invalid &&
                 eventForm.get('ShortDescription')?.touched
               "
-              class="error"
-            >
+              class="error">
               Short Description is required & should be less than 200 words!
             </div>
           </div>
 
           <div class="col-8 mt-4">
-            <label for="longDescription" class="form-label"
-              >Long Description</label
-            >
+            <label for="longDescription" class="form-label">Long
+              Description</label>
             <textarea
               id="longDescription"
               type="text"
               class="form-control h-3 rounded-3"
               formControlName="Description"
               placeholder="Enter Long Description"
-              rows="4"
-            ></textarea>
+              rows="4"></textarea>
           </div>
 
           <div class="col-3 mt-4">
@@ -184,14 +164,12 @@
               id="date"
               formControlName="Date"
               type="date"
-              class="form-control h-3 rounded-3"
-            />
+              class="form-control h-3 rounded-3" />
             <div
               *ngIf="
                 eventForm.get('Date')?.invalid && eventForm.get('Date')?.touched
               "
-              class="error"
-            >
+              class="error">
               Date is required.
             </div>
           </div>
@@ -203,14 +181,12 @@
               type="text"
               class="form-control h-3 rounded-3"
               formControlName="City"
-              placeholder="Enter City"
-            />
+              placeholder="Enter City" />
             <div
               *ngIf="
                 eventForm.get('City')?.invalid && eventForm.get('City')?.touched
               "
-              class="error"
-            >
+              class="error">
               City is required.
             </div>
           </div>
@@ -221,28 +197,29 @@
               type="file"
               id="eventImage"
               class="form-control h-3 rounded-3"
-              formControlName="EventImage"
-            />
+              (change)="uploadPhoto($event)" />
+          </div>
+          <!-- Displaying the uploaded image -->
+          <div *ngIf="photoURL" class="mt-2">
+            <img [src]="photoURL" alt="Uploaded Event Image"
+              class="img-thumbnail" />
           </div>
 
           <div class="col-6 mt-4">
-            <label for="venueName" class="form-label required"
-              >Venue Name</label
-            >
+            <label for="venueName" class="form-label required">Venue
+              Name</label>
             <input
               id="venueName"
               type="text"
               class="form-control h-3 rounded-3"
               formControlName="VenueName"
-              placeholder="Enter Venue Name"
-            />
+              placeholder="Enter Venue Name" />
             <div
               *ngIf="
                 eventForm.get('VenueName')?.invalid &&
                 eventForm.get('VenueName')?.touched
               "
-              class="error"
-            >
+              class="error">
               Venue Name is required.
             </div>
           </div>
@@ -253,43 +230,43 @@
               type="file"
               id="venueImage"
               class="form-control h-3 rounded-3"
-              formControlName="VenueImg"
-            />
+              (change)="uploadVenueImage($event)" />
+          </div>
+
+          <!-- Displaying the uploaded venue image -->
+          <div *ngIf="venueImageURL" class="mt-2">
+            <img [src]="venueImageURL" alt="Uploaded Venue Image"
+              class="img-thumbnail" />
           </div>
 
           <div class="col-6 mt-4">
-            <label for="venueInfo" class="form-label required"
-              >Venue Info</label
-            >
+            <label for="venueInfo" class="form-label required">Venue
+              Info</label>
             <textarea
               id="venueInfo"
               type="text"
               class="form-control h-3 rounded-3"
               formControlName="VenueInfo"
-              placeholder="Venue Info"
-            ></textarea>
+              placeholder="Venue Info"></textarea>
             <div
               *ngIf="
                 eventForm.get('VenueInfo')?.invalid &&
                 eventForm.get('VenueInfo')?.touched
               "
-              class="error"
-            >
+              class="error">
               Venue Info is required.
             </div>
           </div>
 
           <div class="col-6 mt-4">
-            <label for="venueIframe" class="form-label"
-              >Venue Map Location</label
-            >
+            <label for="venueIframe" class="form-label">Venue Map
+              Location</label>
             <input
               id="venueIframe"
               type="text"
               class="form-control h-3 rounded-3"
               formControlName="VenueIframe"
-              placeholder="Enter Iframe"
-            />
+              placeholder="Enter Iframe" />
           </div>
 
           <div class="col-2 mt-4">
@@ -327,16 +304,14 @@
           <button
             type="button"
             class="nmc-btn-primary font-14 fw-semibold box-shadow-none py-2 h-auto nmc-bg-medium-grey"
-            (click)="hideForm()"
-          >
+            (click)="hideForm()">
             Cancel
           </button>
 
           <button
             (click)="addOrUpdateEvent()"
             type="submit"
-            class="nmc-btn-primary font-14 fw-semibold box-shadow-none py-2 h-auto ms-3"
-          >
+            class="nmc-btn-primary font-14 fw-semibold box-shadow-none py-2 h-auto ms-3">
             {{ editMode ? "Update" : "Add" }} Event
           </button>
         </div>
@@ -368,32 +343,28 @@
               <button
                 type="button"
                 class="btn btn-custom-edit btn-sm btn-primary nmc-white"
-                [routerLink]="['/add-speakers', event.id]"
-              >
+                [routerLink]="['/add-speakers', event.id]">
                 Add Speakers
               </button>
 
               <button
                 type="button"
                 class="btn btn-custom-edit btn-sm btn-primary nmc-white ms-3"
-                [routerLink]="['/add-agenda', event.id]"
-              >
+                [routerLink]="['/add-agenda', event.id]">
                 Add Agenda
               </button>
 
               <button
                 type="button"
                 class="btn btn-custom-edit btn-sm nmc-bg-primary nmc-white ms-3"
-                (click)="editEvent(event)"
-              >
+                (click)="editEvent(event)">
                 Edit
               </button>
 
               <button
                 type="button"
                 class="btn btn-danger btn-sm ms-3"
-                (click)="deleteEvent(event.id)"
-              >
+                (click)="deleteEvent(event.id)">
                 Delete
               </button>
             </td>

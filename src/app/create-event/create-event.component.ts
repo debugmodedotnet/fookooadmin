@@ -1,12 +1,15 @@
 import slugify from 'slugify';
 import { v4 as uuidv4 } from 'uuid';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EventService } from '../services/event.service';
 import { IEvent } from '../modules/event';
 import { first } from 'rxjs';
 import { NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { finalize } from 'rxjs/operators';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+
 
 @Component({
   selector: 'app-create-event',
@@ -24,6 +27,9 @@ export class CreateEventComponent implements OnInit {
   currentEventId?: string;
   formVisible = false;
   isProcessing = false;
+  photoURL?: string;
+  private storage = inject(AngularFireStorage);
+  venueImageURL: string | null = null;
 
   constructor(private eventService: EventService) {
     this.eventForm = new FormGroup({
@@ -49,6 +55,7 @@ export class CreateEventComponent implements OnInit {
       displayAtHomePage: new FormControl(false),
       isActive: new FormControl(false),
       isPrivate: new FormControl(false),
+      
     });
   }
 
@@ -191,6 +198,42 @@ export class CreateEventComponent implements OnInit {
 
   hideForm() {
     this.formVisible = false;
+  }
+
+  uploadPhoto(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const filePath = `eventPhotos/${new Date().getTime()}_${file.name}`;
+      const fileRef = this.storage.ref(filePath);
+      const task = this.storage.upload(filePath, file);
+
+      task.snapshotChanges().pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe((url: string) => {
+            this.photoURL = url;
+            this.eventForm.patchValue({ EventImage: this.photoURL });
+          });
+        })
+      ).subscribe();
+    }
+  }
+
+  uploadVenueImage(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const filePath = `venuePhotos/${new Date().getTime()}_${file.name}`;
+      const fileRef = this.storage.ref(filePath);
+      const task = this.storage.upload(filePath, file);
+
+      task.snapshotChanges().pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe((url: string) => {
+            this.venueImageURL = url;
+            this.eventForm.patchValue({ VenueImg: this.venueImageURL });
+          });
+        })
+      ).subscribe();
+    }
   }
 
 }
