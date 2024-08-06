@@ -25,6 +25,9 @@
               formControlName="Title"
               placeholder="Enter Title"
             />
+            <div *ngIf="eventForm.get('Title')?.invalid && eventForm.get('Title')?.touched" class="error">
+              Title is required.
+            </div>
           </div>
 
           <div class="col-3">
@@ -38,6 +41,9 @@
               formControlName="TotalSeats"
               placeholder="Enter Total Seats"
             />
+            <div *ngIf="eventForm.get('TotalSeats')?.invalid && eventForm.get('TotalSeats')?.touched" class="error">
+              Total Seats is required.
+            </div>
           </div>
 
           <div class="col-3">
@@ -51,6 +57,9 @@
               formControlName="RegisteredSeats"
               placeholder="Enter Registered Seats"
             />
+            <div *ngIf="eventForm.get('RegisteredSeats')?.invalid && eventForm.get('RegisteredSeats')?.touched" class="error">
+              Registered Seats is required.
+            </div>
           </div>
 
           <div class="col-4 mt-4">
@@ -66,6 +75,9 @@
               <option value="React">React</option>
               <option value="Vue">Vue</option>
             </select>
+            <div *ngIf="eventForm.get('Tech')?.invalid && eventForm.get('Tech')?.touched" class="error">
+              Technology is required.
+            </div>
           </div>
 
           <div class="col-4 mt-4">
@@ -77,6 +89,9 @@
               formControlName="Logo"
               placeholder="Enter Logo URL"
             />
+            <div *ngIf="eventForm.get('Logo')?.invalid && eventForm.get('Logo')?.touched" class="error">
+              Logo is required.
+            </div>
           </div>
 
           <div class="col-4 mt-4">
@@ -88,6 +103,9 @@
               formControlName="Tagline"
               placeholder="Enter Tagline"
             />
+            <div *ngIf="eventForm.get('Tagline')?.invalid && eventForm.get('Tagline')?.touched" class="error">
+              Tagline is required.
+            </div>
           </div>
 
           <div class="col-4 mt-4">
@@ -101,10 +119,13 @@
               formControlName="ShortDescription"
               placeholder="Enter Short Description"
             />
+            <div *ngIf="eventForm.get('ShortDescription')?.invalid && eventForm.get('ShortDescription')?.touched" class="error">
+              Short Description is required & should be less than 200 words!
+            </div>
           </div>
 
           <div class="col-8 mt-4">
-            <label for="longDescription" class="form-label required"
+            <label for="longDescription" class="form-label"
               >Long Description</label
             >
             <textarea
@@ -125,6 +146,9 @@
               type="date"
               class="form-control h-3 rounded-3"
             />
+            <div *ngIf="eventForm.get('Date')?.invalid && eventForm.get('Date')?.touched" class="error">
+              Date is required.
+            </div>
           </div>
 
           <div class="col-3 mt-4">
@@ -136,6 +160,9 @@
               formControlName="City"
               placeholder="Enter City"
             />
+            <div *ngIf="eventForm.get('City')?.invalid && eventForm.get('City')?.touched" class="error">
+              City is required.
+            </div>
           </div>
 
           <div class="col-6 mt-4">
@@ -159,6 +186,9 @@
               formControlName="VenueName"
               placeholder="Enter Venue Name"
             />
+            <div *ngIf="eventForm.get('VenueName')?.invalid && eventForm.get('VenueName')?.touched" class="error">
+              Venue Name is required.
+            </div>
           </div>
 
           <div class="col-6 mt-4">
@@ -182,6 +212,9 @@
               formControlName="VenueInfo"
               placeholder="Venue Info"
             ></textarea>
+            <div *ngIf="eventForm.get('VenueInfo')?.invalid && eventForm.get('VenueInfo')?.touched" class="error">
+              Venue Info is required.
+            </div>
           </div>
 
           <div class="col-6 mt-4">
@@ -240,6 +273,7 @@
           <button (click)="addOrUpdateEvent()"
             type="submit"
             class="nmc-btn-primary font-14 fw-semibold box-shadow-none py-2 h-auto ms-3"
+            
             
           >
           {{ editMode ? "Update" : "Add" }} Event
