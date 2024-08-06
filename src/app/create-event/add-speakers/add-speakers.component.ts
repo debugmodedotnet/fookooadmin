@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { CommonModule } from '@angular/common';
 import { IEventSpeakers } from '../../modules/event-speakers';
+import { finalize } from 'rxjs';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Component({
   selector: 'app-add-speakers',
@@ -20,6 +22,9 @@ export class AddSpeakersComponent {
   formVisible = false;
   isEditMode = false;
   editingSpeakerId?: string;
+  imagePreviewUrl: string | ArrayBuffer | null = null;
+
+  private storage = inject(AngularFireStorage);
 
   constructor(
     private fb: FormBuilder,
@@ -47,9 +52,9 @@ export class AddSpeakersComponent {
       Image: [''],
       Position: ['', Validators.required],
       Info: ['', Validators.required],
-      Github: [''],
+      Github: ['', [Validators.pattern('https://github.com/.*')]],
       LinkedIn: ['', [Validators.required, Validators.pattern('https://www.linkedin.com/.*')]],
-      X: ['']
+      X: ['', [ Validators.pattern('https://x.com/.*')]]
     });
   }
 
@@ -108,6 +113,31 @@ export class AddSpeakersComponent {
         .catch(error => {
           console.error('Error adding speaker: ', error);
         });
+    }
+  }
+
+  uploadImage(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const filePath = `speakerImages/${new Date().getTime()}_${file.name}`;
+      const fileRef = this.storage.ref(filePath);
+      const task = this.storage.upload(filePath, file);
+
+      task.snapshotChanges().pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe((url: string) => {
+            this.imagePreviewUrl = url;
+            this.speakerForm.patchValue({ Image: this.imagePreviewUrl });
+          });
+        })
+      ).subscribe();
+
+      // For displaying a preview before upload
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreviewUrl = reader.result;
+      };
+      reader.readAsDataURL(file);
     }
   }
 
