@@ -6,6 +6,8 @@ import { EventService } from '../services/event.service';
 import { IEvent } from '../modules/event';
 import { first } from 'rxjs';
 import { NgIf } from '@angular/common';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-event',
@@ -20,9 +22,12 @@ export class CreateEventComponent implements OnInit {
   eventForm: FormGroup;
   totalEventCount = 0;
   editMode = false;
+  photoURL: string | null = null;
   currentEventId?: string;
   formVisible = false;
   isProcessing = false; // Renamed flag to isProcessing
+
+  private storage = inject(AngularFireStorage);
 
   constructor(private eventService: EventService) {
     this.eventForm = new FormGroup({
@@ -66,6 +71,24 @@ export class CreateEventComponent implements OnInit {
         console.error('Error loading events:', error);
       }
     );
+  }
+
+  uploadPhoto(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const filePath = `eventPhotos/${new Date().getTime()}_${file.name}`;
+      const fileRef = this.storage.ref(filePath);
+      const task = this.storage.upload(filePath, file);
+
+      task.snapshotChanges().pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe(url => {
+            this.photoURL = url;
+            this.eventForm.patchValue({ ImageUpload: this.photoURL });
+          });
+        })
+      ).subscribe();
+    }
   }
 
   generateSlug(title: string): string {
