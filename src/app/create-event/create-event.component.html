@@ -25,7 +25,13 @@
               formControlName="Title"
               placeholder="Enter Title"
             />
-            <div *ngIf="eventForm.get('Title')?.invalid && eventForm.get('Title')?.touched" class="error">
+            <div
+              *ngIf="
+                eventForm.get('Title')?.invalid &&
+                eventForm.get('Title')?.touched
+              "
+              class="error"
+            >
               Title is required.
             </div>
           </div>
@@ -41,7 +47,13 @@
               formControlName="TotalSeats"
               placeholder="Enter Total Seats"
             />
-            <div *ngIf="eventForm.get('TotalSeats')?.invalid && eventForm.get('TotalSeats')?.touched" class="error">
+            <div
+              *ngIf="
+                eventForm.get('TotalSeats')?.invalid &&
+                eventForm.get('TotalSeats')?.touched
+              "
+              class="error"
+            >
               Total Seats is required.
             </div>
           </div>
@@ -57,7 +69,13 @@
               formControlName="RegisteredSeats"
               placeholder="Enter Registered Seats"
             />
-            <div *ngIf="eventForm.get('RegisteredSeats')?.invalid && eventForm.get('RegisteredSeats')?.touched" class="error">
+            <div
+              *ngIf="
+                eventForm.get('RegisteredSeats')?.invalid &&
+                eventForm.get('RegisteredSeats')?.touched
+              "
+              class="error"
+            >
               Registered Seats is required.
             </div>
           </div>
@@ -75,7 +93,12 @@
               <option value="React">React</option>
               <option value="Vue">Vue</option>
             </select>
-            <div *ngIf="eventForm.get('Tech')?.invalid && eventForm.get('Tech')?.touched" class="error">
+            <div
+              *ngIf="
+                eventForm.get('Tech')?.invalid && eventForm.get('Tech')?.touched
+              "
+              class="error"
+            >
               Technology is required.
             </div>
           </div>
@@ -89,7 +112,12 @@
               formControlName="Logo"
               placeholder="Enter Logo URL"
             />
-            <div *ngIf="eventForm.get('Logo')?.invalid && eventForm.get('Logo')?.touched" class="error">
+            <div
+              *ngIf="
+                eventForm.get('Logo')?.invalid && eventForm.get('Logo')?.touched
+              "
+              class="error"
+            >
               Logo is required.
             </div>
           </div>
@@ -103,7 +131,13 @@
               formControlName="Tagline"
               placeholder="Enter Tagline"
             />
-            <div *ngIf="eventForm.get('Tagline')?.invalid && eventForm.get('Tagline')?.touched" class="error">
+            <div
+              *ngIf="
+                eventForm.get('Tagline')?.invalid &&
+                eventForm.get('Tagline')?.touched
+              "
+              class="error"
+            >
               Tagline is required.
             </div>
           </div>
@@ -119,7 +153,13 @@
               formControlName="ShortDescription"
               placeholder="Enter Short Description"
             />
-            <div *ngIf="eventForm.get('ShortDescription')?.invalid && eventForm.get('ShortDescription')?.touched" class="error">
+            <div
+              *ngIf="
+                eventForm.get('ShortDescription')?.invalid &&
+                eventForm.get('ShortDescription')?.touched
+              "
+              class="error"
+            >
               Short Description is required & should be less than 200 words!
             </div>
           </div>
@@ -146,7 +186,12 @@
               type="date"
               class="form-control h-3 rounded-3"
             />
-            <div *ngIf="eventForm.get('Date')?.invalid && eventForm.get('Date')?.touched" class="error">
+            <div
+              *ngIf="
+                eventForm.get('Date')?.invalid && eventForm.get('Date')?.touched
+              "
+              class="error"
+            >
               Date is required.
             </div>
           </div>
@@ -160,7 +205,12 @@
               formControlName="City"
               placeholder="Enter City"
             />
-            <div *ngIf="eventForm.get('City')?.invalid && eventForm.get('City')?.touched" class="error">
+            <div
+              *ngIf="
+                eventForm.get('City')?.invalid && eventForm.get('City')?.touched
+              "
+              class="error"
+            >
               City is required.
             </div>
           </div>
@@ -186,7 +236,13 @@
               formControlName="VenueName"
               placeholder="Enter Venue Name"
             />
-            <div *ngIf="eventForm.get('VenueName')?.invalid && eventForm.get('VenueName')?.touched" class="error">
+            <div
+              *ngIf="
+                eventForm.get('VenueName')?.invalid &&
+                eventForm.get('VenueName')?.touched
+              "
+              class="error"
+            >
               Venue Name is required.
             </div>
           </div>
@@ -212,7 +268,13 @@
               formControlName="VenueInfo"
               placeholder="Venue Info"
             ></textarea>
-            <div *ngIf="eventForm.get('VenueInfo')?.invalid && eventForm.get('VenueInfo')?.touched" class="error">
+            <div
+              *ngIf="
+                eventForm.get('VenueInfo')?.invalid &&
+                eventForm.get('VenueInfo')?.touched
+              "
+              class="error"
+            >
               Venue Info is required.
             </div>
           </div>
@@ -254,7 +316,7 @@
             <input type="checkbox" formControlName="isActive" />
             Is Active?
           </div>
-  
+
           <div class="col-2 mt-4">
             <input type="checkbox" formControlName="isPrivate" />
             Is Private?
@@ -270,13 +332,12 @@
             Cancel
           </button>
 
-          <button (click)="addOrUpdateEvent()"
+          <button
+            (click)="addOrUpdateEvent()"
             type="submit"
             class="nmc-btn-primary font-14 fw-semibold box-shadow-none py-2 h-auto ms-3"
-            
-            
           >
-          {{ editMode ? "Update" : "Add" }} Event
+            {{ editMode ? "Update" : "Add" }} Event
           </button>
         </div>
       </form>
@@ -306,7 +367,23 @@
             <td class="actions">
               <button
                 type="button"
-                class="btn btn-custom-edit btn-sm nmc-bg-primary nmc-white"
+                class="btn btn-custom-edit btn-sm btn-primary nmc-white"
+                [routerLink]="['/add-speakers', event.id]"
+              >
+                Add Speakers
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-custom-edit btn-sm btn-primary nmc-white ms-3"
+                [routerLink]="['/add-agenda', event.id]"
+              >
+                Add Agenda
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-custom-edit btn-sm nmc-bg-primary nmc-white ms-3"
                 (click)="editEvent(event)"
               >
                 Edit
