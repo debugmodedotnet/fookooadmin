@@ -7,6 +7,6 @@ export interface IQuizQuestion {
     id: string;
     question: string;
     options: IQuizQuestionOption[];
-    answerId: string; // Use answerId
-    order:number
+    answerId: string;
+    order: number;    
 }

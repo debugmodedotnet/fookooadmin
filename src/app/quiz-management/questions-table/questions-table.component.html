@@ -1,0 +1,40 @@
+<div class="container mt-5" style="max-width: 900px">
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>Order</th>
+          <th>Question</th>
+          <th>Options</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let question of questions">
+          <td>{{ question.order }}</td>
+          <td>{{ question.question }}</td>
+          <td>
+            <ul>
+              <li *ngFor="let option of question.options">
+                {{ option.value }}
+              </li>
+            </ul>
+          </td>
+          <td>
+            <div class="d-flex">
+              <button
+                (click)="onEdit(question)"
+                class="btn btn-warning btn-sm me-2"
+              >
+                Edit
+              </button>
+              <button (click)="onDelete(question.id)" class="btn btn-danger">
+                Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

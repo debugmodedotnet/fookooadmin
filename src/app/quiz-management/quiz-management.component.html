@@ -1,0 +1,30 @@
+<div>
+  <button (click)="showAddEditTechnologyForm()">Add Quiz</button>
+  <button (click)="showAddQuestionForm()">Add Question</button>
+</div>
+
+<app-technology-table
+  [technologies]="technologies"
+  (viewQuestions)="onTechnologySelected($event.id)"
+  (editTechnology)="onEditTechnology($event)"
+  (deleteTechnology)="onDeleteTechnology($event)"
+></app-technology-table>
+
+<app-questions-table
+  *ngIf="selectedTechnology"
+  [questions]="questions"
+  (editQuestion)="onEditQuestion($event)"
+  (deleteQuestion)="onDeleteQuestion($event)"
+></app-questions-table>
+
+<app-technology-form
+  *ngIf="showTechnologyForm"
+  (technologySelected)="onTechnologyFormSubmit($event)"
+></app-technology-form>
+
+<app-questions-form
+  *ngIf="showQuizForm"
+  [technologies]="technologies"
+  (submit)="onQuestionFormSubmit($event)"
+  (cancel)="showQuizForm = false"
+></app-questions-form>
