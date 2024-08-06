@@ -1,16 +1,17 @@
 import slugify from 'slugify';
 import { v4 as uuidv4 } from 'uuid';
-import { Component, inject, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EventService } from '../services/event.service';
 import { IEvent } from '../modules/event';
 import { first } from 'rxjs';
 import { NgIf } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-create-event',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf],
+  imports: [ReactiveFormsModule, NgIf, RouterModule],
   templateUrl: './create-event.component.html',
   styleUrl: './create-event.component.scss',
 })
@@ -22,7 +23,7 @@ export class CreateEventComponent implements OnInit {
   editMode = false;
   currentEventId?: string;
   formVisible = false;
-  isProcessing = false; // Renamed flag to isProcessing
+  isProcessing = false;
 
   constructor(private eventService: EventService) {
     this.eventForm = new FormGroup({
@@ -75,37 +76,35 @@ export class CreateEventComponent implements OnInit {
   addOrUpdateEvent() {
     if (this.isProcessing) {
       console.warn('Form is currently processing, operation skipped.');
-      return; // Prevent operation if form is processing
-    }
-  
-    if (this.eventForm.invalid) {
-      console.warn('Form is invalid. Please fill in all required fields.');
-      this.eventForm.markAllAsTouched(); // Highlight invalid fields
       return;
     }
-  
+
+    if (this.eventForm.invalid) {
+      console.warn('Form is invalid. Please fill in all required fields.');
+      this.eventForm.markAllAsTouched();
+      return;
+    }
+
     console.log('Form values on submit:', this.eventForm.value);
     const title = this.eventForm.get('Title')?.value;
     const slug = this.generateSlug(title);
     const uuid = uuidv4();
     const eventId = `${slug}-${uuid}`;
-  
+
     if (!this.editMode) {
       this.eventForm.get('Id')?.setValue(eventId);
     }
-  
+
     const event = { ...this.eventForm.value } as IEvent;
-  
+
     this.isProcessing = true;
-  
+
     if (this.editMode && this.currentEventId) {
       this.updateEvent(this.currentEventId, event);
     } else {
       this.addEvent(eventId, event);
     }
   }
-  
-  
 
   addEvent(id: string, event: IEvent) {
     console.log('Attempting to add event with ID:', id);
@@ -116,7 +115,7 @@ export class CreateEventComponent implements OnInit {
     }).catch(error => {
       console.error('Error adding event:', error);
     }).finally(() => {
-      this.isProcessing = false; // Reset flag after operation
+      this.isProcessing = false;
     });
   }
 
@@ -129,7 +128,7 @@ export class CreateEventComponent implements OnInit {
     }).catch(error => {
       console.error('Error updating event:', error);
     }).finally(() => {
-      this.isProcessing = false; // Reset flag after operation
+      this.isProcessing = false;
     });
   }
 
@@ -137,8 +136,8 @@ export class CreateEventComponent implements OnInit {
     console.log('Editing event:', event);
     this.eventForm.patchValue(event);
     this.formVisible = true;
-    this.editMode = true; // Set editMode to true for editing
-    this.currentEventId = event.Id; // Set the current event ID for editing
+    this.editMode = true;
+    this.currentEventId = event.Id;
   }
 
   deleteEvent(id: string | undefined) {
@@ -180,9 +179,9 @@ export class CreateEventComponent implements OnInit {
       isPrivate: false,
     });
 
-    this.editMode = false; // Reset editMode to false
-    this.currentEventId = undefined; // Clear the current event ID
-    this.hideForm(); // Hide the form
+    this.editMode = false;
+    this.currentEventId = undefined;
+    this.hideForm();
   }
 
   showForm() {

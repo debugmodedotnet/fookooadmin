@@ -26,7 +26,7 @@ export class TechnologyFormComponent {
       isPrivate: [false],
       isActive: [true],
     });
-  }
+  } 
 
   onSubmit(): void {
     if (this.technologyForm.valid) {
