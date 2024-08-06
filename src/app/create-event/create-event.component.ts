@@ -5,11 +5,12 @@ import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } fr
 import { EventService } from '../services/event.service';
 import { IEvent } from '../modules/event';
 import { first } from 'rxjs';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-create-event',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NgIf],
   templateUrl: './create-event.component.html',
   styleUrl: './create-event.component.scss',
 })
@@ -36,11 +37,11 @@ export class CreateEventComponent implements OnInit {
       Description: new FormControl(''),
       Date: new FormControl('', Validators.required),
       City: new FormControl('', Validators.required),
-      EventImage: new FormControl('', Validators.required),
+      EventImage: new FormControl('',),
       VenueName: new FormControl('', Validators.required),
       VenueInfo: new FormControl('', Validators.required),
-      VenueImg: new FormControl('', Validators.required),
-      VenueIframe: new FormControl('', Validators.required),
+      VenueImg: new FormControl(''),
+      VenueIframe: new FormControl(''),
       isOffline: new FormControl(false),
       isPaid: new FormControl(false),
       isCertificateProvided: new FormControl(false),
@@ -76,30 +77,35 @@ export class CreateEventComponent implements OnInit {
       console.warn('Form is currently processing, operation skipped.');
       return; // Prevent operation if form is processing
     }
-
+  
+    if (this.eventForm.invalid) {
+      console.warn('Form is invalid. Please fill in all required fields.');
+      this.eventForm.markAllAsTouched(); // Highlight invalid fields
+      return;
+    }
+  
     console.log('Form values on submit:', this.eventForm.value);
     const title = this.eventForm.get('Title')?.value;
     const slug = this.generateSlug(title);
     const uuid = uuidv4();
     const eventId = `${slug}-${uuid}`;
-
+  
     if (!this.editMode) {
-      // Only set ID if we're adding a new event
       this.eventForm.get('Id')?.setValue(eventId);
     }
-
+  
     const event = { ...this.eventForm.value } as IEvent;
-
-    this.isProcessing = true; // Prevent further submissions
-
+  
+    this.isProcessing = true;
+  
     if (this.editMode && this.currentEventId) {
-      console.log('Updating event with ID:', this.currentEventId);
       this.updateEvent(this.currentEventId, event);
     } else {
-      console.log('Adding new event with ID:', eventId);
       this.addEvent(eventId, event);
     }
   }
+  
+  
 
   addEvent(id: string, event: IEvent) {
     console.log('Attempting to add event with ID:', id);
