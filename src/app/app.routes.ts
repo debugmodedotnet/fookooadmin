@@ -7,4 +7,5 @@ export const routes: Routes = [
     { path: 'quiz', loadComponent: () => import('./createquiz/createquiz.component').then(m => m.CreatequizComponent) },
     { path: 'post-quiz', loadComponent: () => import('./post-quiz/post-quiz.component').then(m => m.PostQuizComponent) },
     { path: 'instructor-setting', loadComponent: () => import('./instructor-setting/instructor-setting.component').then(m => m.InstructorSettingComponent) },
+    { path: 'event-form', loadComponent: () => import('./event-form/event-form.component').then(m => m.EventFormComponent) },
 ];
