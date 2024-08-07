@@ -57,7 +57,7 @@
             }
           </div>
 
-          <div class="col-6 mt-3">
+          <div class="col-4 mt-3">
             <label for="tech" class="form-label">Technology</label>
             <input
               id="tech"
@@ -73,7 +73,7 @@
             }
           </div>
 
-          <div class="col-6 mt-3">
+          <div class="col-4 mt-3">
             <label for="time" class="form-label required">Time</label>
             <input
               id="time"
@@ -87,6 +87,17 @@
             agendaForm.get('Time')?.touched){
             <div class="error">Time is required.</div>
             }
+          </div>
+
+          <div class="col-4 mt-3">
+            <label for="speakerImg" class="form-label">Speaker Image URL</label>
+            <input
+              id="speakerImg"
+              type="text"
+              class="form-control h-3 rounded-3"
+              formControlName="SpeakerImg"
+              placeholder="Enter Speaker Image URL"
+            />
           </div>
 
           <div class="col-12 mt-3">
@@ -103,17 +114,6 @@
             agendaForm.get('Info')?.touched){
             <div class="error">Info is required.</div>
             }
-          </div>
-
-          <div class="col-12 mt-3">
-            <label for="speakerImg" class="form-label">Speaker Image URL</label>
-            <input
-              id="speakerImg"
-              type="text"
-              class="form-control h-3 rounded-3"
-              formControlName="SpeakerImg"
-              placeholder="Enter Speaker Image URL"
-            />
           </div>
         </div>
 
