@@ -1,5 +1,5 @@
 import { CommonModule, NgClass } from '@angular/common';
-import { Component, ElementRef, ViewChild, inject, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -37,6 +37,8 @@ export class CreatequizComponent implements OnInit {
   showTechnologyTable = true;
   isAddingNewTechnology = false;
 
+
+  private cd = inject(ChangeDetectorRef);
   private firestore = inject(AngularFirestore);
   private fb = inject(FormBuilder);
 
@@ -142,6 +144,7 @@ export class CreatequizComponent implements OnInit {
       .then(() => {
         this.resetForms();
         this.loadQuestions();
+        this.cd.detectChanges();
       })
       .catch(error => {
         console.error('Error adding quiz:', error);
@@ -245,7 +248,6 @@ export class CreatequizComponent implements OnInit {
     }
   }
 
-
   editTechnology(tech: IQuizTechnology): void {
     this.technologyCreationForm.patchValue(tech);
     this.isAddingNewTechnology = true;
@@ -308,7 +310,10 @@ export class CreatequizComponent implements OnInit {
       options: this.fb.array([this.createOption(1)]),
       answerId: '',
     });
-    this.technologyForm.reset();
+    //this.technologyForm.reset();
+    this.technologyForm.reset({
+      technology: 'select technology'
+    });
     this.technologyCreationForm.reset();
     this.technologyEditMode = false;
     this.editMode = false;

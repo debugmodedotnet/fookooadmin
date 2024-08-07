@@ -136,63 +136,6 @@
     </section>
     }
 
-    <!-- Form for selecting technology -->
-    @if(formVisible && !technologySelected){
-    <section id="select_technology">
-      <div class="container-boxed pt-4 pb-5">
-        <div class="card p-4 mb-4 mx-auto" style="max-width: 700px">
-          <h3
-            class="section-title font-36 nmc-dark-grey font-family-poppins text-center mb-4"
-          >
-            Select Technology
-          </h3>
-          <form [formGroup]="technologyForm" (ngSubmit)="onTechnologySelect()">
-            <div class="form-group mt-3">
-              <select
-                id="technology"
-                class="form-select h-3 rounded-3 nmc-dark-grey"
-                formControlName="technology"
-              >
-                <option value="select technology" selected>
-                  Select Technology
-                </option>
-
-                @for(tech of technologies; track tech;){
-                <option [value]="tech.Name">
-                  {{ tech.Name }}
-                </option>
-                }
-              </select>
-
-              @if( technologyForm.get('technology')?.touched &&
-              technologyForm.get('technology')?.invalid){
-              <div class="text-danger">Please select a technology</div>
-              }
-            </div>
-
-            <div class="d-flex justify-content-end align-items-center mt-5">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                (click)="hideTechnologyForm()"
-              >
-                Back
-              </button>
-
-              <button
-                type="submit"
-                class="btn btn-light-orange ms-2"
-                [disabled]="!technologyForm.valid"
-              >
-                Next
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </section>
-    }
-
     <!-- Form for adding a new technology -->
     @if(isAddingNewTechnology){
     <section id="new_technology">
@@ -329,6 +272,63 @@
     </section>
     }
 
+    <!-- Form for selecting technology -->
+    @if(formVisible && !technologySelected){
+    <section id="select_technology">
+      <div class="container-boxed pt-4 pb-5">
+        <div class="card p-4 mb-4 mx-auto" style="max-width: 700px">
+          <h3
+            class="section-title font-36 nmc-dark-grey font-family-poppins text-center mb-4"
+          >
+            Select Technology
+          </h3>
+          <form [formGroup]="technologyForm" (ngSubmit)="onTechnologySelect()">
+            <div class="form-group mt-3">
+              <select
+                id="technology"
+                class="form-select h-3 rounded-3 nmc-dark-grey"
+                formControlName="technology"
+              >
+                <option value="select technology" selected>
+                  Select Technology
+                </option>
+
+                @for(tech of technologies; track tech;){
+                <option [value]="tech.Name">
+                  {{ tech.Name }}
+                </option>
+                }
+              </select>
+
+              @if( technologyForm.get('technology')?.touched &&
+              technologyForm.get('technology')?.invalid){
+              <div class="text-danger">Please select a technology</div>
+              }
+            </div>
+
+            <div class="d-flex justify-content-end align-items-center mt-5">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="hideTechnologyForm()"
+              >
+                Back
+              </button>
+
+              <button
+                type="submit"
+                class="btn btn-light-orange ms-2"
+                [disabled]="!technologyForm.valid"
+              >
+                Next
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+    }
+
     <!-- Form for adding or updating a quiz -->
     @if(formVisible && technologySelected){
     <section id="new_quiz">
@@ -388,8 +388,9 @@
                   (click)="removeOption(i)"
                   class="btn btn-danger btn-sm mt-2"
                 >
-                  Remove</button
-                >}
+                  Remove
+                </button>
+                }
               </div>
               }
             </div>
