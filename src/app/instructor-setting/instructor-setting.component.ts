@@ -1,6 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { NgFor, NgIf } from '@angular/common';
 import { InstructorService } from '../services/instructor.service';
 import { IInstructor } from '../modules/instructors';
 import { AngularFireStorage } from '@angular/fire/compat/storage';

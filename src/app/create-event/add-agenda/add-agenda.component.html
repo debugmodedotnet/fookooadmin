@@ -25,7 +25,7 @@
     <div class="form-wrapper rounded-4 w-100">
       <form [formGroup]="agendaForm" (ngSubmit)="addOrUpdateAgenda()">
         <div class="row form-group mt-3 p-4">
-          <div class="col-6">
+          <div class="col-8">
             <label for="title" class="form-label required">Title</label>
             <input
               id="title"
@@ -41,19 +41,19 @@
             }
           </div>
 
-          <div class="col-6">
-            <label for="speaker" class="form-label">Speaker</label>
+          <div class="col-4">
+            <label for="time" class="form-label required">Time</label>
             <input
-              id="speaker"
+              id="time"
               type="text"
               class="form-control h-3 rounded-3"
-              formControlName="Speaker"
-              placeholder="Enter Speaker"
+              formControlName="Time"
+              placeholder="Enter Time"
             />
 
-            @if( agendaForm.get('Speaker')?.invalid &&
-            agendaForm.get('Speaker')?.touched){
-            <div class="error">Speaker is required.</div>
+            @if( agendaForm.get('Time')?.invalid &&
+            agendaForm.get('Time')?.touched){
+            <div class="error">Time is required.</div>
             }
           </div>
 
@@ -73,19 +73,19 @@
             }
           </div>
 
-          <div class="col-4 mt-3">
-            <label for="time" class="form-label required">Time</label>
+          <!-- <div class="col-4 mt-3">
+            <label for="speaker" class="form-label">Speaker</label>
             <input
-              id="time"
+              id="speaker"
               type="text"
               class="form-control h-3 rounded-3"
-              formControlName="Time"
-              placeholder="Enter Time"
+              formControlName="Speaker"
+              placeholder="Enter Speaker"
             />
 
-            @if( agendaForm.get('Time')?.invalid &&
-            agendaForm.get('Time')?.touched){
-            <div class="error">Time is required.</div>
+            @if( agendaForm.get('Speaker')?.invalid &&
+            agendaForm.get('Speaker')?.touched){
+            <div class="error">Speaker is required.</div>
             }
           </div>
 
@@ -98,17 +98,51 @@
               formControlName="SpeakerImg"
               placeholder="Enter Speaker Image URL"
             />
+          </div> -->
+
+          <div class="col-4 mt-3">
+            <label for="speaker" class="form-label">Speaker</label>
+            <select
+              id="speaker"
+              class="form-control form-select h-3 rounded-3"
+              formControlName="Speaker"
+              (change)="onSpeakerChange($event)"
+            >
+              <option value="">None</option>
+              @for(speaker of speakers; track speaker;){
+              <option [value]="speaker.Name">
+                {{ speaker.Name }}
+              </option>
+              }
+            </select>
+
+            @if(agendaForm.get('Speaker')?.invalid &&
+            agendaForm.get('Speaker')?.touched){
+            <div class="error">Speaker is required.</div>
+            }
+          </div>
+
+          <div class="col-4 mt-3">
+            <label for="speakerImg" class="form-label">Speaker Image URL</label>
+            <input
+              id="speakerImg"
+              type="text"
+              class="form-control h-3 rounded-3"
+              formControlName="SpeakerImg"
+              placeholder="Enter Speaker Image URL"
+              readonly
+            />
           </div>
 
           <div class="col-12 mt-3">
             <label for="info" class="form-label">Info</label>
-            <input
+            <textarea
               id="info"
               type="text"
-              class="form-control h-3 rounded-3"
+              class="form-control rounded-3"
               formControlName="Info"
               placeholder="Enter Info"
-            />
+            ></textarea>
 
             @if( agendaForm.get('Info')?.invalid &&
             agendaForm.get('Info')?.touched){

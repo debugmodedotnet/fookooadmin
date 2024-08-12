@@ -1,4 +1,4 @@
-import { CommonModule, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, ElementRef, ViewChild, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ReactiveFormsModule } from '@angular/forms';

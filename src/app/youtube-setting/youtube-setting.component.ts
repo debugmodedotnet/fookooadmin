@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IYoutubeVideos } from '../modules/home-youtube';
 import { YoutubeVideoService } from '../services/youtube-video.service';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { NgFor, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-youtube-setting',

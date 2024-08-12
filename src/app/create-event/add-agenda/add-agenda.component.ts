@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { CommonModule } from '@angular/common';
 import { IEventAgenda } from '../../modules/event-agenda';
+import { IEventSpeakers } from '../../modules/event-speakers';
 
 @Component({
   selector: 'app-add-agenda',
@@ -12,10 +12,11 @@ import { IEventAgenda } from '../../modules/event-agenda';
   templateUrl: './add-agenda.component.html',
   styleUrl: './add-agenda.component.scss'
 })
-export class AddAgendaComponent {
+export class AddAgendaComponent implements OnInit {
 
   eventId?: string;
   agendas: IEventAgenda[] = [];
+  speakers: IEventSpeakers[] = [];
   agendaForm!: FormGroup;
   formVisible = false;
   isEditMode = false;
@@ -35,6 +36,7 @@ export class AddAgendaComponent {
         console.log("Event id", this.eventId);
         this.initForm();
         this.loadAgendas();
+        this.loadSpeakers();
       } else {
         console.error('Event ID is not available');
       }
@@ -66,6 +68,33 @@ export class AddAgendaComponent {
         } as IEventAgenda));
       });
   }
+
+  loadSpeakers(): void {
+    this.firestore.collection(`events/${this.eventId}/speakers`).valueChanges({ idField: 'id' })
+      .subscribe((data: any[]) => {
+        this.speakers = data.map((item: any) => ({
+          id: item.id,
+          Name: item.Name,
+          Image: item.Image,
+        }));
+      });
+  }
+
+  onSpeakerChange(event: any): void {
+    const selectedSpeakerName = event.target.value;
+    if (selectedSpeakerName === '') {
+      this.agendaForm.patchValue({
+        SpeakerImg: ''
+      });
+    } else {
+      const selectedSpeaker = this.speakers.find(speaker => speaker.Name === selectedSpeakerName);
+      if (selectedSpeaker) {
+        this.agendaForm.patchValue({
+          SpeakerImg: selectedSpeaker.Image
+        });
+      }
+    }
+  }  
 
   showForm(agenda?: IEventAgenda): void {
     if (agenda) {
@@ -108,7 +137,6 @@ export class AddAgendaComponent {
         });
     }
   }
-
 
   deleteAgenda(agendaId?: string): void {
     if (agendaId) {
