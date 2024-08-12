@@ -5,7 +5,6 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { EventService } from '../services/event.service';
 import { IEvent } from '../modules/event';
 import { first } from 'rxjs';
-import { NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
@@ -40,8 +39,8 @@ export class CreateEventComponent implements OnInit {
       Tech: new FormControl('', Validators.required),
       Logo: new FormControl('', Validators.required),
       Tagline: new FormControl('', Validators.required),
-      ShortDescription: new FormControl('', Validators.maxLength(200)),
-      Description: new FormControl(''),
+      ShortDescription: new FormControl('', Validators.maxLength(145)),
+      Description: new FormControl('', Validators.maxLength(500)),
       Date: new FormControl('', Validators.required),
       City: new FormControl('', Validators.required),
       EventImage: new FormControl('',),

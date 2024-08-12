@@ -1,8 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { CommonModule } from '@angular/common';
 import { IEventSpeakers } from '../../modules/event-speakers';
 import { finalize } from 'rxjs';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
@@ -14,7 +13,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
   templateUrl: './add-speakers.component.html',
   styleUrl: './add-speakers.component.scss'
 })
-export class AddSpeakersComponent {
+export class AddSpeakersComponent implements OnInit {
 
   eventId?: string;
   speakers: IEventSpeakers[] = [];

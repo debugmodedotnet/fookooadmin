@@ -120,18 +120,19 @@
             <label for="shortDescription" class="form-label required"
               >Short Description</label
             >
-            <input
+            <textarea
               id="shortDescription"
               type="text"
-              class="form-control h-3 rounded-3"
+              class="form-control rounded-3"
+              rows="4"
               formControlName="ShortDescription"
               placeholder="Enter Short Description"
-            />
+            ></textarea>
 
             @if( eventForm.get('ShortDescription')?.invalid &&
             eventForm.get('ShortDescription')?.touched){
             <div class="error">
-              Short Description is required & should be less than 200 words!
+              Short Description is required & should be less than 145 letters!
             </div>
             }
           </div>
@@ -143,11 +144,18 @@
             <textarea
               id="longDescription"
               type="text"
-              class="form-control h-3 rounded-3"
+              class="form-control rounded-3"
               formControlName="Description"
               placeholder="Enter Long Description"
               rows="4"
             ></textarea>
+
+            @if( eventForm.get('Description')?.invalid &&
+            eventForm.get('Description')?.touched){
+            <div class="error">
+              Description is required & should be less than 500 letters!
+            </div>
+            }
           </div>
 
           <div class="col-3 mt-4">
