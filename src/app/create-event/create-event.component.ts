@@ -1,7 +1,7 @@
 import slugify from 'slugify';
 import { v4 as uuidv4 } from 'uuid';
 import { Component, OnInit, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EventService } from '../services/event.service';
 import { IEvent } from '../modules/event';
 import { first } from 'rxjs';
@@ -30,30 +30,30 @@ export class CreateEventComponent implements OnInit {
   private storage = inject(AngularFireStorage);
   venueImageURL: string | null = null;
 
-  constructor(private eventService: EventService) {
-    this.eventForm = new FormGroup({
-      Id: new FormControl(''),
-      Title: new FormControl('', Validators.required),
-      TotalSeats: new FormControl('', Validators.required),
-      RegisteredSeats: new FormControl('', Validators.required),
-      Tech: new FormControl('', Validators.required),
-      Logo: new FormControl('', Validators.required),
-      Tagline: new FormControl('', Validators.required),
-      ShortDescription: new FormControl('', Validators.maxLength(145)),
-      Description: new FormControl('', Validators.maxLength(500)),
-      Date: new FormControl('', Validators.required),
-      City: new FormControl('', Validators.required),
-      EventImage: new FormControl('',),
-      VenueName: new FormControl('', Validators.required),
-      VenueInfo: new FormControl('', Validators.required),
-      VenueImg: new FormControl(''),
-      VenueIframe: new FormControl(''),
-      isOffline: new FormControl(false),
-      isPaid: new FormControl(false),
-      isCertificateProvided: new FormControl(false),
-      displayAtHomePage: new FormControl(false),
-      isActive: new FormControl(false),
-      isPrivate: new FormControl(false),
+  constructor(private eventService: EventService, private fb: FormBuilder) {
+    this.eventForm = this.fb.group({
+      Id: [''],
+      Title: ['', Validators.required],
+      TotalSeats: ['', Validators.required],
+      RegisteredSeats: ['', Validators.required],
+      Tech: ['', Validators.required],
+      Logo: ['', Validators.required],
+      Tagline: ['', Validators.required],
+      ShortDescription: ['', [Validators.required, Validators.maxLength(145)]],
+      Description: ['', [Validators.required, Validators.maxLength(500), Validators.minLength(300)]],
+      Date: ['', Validators.required],
+      City: ['', Validators.required],
+      EventImage: ['', Validators.required],
+      VenueName: ['', Validators.required],
+      VenueInfo: ['', Validators.required],
+      VenueImg: [''],
+      VenueIframe: ['', Validators.required],
+      isOffline: [false],
+      isPaid: [false],
+      isCertificateProvided: [false],
+      displayAtHomePage: [false],
+      isActive: [false],
+      isPrivate: [false],
 
     });
   }
