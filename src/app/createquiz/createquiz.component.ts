@@ -132,6 +132,11 @@ export class CreatequizComponent implements OnInit {
   }
 
   addOrUpdateQuestions(): void {
+    if (this.quizForm.invalid || !this.quizForm.value.answerId) {
+      this.isOptionsInvalid = true;
+      return;
+    }
+
     if (this.editMode && this.currentQuizId) {
       this.updateQuestions(this.currentQuizId, this.quizForm.value);
     } else {
@@ -140,15 +145,18 @@ export class CreatequizComponent implements OnInit {
   }
 
   addQuestions(): void {
-    this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('questions').add(this.quizForm.value)
-      .then(() => {
-        this.resetForms();
-        this.loadQuestions();
-        this.cd.detectChanges();
-      })
-      .catch(error => {
-        console.error('Error adding quiz:', error);
-      });
+    if (this.quizForm.valid) {
+      this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('questions').add(this.quizForm.value)
+        .then(() => {
+          this.updateNumberOfQuestions(1);
+          this.resetForms();
+          this.loadQuestions();
+          this.cd.detectChanges();
+        })
+        .catch(error => {
+          console.error('Error adding quiz:', error);
+        });
+    }
   }
 
   updateQuestions(id: string, quiz: IQuizQuestion): void {
@@ -160,6 +168,22 @@ export class CreatequizComponent implements OnInit {
       .catch(error => {
         console.error('Error updating quiz:', error);
       });
+  }
+
+  updateNumberOfQuestions(change: number): void {
+    const techDocRef = this.firestore.collection('quiz').doc(this.selectedTechnology!);
+
+    techDocRef.get().subscribe((doc) => {
+      if (doc.exists) {
+        const techData = doc.data() as IQuizTechnology;
+
+        const currentCount = techData.numberOfQuestions || 0;
+        techDocRef.update({ numberOfQuestions: currentCount + change })
+          .catch(error => console.error('Error updating number of questions:', error));
+      } else {
+        console.error('Technology not found!');
+      }
+    });
   }
 
   editQuestions(quiz: IQuizQuestion): void {
@@ -182,6 +206,7 @@ export class CreatequizComponent implements OnInit {
     if (confirm('Are you sure you want to delete this quiz?')) {
       this.firestore.collection('quiz').doc(this.selectedTechnology!).collection('questions').doc(id).delete()
         .then(() => {
+          this.updateNumberOfQuestions(-1);
           this.loadQuestions();
         })
         .catch(error => {
@@ -289,7 +314,7 @@ export class CreatequizComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.quizForm.invalid) {
+    if (this.quizForm.invalid || !this.quizForm.get('answerId')?.value) {
       this.isOptionsInvalid = true;
       return;
     }
@@ -307,13 +332,18 @@ export class CreatequizComponent implements OnInit {
     this.quizForm.reset({
       question: '',
       order: '',
-      options: this.fb.array([this.createOption(1)]),
+      //options: this.fb.array([this.createOption(1)]),
       answerId: '',
     });
-    //this.technologyForm.reset();
+
+    const optionsArray = this.quizForm.get('options') as FormArray;
+    optionsArray.clear();
+    optionsArray.push(this.createOption(1));
+
     this.technologyForm.reset({
       technology: 'select technology'
     });
+
     this.technologyCreationForm.reset();
     this.technologyEditMode = false;
     this.editMode = false;
