@@ -123,3 +123,26 @@ $nmc-primary: #ef7a04;
     max-width: 1200px; /* Set a maximum width as needed */
     margin: auto; /* Center the table */
 }
+
+
+quill-editor {
+  width: 100%;
+}
+
+::ng-deep .ql-toolbar.ql-snow {
+  border-top-left-radius: 0.5rem !important;
+  border-top-right-radius: 0.5rem !important;
+  border-color: #dee2e6;
+}
+
+::ng-deep .ql-container.ql-snow {
+  border-bottom-left-radius: 0.5rem !important;
+  border-bottom-right-radius: 0.5rem !important;
+  border-color: #dee2e6;
+  font-size: 16px !important;
+}
+
+::ng-deep .ql-editor ol,
+::ng-deep .ql-editor ul {
+  margin-left: 1.5rem !important;
+}

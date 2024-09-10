@@ -2,7 +2,7 @@ import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } fr
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { routes } from './app.routes';
 import { AngularFireModule } from '@angular/fire/compat';
-
+import { QuillModule } from 'ngx-quill'
 
 const firebaseConfig = {
   apiKey: "AIzaSyBVl1Xpr8fF_Gc1G4KEcqJWX5eRWO7JNkE",
@@ -17,7 +17,7 @@ const firebaseConfig = {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes, withComponentInputBinding()),
-    importProvidersFrom(AngularFireModule.initializeApp(firebaseConfig)),
+    provideRouter(routes, withComponentInputBinding()),    
+    importProvidersFrom(AngularFireModule.initializeApp(firebaseConfig), QuillModule.forRoot()),
   ]
 };

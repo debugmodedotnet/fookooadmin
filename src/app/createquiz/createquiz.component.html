@@ -347,13 +347,21 @@
           <form [formGroup]="quizForm" (ngSubmit)="onSubmit()">
             <div class="form-group mt-3">
               <label for="question" class="form-label required">Question</label>
-              <input
+              <!-- <input
                 type="text"
                 id="question"
                 class="form-control h-3 rounded-3"
                 formControlName="question"
                 placeholder="Enter question"
-              />
+              /> -->
+
+              <quill-editor
+                id="question"
+                formControlName="question"
+                [modules]="{ toolbar: true }"
+                style="height: 100px"
+                placeholder="Type your question here..."
+              ></quill-editor>
 
               @if( quizForm.get('question')?.touched &&
               quizForm.get('question')?.invalid){
@@ -378,13 +386,20 @@
                 <label for="option{{ i }}" class="form-label"
                   >Option {{ i + 1 }}</label
                 >
-                <input
+                <!-- <input
                   id="option{{ i }}"
                   formControlName="value"
                   type="text"
                   class="form-control h-3 rounded-3"
                   placeholder="Enter option"
-                />
+                /> -->
+                <quill-editor
+                  id="option{{ i }}"
+                  formControlName="value"
+                  [modules]="{ toolbar: true }"
+                  style="height: 100px"
+                  placeholder="Type your option here..."
+                ></quill-editor>
 
                 @if(options.length > 1){
                 <button

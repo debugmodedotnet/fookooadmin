@@ -27,6 +27,7 @@
     "firebase": "^10.12.2",
     "font-awesome": "^4.7.0",
     "glightbox": "^3.3.0",
+    "ngx-quill": "^26.0.8",
     "rxjs": "~7.8.0",
     "slugify": "^1.6.6",
     "swiper": "^11.1.4",

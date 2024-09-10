@@ -1,17 +1,18 @@
 import { NgClass } from '@angular/common';
 import { Component, ElementRef, ViewChild, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import { IQuizQuestion } from '../modules/quiz-question';
 import { IQuizTechnology } from '../modules/quiz-technology';
+import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'app-createquiz',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, NgClass],
+  imports: [ReactiveFormsModule, RouterModule, NgClass, FormsModule, QuillModule],
   templateUrl: './createquiz.component.html',
   styleUrls: ['./createquiz.component.scss']
 })
