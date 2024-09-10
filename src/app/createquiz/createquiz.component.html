@@ -35,6 +35,7 @@
               <thead class="table-dark">
                 <tr>
                   <th>Technology</th>
+                  <th>Total Questions</th>
                   <th>isActive</th>
                   <th>isPrivate</th>
                   <th>Actions</th>
@@ -45,6 +46,7 @@
                 @for(tech of technologies; track tech;){
                 <tr>
                   <td>{{ tech.Name }}</td>
+                  <td>{{ tech.numberOfQuestions }}</td>
                   <td>{{ tech.isActive ? "Yes" : "No" }}</td>
                   <td>{{ tech.isPrivate ? "Yes" : "No" }}</td>
                   <td>
@@ -90,6 +92,7 @@
                 <tr>
                   <th>Order</th>
                   <th>Question</th>
+                  <th>Answer ID</th>
                   <th>Options</th>
                   <th>Actions</th>
                 </tr>
@@ -100,6 +103,7 @@
                 <tr>
                   <td>{{ quiz.order }}</td>
                   <td>{{ quiz.question }}</td>
+                  <td>{{ quiz.answerId }}</td>
                   <td>
                     <ul>
                       @for(option of quiz.options; track option;){
