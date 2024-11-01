@@ -1,7 +1,7 @@
 import slugify from 'slugify';
 import { v4 as uuidv4 } from 'uuid';
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EventService } from '../services/event.service';
 import { IEvent } from '../modules/event';
 import { first } from 'rxjs';
@@ -43,13 +43,14 @@ export class CreateEventComponent implements OnInit {
       Description: ['', [Validators.required, Validators.maxLength(500), Validators.minLength(300)]],
       Date: ['', Validators.required],
       City: ['', Validators.required],
-      EventImage: ['', Validators.required],
-      VenueName: ['', Validators.required],
-      VenueInfo: ['', Validators.required],
-      VenueImg: [''],
-      VenueIframe: ['', Validators.required],
+      EventImage: [''],
+      VenueName: [{ value: '', disabled: true }, Validators.required],
+      VenueInfo: [{ value: '', disabled: true }, Validators.required],
+      VenueImg: [{ value: '', disabled: true }, Validators.required],
+      VenueIframe: [{ value: '', disabled: true }, Validators.required],
       isOffline: [false],
       isPaid: [false],
+      price: [{ value: '', disabled: true }, Validators.required],
       isCertificateProvided: [false],
       displayAtHomePage: [false],
       isActive: [false],
@@ -60,6 +61,26 @@ export class CreateEventComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadEvents();
+
+    this.eventForm.get('isOffline')?.valueChanges.subscribe(isOffline => {
+      if (isOffline) {
+        this.enableVenueFields();
+      } else {
+        this.disableVenueFields();
+      }
+    });
+
+    this.eventForm.get('isPaid')?.valueChanges.subscribe(isPaid => {
+      const priceControl = this.eventForm.get('price');
+      if (isPaid) {
+        priceControl?.enable();
+      } else {
+        priceControl?.disable();
+        priceControl?.reset();
+      }
+    });
+
+    this.disableVenueFields();
   }
 
   loadEvents() {
@@ -183,6 +204,7 @@ export class CreateEventComponent implements OnInit {
       displayAtHomePage: false,
       isActive: false,
       isPrivate: false,
+      price: ''
     });
 
     this.editMode = false;
@@ -233,6 +255,20 @@ export class CreateEventComponent implements OnInit {
         })
       ).subscribe();
     }
+  }
+
+  enableVenueFields() {
+    this.eventForm.get('VenueName')?.enable();
+    this.eventForm.get('VenueInfo')?.enable();
+    this.eventForm.get('VenueImg')?.enable();
+    this.eventForm.get('VenueIframe')?.enable();
+  }
+
+  disableVenueFields() {
+    this.eventForm.get('VenueName')?.disable();
+    this.eventForm.get('VenueInfo')?.disable();
+    this.eventForm.get('VenueImg')?.disable();
+    this.eventForm.get('VenueIframe')?.disable();
   }
 
 }
