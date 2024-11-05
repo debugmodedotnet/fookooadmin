@@ -16,7 +16,39 @@
     <div class="form-wrapper rounded-4 w-100">
       <form [formGroup]="eventForm" (ngSubmit)="addOrUpdateEvent()">
         <div class="row form-group mt-3 p-4">
-          <div class="col-6">
+          <div class="col-12 d-flex gap-5">
+            <div class="mt-4">
+              <input type="checkbox" formControlName="isOffline" />
+              Is Offline?
+            </div>
+
+            <div class="mt-4">
+              <input type="checkbox" formControlName="isPaid" />
+              Is Paid?
+            </div>
+
+            <div class="mt-4">
+              <input type="checkbox" formControlName="isCertificateProvided" />
+              Is Certificate Provided?
+            </div>
+
+            <div class="mt-4">
+              <input type="checkbox" formControlName="displayAtHomePage" />
+              Display At HomePage
+            </div>
+
+            <div class="mt-4">
+              <input type="checkbox" formControlName="isActive" />
+              Is Active?
+            </div>
+
+            <div class="mt-4">
+              <input type="checkbox" formControlName="isPrivate" />
+              Is Private?
+            </div>
+          </div>
+
+          <div class="col-12 mt-5">
             <label for="title" class="form-label required">Title</label>
             <input
               id="title"
@@ -31,7 +63,7 @@
             }
           </div>
 
-          <div class="col-3">
+          <div class="col-3 mt-4">
             <label for="totalSeats" class="form-label required"
               >Total Seats</label
             >
@@ -48,7 +80,7 @@
             }
           </div>
 
-          <div class="col-3">
+          <div class="col-3 mt-4">
             <label for="registeredSeats" class="form-label required"
               >Registered Seats</label
             >
@@ -65,7 +97,24 @@
             }
           </div>
 
-          <div class="col-4 mt-4">
+          <div class="col-3 mt-4">
+            <label for="registeredSeats" class="form-label required"
+              >Price(₹)</label
+            >
+            <input
+              id="price"
+              type="number"
+              class="form-control h-3 rounded-3"
+              formControlName="price"
+              placeholder="Enter Price"
+            />
+            @if(eventForm.get('price')?.invalid &&
+            eventForm.get('price')?.touched){
+            <div class="error">Price is required.</div>
+            }
+          </div>
+
+          <div class="col-3 mt-4">
             <label for="tech" class="form-label required">Technology</label>
 
             <select
@@ -85,7 +134,7 @@
             }
           </div>
 
-          <div class="col-4 mt-4">
+          <div class="col-6 mt-4">
             <label for="logo" class="form-label required">Logo</label>
             <input
               id="logo"
@@ -101,7 +150,7 @@
             }
           </div>
 
-          <div class="col-4 mt-4">
+          <div class="col-6 mt-4">
             <label for="tagline" class="form-label required">Tagline</label>
             <input
               id="tagline"
@@ -202,6 +251,7 @@
               (change)="uploadPhoto($event)"
             />
           </div>
+
           <!-- Displaying the uploaded image -->
           @if(photoURL){
           <div class="mt-2">
@@ -259,9 +309,10 @@
             <textarea
               id="venueInfo"
               type="text"
-              class="form-control h-3 rounded-3"
+              class="form-control rounded-3"
               formControlName="VenueInfo"
               placeholder="Venue Info"
+              rows="1"
             ></textarea>
             @if(eventForm.get('VenueInfo')?.invalid &&
             eventForm.get('VenueInfo')?.touched){
@@ -280,36 +331,11 @@
               formControlName="VenueIframe"
               placeholder="Enter Iframe"
             />
-          </div>
 
-          <div class="col-2 mt-4">
-            <input type="checkbox" formControlName="isOffline" />
-            Is Offline?
-          </div>
-
-          <div class="col-2 mt-4">
-            <input type="checkbox" formControlName="isPaid" />
-            Is Paid?
-          </div>
-
-          <div class="col-3 mt-4">
-            <input type="checkbox" formControlName="isCertificateProvided" />
-            Is Certificate Provided?
-          </div>
-
-          <div class="col-3 mt-4">
-            <input type="checkbox" formControlName="displayAtHomePage" />
-            Display At HomePage
-          </div>
-
-          <div class="col-2 mt-4">
-            <input type="checkbox" formControlName="isActive" />
-            Is Active?
-          </div>
-
-          <div class="col-2 mt-4">
-            <input type="checkbox" formControlName="isPrivate" />
-            Is Private?
+            @if(eventForm.get('VenueIframe')?.invalid &&
+            eventForm.get('VenueIframe')?.touched){
+            <div class="error">Venue Iframe Locations is required.</div>
+            }
           </div>
         </div>
 
